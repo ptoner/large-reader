@@ -1,0 +1,104 @@
+{
+  "name": "large-reader",
+  "version": "1.0.0",
+  "description": "A readers that allows a user to browse an NFT collection built with Large.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/ptoner/large-reader"
+  },
+  "scripts": {
+    "start:dev": "webpack serve --config=webpack.dev.ts",
+    "build": "node node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",
+    "build:dev": "node node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",
+    "test": "cd test && mocha --require ts-node/register --timeout 999999 **/*.spec.ts --exit"
+  },
+  "keywords": [
+    "framework7",
+    "template",
+    "ios",
+    "android",
+    "mobile",
+    "app",
+    "cordova",
+    "phonegap"
+  ],
+  "author": "Patrick Toner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/ptoner/large-reader/issues"
+  },
+  "homepage": "https://gitlab.com/ptoner-reader/large#readme",
+  "sideEffects": ["**/*.css"],
+  "devDependencies": {
+
+    "reflect-metadata": "0.1.13",
+    "regenerator-runtime": "0.13.7",
+
+    "@types/mocha": "9.1.0",
+    "@types/node": "^17.0.21",
+    "@types/reflect-metadata": "0.1.0",
+    "@types/pouchdb": "6.4.0",
+
+    "core-js": "3.21.0",
+    
+    "framework7": "6.3.16",
+    "framework7-loader": "3.0.2",
+
+    "html-inline-script-webpack-plugin": "2.0.3",
+    "html-webpack-plugin": "5.5.0",
+    "mocha": "9.2.0",
+
+    "ts-loader": "9.2.7",
+    "css-loader": "5.2.7",
+    "file-loader": "6.2.0",
+    "style-loader": "3.3.1",
+    "terser-webpack-plugin": "5.3.1",
+    "clean-webpack-plugin": "4.0.0",
+    "copy-webpack-plugin": "10.2.4",
+    "url-loader": "4.1.1",
+
+    "ts-mocha": "9.0.2",
+    "ts-mockito": "2.6.1",
+    "ts-node": "10.6.0",
+    "typescript": "4.6.2",
+    
+    "webpack": "5.68.0",
+    "webpack-cli": "4.9.2",
+    "webpack-dev-server": "4.7.4",
+    "webpack-merge": "5.8.0",
+    "webpack-node-externals": "3.0.0",
+    
+    "dotenv": "16.0.0"
+  },
+
+  "dependencies": {
+
+    "reflect-metadata": "0.1.13",
+
+    "framework7": "6.3.16",
+    "framework7-icons": "5.0.5",
+
+    "inversify": "6.0.1",
+
+    "ethers": "5.5.4",
+    "pouchdb": "7.2.2",
+    "pouchdb-find": "7.2.2",
+
+    "it-to-buffer": "2.0.2",
+    "level-js": "6.1.0",
+
+    "assert": "2.0.0",
+    "buffer": "6.0.3",
+    "material-icons": "1.10.7",
+    "moment": "2.29.1",
+    "path-browserify": "1.0.1",
+    "process": "0.11.10",
+    "stream-browserify": "3.0.0",
+    "url": "0.11.0",
+    "util": "0.12.4",
+
+    "axios": "0.26.1",
+
+    "blob-polyfill": "6.0.20211015"
+  }
+}
