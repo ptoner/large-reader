@@ -14,9 +14,12 @@ class ImageRepository {
     async get(_id: string): Promise<Image> {
 
         //If it's empty fetch it
-        const response = await axios.get(`/backup/images/${_id}.json`)
+        const response = await axios.get(`/backup/images/${_id}`)
 
-        let image = Object.assign(new Image(), response.data)
+        let image = new Image()
+
+        image.cid
+        image.buffer = response.data
 
         console.log(image)
 
