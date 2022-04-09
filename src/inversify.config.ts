@@ -14,6 +14,7 @@ import { AuthorService } from "./service/author-service";
 import { ChannelService } from "./service/channel-service";
 import { DatabaseService } from "./service/core/database-service";
 import { RoutingService } from "./service/core/routing-service";
+import { SchemaService } from "./service/core/schema-service";
 
 import TYPES from "./service/core/types";
 import { UiService } from "./service/core/ui-service";
@@ -96,6 +97,7 @@ function getMainContainer() {
   container.bind(ItemService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(RoutingService).toSelf().inSingletonScope()
+  container.bind(SchemaService).toSelf().inSingletonScope()
 
   container.bind(ChannelRepository).toSelf().inSingletonScope()
   container.bind(ItemRepository).toSelf().inSingletonScope()

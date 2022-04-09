@@ -21,6 +21,7 @@
 <script>
 
   import { ContainerService } from "../../service/core/container-service"
+  import { SchemaService } from "../../service/core/schema-service"
 
   import { UiService } from "../../service/core/ui-service"
 
@@ -32,7 +33,7 @@
 
       let uiService = ContainerService.getInstance(UiService)
       let walletService = ContainerService.getWalletService()
-
+      let schemaService = ContainerService.getInstance(SchemaService)
 
       //If Ethereum connection is available then initialize the wallet
       if (typeof window !== "undefined" && window['ethereum']) {
@@ -58,6 +59,8 @@
 
         let walletAddress = await walletService.getAddress()
         
+        await schemaService.load()
+
         $f7.views.create('.view-main', {
           url: '/',
           browserHistory: true
@@ -70,6 +73,8 @@
       async function initNoWallet() {
 
         uiService.showSpinner("Loading...")
+
+        await schemaService.load()
 
         $f7.views.create('.view-main', {
           url: '/',
