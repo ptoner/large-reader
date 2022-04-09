@@ -13,9 +13,9 @@ class DatabaseService {
         PouchDB.plugin(PouchFind)
     }
 
-    async getDatabase(name:string, buildIndexes?:Function) {
+    async getDatabase(config:DatabaseConfig) {
 
-        const fullName = `./pouch/${name}`
+        const fullName = `./pouch/${config.name}`
 
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 
@@ -28,10 +28,16 @@ class DatabaseService {
         if (details.doc_count == 0 && details.update_seq == 0) {
 
             //Create indexes
-            if (buildIndexes) {
+            if (config.buildIndexes) {
                 console.log(`Creating indexes for ${fullName}`)
-                await buildIndexes(this.dbCache[fullName])
+                await config.buildIndexes(this.dbCache[fullName])
             }
+
+            if (config.initialRecords?.length > 0) {
+                console.log(`Loading ${config.initialRecords?.length} initial records for ${fullName}`)
+                await this.dbCache[fullName].bulkDocs(config.initialRecords)
+            }
+
         }
 
 
@@ -40,6 +46,12 @@ class DatabaseService {
     }
 
 
+}
+
+interface DatabaseConfig {
+    name:string
+    buildIndexes?:Function
+    initialRecords?:any[]
 }
 
 export {

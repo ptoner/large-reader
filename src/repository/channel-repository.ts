@@ -14,8 +14,13 @@ class ChannelRepository {
         private databaseService: DatabaseService
     ) {}
 
-    async load(channelId:string) {
-        this.db = await this.databaseService.getDatabase(`${channelId}-item`)
+    async load(channelId:string, initial:Channel[]) {
+
+        this.db = await this.databaseService.getDatabase({
+            name: `${channelId}-channel`, 
+            initialRecords: initial
+        })
+
     }
 
     async get(_id:string): Promise<Channel> {        

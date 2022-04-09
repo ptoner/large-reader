@@ -22,7 +22,7 @@ class ChannelWebService {
     }
 
     async getViewModel(channel:Channel) : Promise<ChannelViewModel> {
-
+ 
         let coverImage:ImageViewModel
         let coverBanner:ImageViewModel 
         let authorPhoto:ImageViewModel

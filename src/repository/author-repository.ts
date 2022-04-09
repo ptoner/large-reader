@@ -12,8 +12,13 @@ class AuthorRepository {
         private databaseService: DatabaseService
     ) { }
 
-    async load(channelId:string) {
-        this.db = await this.databaseService.getDatabase(`${channelId}-author`)
+    async load(channelId:string, initial:Author[]) {
+
+        this.db = await this.databaseService.getDatabase({
+            name: `${channelId}-author`, 
+            initialRecords: initial
+        })
+        
     }
 
     async get(_id: string): Promise<Author> {

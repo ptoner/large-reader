@@ -4,6 +4,7 @@ import webpack from 'webpack'
 
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // const nodeExternals = require('webpack-node-externals')
 
@@ -103,14 +104,15 @@ let readerConfig = {
       // favicon: 'src/html/favicon.ico',
       template: 'src/html/index.html',
       filename: 'index.html'
+    }),
+
+    new CopyWebpackPlugin({
+      patterns: [
+          { from: './backup', to: 'backup' }
+      ]
     })
   ]
 }
 
 
 export default [readerConfig]
-
-
-
-
-

@@ -4,6 +4,7 @@ import { Container } from "inversify";
 import AppComponent from './components/reader/app.f7.html'
 
 import ReaderIndexComponent from './components/reader/index.f7.html'
+import { ChannelController } from "./controller/channel-controller";
 
 import { AuthorRepository } from "./repository/author-repository";
 import { ChannelRepository } from "./repository/channel-repository";
@@ -12,6 +13,7 @@ import { ItemRepository } from "./repository/item-repository";
 import { AuthorService } from "./service/author-service";
 import { ChannelService } from "./service/channel-service";
 import { DatabaseService } from "./service/core/database-service";
+import { RoutingService } from "./service/core/routing-service";
 
 import TYPES from "./service/core/types";
 import { UiService } from "./service/core/ui-service";
@@ -43,28 +45,7 @@ function getMainContainer() {
       id: 'large-reader', // App bundle ID
       name: 'Large Reader', // App name
       theme: 'auto', // Automatic theme detection
-      component: AppComponent,
-      routes: [
-
-        {
-          path: "/",
-          async async({ resolve, reject, to }) {
-
-            // let itemViewModel = await itemWebService.getNewViewModel(to.params.channelId)
-        
-            let channelViewModel
-
-            resolve({ 
-              component: ReaderIndexComponent
-            }, {
-              props: {
-                channelViewModel: channelViewModel
-              } 
-            })
-          }
-        },
-
-      ]
+      component: AppComponent
     })
 
 
@@ -98,12 +79,10 @@ function getMainContainer() {
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
 
-  container.bind(UiService).toSelf().inSingletonScope()
-  // container.bind(QueueService).toSelf().inSingletonScope()
+  container.bind(ChannelController).toSelf().inSingletonScope()
 
-  // container.bind(DatabaseService).toSelf().inSingletonScope()
-  // container.bind(SchemaService).toSelf().inSingletonScope()
-  // container.bind(PinningService).toSelf().inSingletonScope()
+
+  container.bind(UiService).toSelf().inSingletonScope()
   
   container.bind(ChannelWebService).toSelf().inSingletonScope()
   container.bind(ItemWebService).toSelf().inSingletonScope()
@@ -116,6 +95,7 @@ function getMainContainer() {
   container.bind(ImageService).toSelf().inSingletonScope()
   container.bind(ItemService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()
+  container.bind(RoutingService).toSelf().inSingletonScope()
 
   container.bind(ChannelRepository).toSelf().inSingletonScope()
   container.bind(ItemRepository).toSelf().inSingletonScope()

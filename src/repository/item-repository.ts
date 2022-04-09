@@ -44,8 +44,14 @@ class ItemRepository {
         private databaseService: DatabaseService
     ) { }
 
-    async load(channelId:string) {
-        this.db = await this.databaseService.getDatabase(`${channelId}-item`, this.CREATE_INDEXES)
+    async load(channelId:string, initial:Item[]) {
+
+        this.db = await this.databaseService.getDatabase({
+            name: `${channelId}-item`, 
+            initialRecords: initial,
+            buildIndexes: this.CREATE_INDEXES
+        })
+        
     }
 
     async get(_id: string): Promise<Item> {

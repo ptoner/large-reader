@@ -106,7 +106,7 @@ class ItemWebService {
         let result: ItemViewModel[] = []
 
         //Get channel
-        const channel:Channel = await this.channelService.getMain()
+        const channel:Channel = await this.channelService.get(globalThis.channelId)
 
         let items: Item[] = await this.itemService.list(skip)
 

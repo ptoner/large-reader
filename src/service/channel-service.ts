@@ -18,10 +18,6 @@ class ChannelService {
     private channelRepository:ChannelRepository
   ) { }
 
-  async getMain(): Promise<Channel> {
-    return
-  }
-
   async get(_id:string): Promise<Channel> {
     return this.channelRepository.get(_id)
   }
