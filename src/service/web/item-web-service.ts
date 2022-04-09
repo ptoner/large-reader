@@ -101,14 +101,14 @@ class ItemWebService {
 
     }
 
-    async listByChannel(channelId: string, limit: number, skip: number): Promise<ItemViewModel[]> {
+    async list(skip: number): Promise<ItemViewModel[]> {
 
         let result: ItemViewModel[] = []
 
-        let items: Item[] = await this.itemService.listByChannel(channelId, limit, skip)
-
         //Get channel
-        const channel:Channel = await this.channelService.get(channelId)
+        const channel:Channel = await this.channelService.getMain()
+
+        let items: Item[] = await this.itemService.list(skip)
 
         for (let item of items) {
             result.push(await this.getViewModel(item, channel))

@@ -66,7 +66,7 @@ class ChannelWebService {
 
         }
 
-        let itemCount = await this.channelService.countItemsByChannel(channel._id)
+        let itemCount = 0
 
         return {
             channel: channel,
@@ -80,19 +80,6 @@ class ChannelWebService {
 
     }
 
-    async list(limit: number, skip:number): Promise<ChannelViewModel[]> {
-
-        let result:ChannelViewModel[] = []
-
-        let channels:Channel[] = await this.channelService.list(limit, skip)
-
-        for (let channel of channels) {
-            result.push(await this.getViewModel(channel))
-        }
-
-        return result
-    
-      }
 
 }
 

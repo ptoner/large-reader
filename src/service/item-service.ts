@@ -15,12 +15,8 @@ class ItemService {
         return this.itemRepository.get(_id)
     }
     
-    async countByChannel(channelId:string) : Promise<number> {
-        return this.itemRepository.countByChannel(channelId)
-    }
-
-    async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
-        return this.itemRepository.listByChannel(channelId, limit, skip)
+    async list(skip: number): Promise<Item[]> {
+        return this.itemRepository.list(skip)
     }
 
     async mint(_id: string) {

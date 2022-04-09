@@ -2,6 +2,7 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 import "reflect-metadata"
 
+import axios from "axios"
 
 import { getMainContainer } from "./inversify.config"
 
@@ -18,8 +19,8 @@ export default async() => {
                 
     let container = getMainContainer()
 
-    let contractAddress = ""
-    let collectionCid = ""
+    const response = await axios.get(`/backup/initial.json`)
 
+    console.log(response)
     
 }

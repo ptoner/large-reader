@@ -6,8 +6,6 @@ import { Blob } from 'blob-polyfill'
 @injectable()
 class ImageService {
 
-  db: any
-
   constructor(
     private imageRepository: ImageRepository
   ) { }

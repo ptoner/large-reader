@@ -15,22 +15,16 @@ import TYPES from "./core/types"
 class ChannelService {
 
   constructor(
-    private channelRepository:ChannelRepository,
-    private itemService:ItemService
+    private channelRepository:ChannelRepository
   ) { }
+
+  async getMain(): Promise<Channel> {
+    return
+  }
 
   async get(_id:string): Promise<Channel> {
     return this.channelRepository.get(_id)
   }
-
-  async list(limit: number, skip:number): Promise<Channel[]> {
-    return this.channelRepository.list(limit, skip)
-  }
-
-  async countItemsByChannel(channelId:string) : Promise<number> {
-    return this.itemService.countByChannel(channelId)
-  }
-
 
 }
 
