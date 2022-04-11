@@ -54,6 +54,29 @@
   }
   
 
+.page-content {
+    background-color: rgb(238, 240, 243);
+}
+
 .center {
     margin: 0 auto;
+}
+
+
+
+.author-avatar {
+  margin-top: -4px;
+  width: 25px;
+  height: 25px;
+  font-size: 20px;
+  float: left;
+  vertical-align: middle;
+  border-radius: 50%;
+  margin-right: 3px;    
+}
+
+.author-avatar img {
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 50%;
 }

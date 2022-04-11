@@ -79,33 +79,12 @@ class ItemRepository {
             throw Error("Invalid skip value")
         }
 
-        //If it's the initial page it'll be in the database so fetch it
-        if (skip == 0) {
+        //First chunk is at 0.json
+        let chunkIndex = skip / ItemRepository.CHUNK_SIZE
 
-            let response = await this.db.find({
-                selector: {
-                    channelId: { $eq: channelId },
-                    dateCreated: { $exists: true }
-                },
-                sort: [{ 'dateCreated': 'asc' }],
-                limit: ItemRepository.CHUNK_SIZE,
-                skip: skip
-            })
-    
+        const response = await axios.get(`/backup/itemChunks/${chunkIndex}.json`)
 
-            items.push(...response.docs.map( doc => Object.assign(new Item(), doc)))
-
-        } else {
-
-            //First chunk is at 0.json
-            let chunkIndex = (skip / ItemRepository.CHUNK_SIZE) - 1
-
-            const response = await axios.get(`/backup/itemChunks/${chunkIndex}`)
-
-            console.log(response)
-
-        }
-
+        items.push(...response.data.map( doc => Object.assign(new Item(), doc)))
 
         return items
 

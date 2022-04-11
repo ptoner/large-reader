@@ -200,7 +200,8 @@
 
    
       let itemWebService = ContainerService.getInstance(ItemWebService)
-  
+      let uiService = ContainerService.getInstance(UiService)
+
       let channelViewModel = props.channelViewModel
   
 
@@ -296,6 +297,8 @@
         // Exit, if loading in progress
         if (loadingInProgress || !hasMoreItems) return
   
+        uiService.showSpinner("Loading...")
+
         // Set loading flag
         loadingInProgress = true
   
@@ -327,6 +330,8 @@
         pageCounter++
         loadingInProgress = false
   
+        uiService.hideSpinner()
+
       }
   
 
