@@ -6,12 +6,12 @@ import { ImageViewModel } from "../viewmodel/image-view-model";
 interface ChannelViewModel {
 
     channel:Channel
-    coverImage:ImageViewModel
-    coverBanner:ImageViewModel
+    // coverImage:ImageViewModel
+    // coverBanner:ImageViewModel
 
     author:Author
     authorDisplayName:string 
-    authorPhoto:ImageViewModel
+    // authorPhoto:ImageViewModel
 
     itemCount:number
 

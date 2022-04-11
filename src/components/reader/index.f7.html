@@ -2,10 +2,8 @@
 
     <div class="page" data-name="admin-show-collection">
   
-      <${Navbar} />
+      <${Navbar} title="${channelViewModel.channel.title}" />
     
-
-
       <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
   
         <div class="row">
@@ -16,8 +14,8 @@
   
                 <div class="card-header banner" id="banner">
         
-                    ${channelViewModel?.coverImage ? $h`
-                      <img src="${channelViewModel.coverImage.url}" class="avatar" />
+                    ${channelViewModel?.channel.coverImageId ? $h`
+                      <img src="backup/images/${channelViewModel.channel.coverImageId}" class="avatar" />
                     ` : $h`
                       <i class="material-icons avatar">image</i>
                     `}
@@ -205,83 +203,82 @@
   
       let channelViewModel = props.channelViewModel
   
-      console.log(channelViewModel)
 
-    //   //Pagination
-    //   const LIMIT = 20
+      //Pagination
+      const LIMIT = 20
   
-    //   let itemsShown = 0
-    //   let hasMoreItems = true
-    //   let loadingInProgress = false
+      let itemsShown = 0
+      let hasMoreItems = true
+      let loadingInProgress = false
   
-    //   let items = []
-    //   let virtualList
-    //   let pageCounter = 0
+      let items = []
+      let virtualList
+      let pageCounter = 0
   
 
-    //   $on('pageInit', async (e, page) => {
+      $on('pageInit', async (e, page) => {
   
-    //     //Get first page
-    //     virtualList = $f7.virtualList.create({
-    //       el: '#item-list',
+        //Get first page
+        virtualList = $f7.virtualList.create({
+          el: '#item-list',
   
-    //       renderItem(itemViewModel) {
-    //         if (!itemViewModel.item) return '<li>Loading</li>'
-    //         return getTemplate(itemViewModel)
-    //       },
+          renderItem(itemViewModel) {
+            if (!itemViewModel.item) return '<li>Loading</li>'
+            return getTemplate(itemViewModel)
+          },
   
-    //       items: [{
-    //         title: 'Loading...'
-    //       }],
-    //       setListHeight: true,
-    //       updatableScroll: true,
-    //       height: function (itemViewModel) {
+          items: [{
+            title: 'Loading...'
+          }],
+          setListHeight: true,
+          updatableScroll: true,
+          height: function (itemViewModel) {
   
-    //         if (!itemViewModel.item) return 50
+            if (!itemViewModel.item) return 50
   
-    //         //Called 'horrible solution but it works' by author.  https://jsfiddle.net/mnahara/1cn6xqLg/
+            //Called 'horrible solution but it works' by author.  https://jsfiddle.net/mnahara/1cn6xqLg/
             
-    //         //Create a div, add the template to it, calculate height, destroy div
-    //         const measuringDiv = document.createElement('div')
+            //Create a div, add the template to it, calculate height, destroy div
+            const measuringDiv = document.createElement('div')
       
-    //         measuringDiv.classList.add('list', 'cards-list')
-    //         measuringDiv.innerHTML = `<ul id='find-me'>${getTemplate(itemViewModel)}</ul>`
+            measuringDiv.classList.add('list', 'cards-list')
+            measuringDiv.innerHTML = `<ul id='find-me'>${getTemplate(itemViewModel)}</ul>`
   
-    //         $('body').append(measuringDiv)
+            $('body').append(measuringDiv)
   
-    //         let height = $('#find-me li').height()
+            let height = $('#find-me li').height()
   
-    //         //Remove
-    //         measuringDiv.parentNode.removeChild(measuringDiv)
+            //Remove
+            measuringDiv.parentNode.removeChild(measuringDiv)
   
-    //         return height
-    //       },
-    //       emptyTemplate: `
-    //         <li class="card item-card">
-    //           <div class="card-content">
-    //             <div class="card-content card-content-padding">
-    //               There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
-    //             </div>
-    //           </div>
-    //         </li>
-    //       `
-    //     })
+            return height
+          },
+          emptyTemplate: `
+            <li class="card item-card">
+              <div class="card-content">
+                <div class="card-content card-content-padding">
+                  There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
+                </div>
+              </div>
+            </li>
+          `
+        })
   
-    //     await $update()
+        await $update()
   
-    //     //Load cover banner into CSS
-    //     if (channelViewModel?.coverBanner?.url) {
-    //       document.getElementById('banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
-    //     }
+        //Load cover banner into CSS
+        if (channelViewModel?.channel.coverBannerId) {
+          document.getElementById('banner').style.backgroundImage = `url('backup/images/${channelViewModel?.channel.coverBannerId}')`
+        }
   
-    //     //Get the page
-    //     $('.infinite-scroll-content').trigger('infinite')
+        //Get the page
+        $('.infinite-scroll-content').trigger('infinite')
   
-    //   })
+      })
   
-    //   $on('pageAfterOut', (e, page) => {
-    //     unloadInfiniteScroll()
-    //   })
+      $on('pageAfterOut', (e, page) => {
+        unloadInfiniteScroll()
+      })
   
   
       function unloadInfiniteScroll() {
@@ -308,7 +305,7 @@
         }
   
         try {
-          // items = await itemWebService.listByChannel(props.id, LIMIT, itemsShown)
+          items = await itemWebService.listByChannel(channelViewModel.channel._id, itemsShown)
   
           if (items && items.length == LIMIT) {
             itemsShown += items.length
@@ -333,58 +330,58 @@
       }
   
 
-    //   const getTemplate = (itemViewModel) => {
+      const getTemplate = (itemViewModel) => {
   
-    //     return `
-    //             <li class="card item-card">
+        return `
+                <li class="card item-card">
   
-    //                   <div class="card-content">
+                      <div class="card-content">
   
-    //                       <div class="card-content card-content-padding">
+                          <div class="card-content card-content-padding">
   
-    //                         <div class="author-header">
+                            <div class="author-header">
   
-    //                           <div class="author-avatar">
-    //                             ${itemViewModel.authorPhoto ? `
-    //                               <img src="${itemViewModel.authorPhoto.url}" />
-    //                             ` : `
-    //                               <i class="material-icons">person</i>
-    //                             `}
-    //                           </div>
+                              <div class="author-avatar">
+                                ${itemViewModel.authorPhoto ? `
+                                  <img src="${itemViewModel.authorPhoto.url}" />
+                                ` : `
+                                  <i class="material-icons">person</i>
+                                `}
+                              </div>
   
-    //                           <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> ·
+                              <a href="/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> ·
   
-    //                           <span class="date">${itemViewModel.dateDisplay}</span>
+                              <span class="date">${itemViewModel.dateDisplay}</span>
   
-    //                         </div>
+                            </div>
   
   
-    //                         <div class="item-preview">
-    //                           <div class="left">
+                            <div class="item-preview">
+                              <div class="left">
   
-    //                             <a class="title" href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>  
+                                <a class="title" href="/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>  
                                 
-    //                             ${itemViewModel.item.excerpt ? `
-    //                               <p>${itemViewModel.item.excerpt}</p>
-    //                             ` : ``}
+                                ${itemViewModel.item.excerpt ? `
+                                  <p>${itemViewModel.item.excerpt}</p>
+                                ` : ``}
   
-    //                           </div>
+                              </div>
                               
-    //                           ${itemViewModel.coverImage ? `
-    //                             <div class="right">
-    //                               <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
-    //                                 <img src="${itemViewModel.coverImage.url}" />
-    //                               </a>
-    //                             </div>
-    //                           ` : ``}
+                              ${itemViewModel.item.coverImageId ? `
+                                <div class="right">
+                                  <a class="title" href="/item/show/${itemViewModel.item._id}">
+                                    <img src="backup/images/${itemViewModel.item.coverImageId}" />
+                                  </a>
+                                </div>
+                              ` : ``}
                               
-    //                         </div>  
-    //                       </div>
-    //                   </div>
-    //             </li>
-    //         `
+                            </div>  
+                          </div>
+                      </div>
+                </li>
+            `
   
-    //   }
+      }
   
   
       return $render

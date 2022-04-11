@@ -18,10 +18,9 @@ class ImageRepository {
 
         let image = new Image()
 
-        image.cid
-        image.buffer = response.data
-
-        console.log(image)
+        image.cid = _id
+        image._id = _id 
+        image.data = response.data
 
         return image
 

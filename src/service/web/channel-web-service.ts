@@ -23,46 +23,47 @@ class ChannelWebService {
 
     async getViewModel(channel:Channel) : Promise<ChannelViewModel> {
  
-        let coverImage:ImageViewModel
-        let coverBanner:ImageViewModel 
-        let authorPhoto:ImageViewModel
+        // let coverImage:ImageViewModel
+        // let coverBanner:ImageViewModel 
+        // let authorPhoto:ImageViewModel
 
         let author:Author
 
-        if (channel.coverImageId) {
+        // if (channel.coverImageId) {
 
-            let cImage = await this.imageService.get(channel.coverImageId)
+        //     let cImage = await this.imageService.get(channel.coverImageId)
 
-            coverImage = {
-                cid: cImage.cid,
-                url: await this.imageService.getUrl(cImage)
-            }
+        //     coverImage = {
+        //         cid: cImage.cid,
+        //         url: await this.imageService.getUrl(cImage)
+        //     }
 
-        }
+        // }
 
-        if (channel.coverBannerId) {
+        // if (channel.coverBannerId) {
 
-            let cBanner = await this.imageService.get(channel.coverBannerId)
+        //     let cBanner = await this.imageService.get(channel.coverBannerId)
 
-            coverBanner = {
-                cid: cBanner.cid,
-                url: await this.imageService.getUrl(cBanner)
-            }
-        }
+        //     coverBanner = {
+        //         cid: cBanner.cid,
+        //         url: await this.imageService.getUrl(cBanner)
+        //     }
+
+        // }
 
         if (channel.authorId) {
             
             author = await this.authorService.get(channel.authorId)
 
             //Load cover photo if there is one.
-            if (author.coverPhotoId) {
-                let aImage = await this.imageService.get(author.coverPhotoId)
+            // if (author.coverPhotoId) {
+            //     let aImage = await this.imageService.get(author.coverPhotoId)
 
-                authorPhoto = {
-                    cid: aImage.cid,
-                    url: await this.imageService.getUrl(aImage)
-                }
-            }
+            //     authorPhoto = {
+            //         cid: aImage.cid,
+            //         url: await this.imageService.getUrl(aImage)
+            //     }
+            // }
 
         }
 
@@ -70,11 +71,11 @@ class ChannelWebService {
 
         return {
             channel: channel,
-            coverImage: coverImage,
-            coverBanner:coverBanner,
+            // coverImage: coverImage,
+            // coverBanner:coverBanner,
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
-            authorPhoto: authorPhoto,
+            // authorPhoto: authorPhoto,
             itemCount: itemCount
         }
 

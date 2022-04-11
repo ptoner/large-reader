@@ -6,7 +6,7 @@
         <div class="navbar-inner sliding">
         
           <div class="left">
-            <a href="/" class="logo">Large Reader CHANGE</a>
+            <a href="/" class="logo">${title}</a>
           </div>
         
           <div class="title"></div>
@@ -36,6 +36,8 @@
 
     export default (props, { $on, $f7, $update }) => {
     
+        let title = props.title
+
         return $render
     }
 </script>

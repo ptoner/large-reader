@@ -71,7 +71,7 @@ class ItemRepository {
         return Object.assign(new Item(), response.data)
     }
 
-    async list(skip: number): Promise<Item[]> {
+    async listByChannel(channelId:string, skip: number): Promise<Item[]> {
 
         let items:Item[] = []
 
@@ -84,12 +84,14 @@ class ItemRepository {
 
             let response = await this.db.find({
                 selector: {
+                    channelId: { $eq: channelId },
                     dateCreated: { $exists: true }
                 },
                 sort: [{ 'dateCreated': 'asc' }],
                 limit: ItemRepository.CHUNK_SIZE,
                 skip: skip
             })
+    
 
             items.push(...response.docs.map( doc => Object.assign(new Item(), doc)))
 

@@ -16,12 +16,9 @@ class ImageService {
 
   async getUrl(image: Image) {
 
-    if (!image.buffer) return ""
+    if (!image.data) return ""
 
-    let blob: Blob = this.bufferToBlob(image.buffer)
-
-    return this.blobToDataURL(blob)
-
+    return 'data:image/png;base64,' + btoa(Buffer.from(image.data).toString('base64'));
   }
 
   public bufferToBlob(buffer: Uint8Array): Promise<Blob> {

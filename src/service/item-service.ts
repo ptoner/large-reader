@@ -15,8 +15,8 @@ class ItemService {
         return this.itemRepository.get(_id)
     }
     
-    async list(skip: number): Promise<Item[]> {
-        return this.itemRepository.list(skip)
+    async listByChannel(channelId:string, skip: number): Promise<Item[]> {
+        return this.itemRepository.listByChannel(channelId, skip)
     }
 
     async mint(_id: string) {
