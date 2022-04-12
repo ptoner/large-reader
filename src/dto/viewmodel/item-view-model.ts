@@ -14,7 +14,6 @@ interface ItemViewModel {
 
     author?:Author
     authorDisplayName?:string 
-    authorPhoto?:ImageViewModel
 
     images?:ImageViewModel[]
 

@@ -1,0 +1,114 @@
+<template>
+
+  <div class="page" data-name="admin-show-post">
+
+    <${Navbar} title="${itemViewModel.channel.title}" />
+
+    <div class="page-content">
+
+      <div class="row">
+        <div class="col-100 large-66 center margin-top">
+
+          <ul class="breadcrumb">
+            <li><a href="/">${itemViewModel.channel.title}</a></li>
+            <li>${itemViewModel.item.title}</li>
+          </ul>
+
+          <div class="card item-card-show">
+
+            <div class="card-content card-content-padding">
+
+              <div class="author-header">
+
+                <div class="author-avatar">
+                  ${itemViewModel?.author?.coverPhotoId ? $h`
+                    <img src="backup/images/${itemViewModel.author.coverPhotoId}" class="avatar" />
+                  ` : $h`
+                    <i class="material-icons">person</i>
+                  `}
+                </div>
+
+                <a href="/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> · <span class="date">${itemViewModel.dateDisplay}</span>
+
+              </div>
+
+              <h1>${itemViewModel.item.title}</h1>
+
+              <div class="content" innerHTML="${itemViewModel.item.contentHTML}"
+                id="item-content-${itemViewModel.item._id}">
+              </div>
+
+
+              ${itemViewModel.attributeSelections?.length > 0 ? $h`
+
+                <h3 style="margin-bottom: 0px;">Attributes</h3>
+                ${itemViewModel.attributeSelections?.map(as => $h`
+                  <div class="attribute-row">
+                    <strong>${as.traitType}:</strong> ${as.value}
+                  </div>
+              `)}
+
+              ` : $h``}
+
+
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</template>
+
+
+<style>
+  .content img {
+    max-width: 100%;
+  }
+
+
+  .item-card-show a {
+    color: var(--f7-text-color);
+  }
+
+  .menu-dropdown-link.menu-close {
+    color: #ffffff;
+  }
+
+
+</style>
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { UiService } from "../../../service/core/ui-service"
+  import { ItemService } from "../../../service/item-service"
+
+  import Navbar from "../../reader/navbar.f7.html"
+
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let itemService = ContainerService.getInstance(ItemService)
+    let uiService = ContainerService.getInstance(UiService)
+
+    let itemViewModel = props.itemViewModel
+
+    $on('pageInit', async (e, page) => {
+
+      //Add external to any links in the doc
+      $(`#item-content-${itemViewModel.item._id} a`).addClass('external')
+
+      await $update()
+
+    })
+
+    return $render
+  }
+
+</script>

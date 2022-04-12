@@ -30,7 +30,7 @@
         
                         ${channelViewModel?.authorDisplayName ? $h`
                           <div class="name">
-                            By <a href="/reader/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                            By <a href="/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
                           </div>
                         ` : ``}
     
@@ -308,7 +308,7 @@
         }
   
         try {
-          items = await itemWebService.listByChannel(channelViewModel.channel._id, itemsShown)
+          items = await itemWebService.list(itemsShown)
   
           if (items && items.length == LIMIT) {
             itemsShown += items.length

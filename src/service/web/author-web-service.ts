@@ -21,20 +21,8 @@ class AuthorWebService {
 
         let authorPhoto:ImageViewModel
 
-        //Load cover photo if there is one.
-        if (author.coverPhotoId) {
-
-            let aImage = await this.imageService.get(author.coverPhotoId)
-
-            authorPhoto = {
-                cid: aImage.cid,
-                url: await this.imageService.getUrl(aImage)
-            }
-        }
-
         return {
             author: author,
-            authorPhoto: authorPhoto,
             authorDisplayName: this.authorService.getDisplayName(author)
         }
 

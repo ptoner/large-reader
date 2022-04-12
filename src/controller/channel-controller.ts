@@ -16,9 +16,10 @@ class ChannelController {
 
     @routeMap("/")
     async index() : Promise<ModelView> {
+
         return new ModelView(async (routeTo:RouteTo) => {
 
-            let channelViewModel:ChannelViewModel = await this.channelWebService.get(globalThis.channelId)
+            let channelViewModel:ChannelViewModel = await this.channelWebService.get()
 
             return {
                 channelViewModel: channelViewModel

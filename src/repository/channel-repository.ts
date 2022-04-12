@@ -1,31 +1,30 @@
 import { injectable } from "inversify"
+import axios from "axios"
+
 import { Channel } from "../dto/channel"
-
-import { DatabaseService } from "../service/core/database-service"
-
-import axios from 'axios'
 
 @injectable()
 class ChannelRepository {
     
-    db: any
-
     constructor(
-        private databaseService: DatabaseService
     ) {}
 
-    async load(channelId:string, initial:Channel[]) {
 
-        this.db = await this.databaseService.getDatabase({
-            name: `${channelId}-channel`, 
-            initialRecords: initial
-        })
-
+    async get(): Promise<Channel> {        
+        
+        const response = await axios.get(`/backup/channels.json`)
+        
+        return response.data[0]
     }
 
-    async get(_id:string): Promise<Channel> {        
-        return Object.assign(new Channel(), await this.db.get(_id))
-    }
+    // async get(_id:string): Promise<Channel> {        
+        
+    //     const response = await axios.get(`/backup/channels.json`)
+        
+    //     let channel:Channel = response.data.filter( channel => channel._id == _id)[0]
+
+    //     return channel
+    // }
 
 }
 

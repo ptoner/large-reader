@@ -5,6 +5,7 @@ import { Channel } from "../../dto/channel";
 import { Image } from "../../dto/image";
 import { Item } from "../../dto/item";
 import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selection-view-model";
+import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
 
 import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
@@ -12,6 +13,7 @@ import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
+import { ChannelWebService } from "./channel-web-service";
 
 @injectable()
 class ItemWebService {
@@ -19,7 +21,6 @@ class ItemWebService {
     constructor(
         private itemService: ItemService,
         private channelService: ChannelService,
-        private imageService: ImageService,
         private authorService: AuthorService
     ) { }
 
@@ -28,7 +29,7 @@ class ItemWebService {
         let item:Item = await this.itemService.get(_id)
 
         //Get channel
-        const channel:Channel = await this.channelService.get(item.channelId)
+        const channel = await this.channelService.get()
 
         return this.getViewModel(item, channel)
     }
@@ -74,14 +75,14 @@ class ItemWebService {
 
     }
 
-    async listByChannel(channelId:string, skip: number): Promise<ItemViewModel[]> {
+    async list(skip: number): Promise<ItemViewModel[]> {
 
         let result: ItemViewModel[] = []
 
         //Get channel
-        const channel:Channel = await this.channelService.get(channelId)
+        const channel = await this.channelService.get()
 
-        let items: Item[] = await this.itemService.listByChannel(channelId, skip)
+        let items: Item[] = await this.itemService.list(skip)
 
         for (let item of items) {
             result.push(await this.getViewModel(item, channel))

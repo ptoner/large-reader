@@ -1,9 +1,6 @@
 import axios from "axios"
 import { injectable } from "inversify"
 import { Image } from "../dto/image"
-import { DatabaseService } from "../service/core/database-service"
-
-
 
 @injectable()
 class ImageRepository {
