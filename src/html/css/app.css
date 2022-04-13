@@ -66,6 +66,15 @@
 
 
 
+.author-header{
+  width: 100%;
+  font-size: 14px;
+}
+
+.author-header .name {
+  margin-bottom: 3px;
+}
+
 .author-avatar {
   margin-top: -4px;
   width: 25px;
@@ -83,6 +92,9 @@
   border-radius: 50%;
 }
 
+.author .avatar i {
+  float: left;
+}
 
 
 
