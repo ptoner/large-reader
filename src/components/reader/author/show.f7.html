@@ -15,8 +15,8 @@
                     <div class="block row">
                         <div class="col-20">
 
-                            ${authorViewModel.authorPhoto ? $h`
-                                <img src="${authorViewModel.authorPhoto.url}" class="profile-pic-main" />
+                            ${authorViewModel.author.coverPhotoId ? $h`
+                                <img src="backup/images/${authorViewModel.author.coverPhotoId}" class="profile-pic-main" />
                             ` : $h`
                                 <i class="material-icons" id="profile-pic-not-found">person</i>
                             `}

@@ -9,7 +9,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const nodeExternals = require('webpack-node-externals')
 
 // const exec = require('child_process').exec;
+const channels = require(`./backup/channels.json`)
 
+let title = channels[0].title
 
 const fileLoader = {
   loader: 'file-loader',
@@ -100,7 +102,7 @@ let readerConfig = {
     //Admin index page
     new HtmlWebpackPlugin({
       inject: false,
-      title: 'Large Reader',
+      title: title,
       // favicon: 'src/html/favicon.ico',
       template: 'src/html/index.html',
       filename: 'index.html'

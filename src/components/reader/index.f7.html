@@ -98,10 +98,17 @@
       font-weight: bold;
     }
   
+    .channel-card-show .date {
+      font-size: 13px;
+      color: #8e8e93;
+    }
+
+
     .channel-card-show .excerpt {
       font-size: 17px;
     }
   
+    
     .channel-card-show .card-content img {
         display: block;
         max-width: 100%;
@@ -302,12 +309,8 @@
         // Set loading flag
         loadingInProgress = true
   
-        if (pageCounter == 0) {
-          //Remove the fake one
-          virtualList.deleteAllItems()
-        }
-  
         try {
+
           items = await itemWebService.list(itemsShown)
   
           if (items && items.length == LIMIT) {
@@ -316,6 +319,11 @@
             hasMoreItems = false
           }
   
+          if (pageCounter == 0) {
+            //Remove the fake one
+            virtualList.deleteAllItems()
+          }
+
           virtualList.appendItems(items)
   
         } catch (ex) {
@@ -347,8 +355,8 @@
                             <div class="author-header">
   
                               <div class="author-avatar">
-                                ${itemViewModel.authorPhoto ? `
-                                  <img src="${itemViewModel.authorPhoto.url}" />
+                                ${itemViewModel.author.coverPhotoId ? `
+                                  <img src="backup/images/${itemViewModel.author.coverPhotoId}" />
                                 ` : `
                                   <i class="material-icons">person</i>
                                 `}
