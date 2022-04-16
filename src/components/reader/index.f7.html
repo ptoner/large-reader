@@ -34,9 +34,6 @@
                 </div>
                 ` : ``}
 
-                <${InfoRow} count="${channelViewModel.channel.itemCount}" price="${channelViewModel.channel?.mintPrice}"
-                  royalty="${channelViewModel.channel?.royaltyPercent}" />
-
                 <div class="description" innerHTML="${channelViewModel.channel?.descriptionHTML}"></div>
 
                 ${channelViewModel.channel?.contractAddress ? $h`
