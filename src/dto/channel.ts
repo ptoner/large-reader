@@ -4,6 +4,7 @@ import { AttributeOptions } from "./attribute";
 class Channel {
     _id?:string
     _rev?:string 
+    contractAddress?:string
     authorId:string
     title?:string
     symbol?:string

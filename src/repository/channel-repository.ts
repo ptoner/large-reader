@@ -14,7 +14,15 @@ class ChannelRepository {
         
         const response = await axios.get(`/backup/channels.json`)
         
-        return response.data[0]
+        let channel:Channel = response.data[0]
+
+        const contractResponse = await axios.get(`/backup/contract.json`)
+
+        if (contractResponse?.data) {
+            channel.contractAddress = contractResponse.data.contractAddress
+        }
+
+        return channel
     }
 
     // async get(_id:string): Promise<Channel> {        
