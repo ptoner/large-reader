@@ -359,32 +359,14 @@
                       <div class="card-content">
   
                           <div class="card-content card-content-padding">
-  
-                            <div class="float-right">
-                              <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                            </div>
 
-                            <div class="author-header">
-  
-                              <div class="author-avatar">
-                                ${itemViewModel.author.coverPhotoId ? `
-                                  <img src="backup/images/${itemViewModel.author.coverPhotoId}" />
-                                ` : `
-                                  <i class="material-icons">person</i>
-                                `}
-                              </div>
-  
-                              <a href="/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> ·
-  
-                              <span class="date">${itemViewModel.dateDisplay}</span>
-  
-                            </div>
-  
-  
                             <div class="item-preview">
                               <div class="left">
   
-                                <a class="title" href="/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>  
+                                <a class="title" href="/item/show/${itemViewModel.item._id}">
+                                  ${itemViewModel.item.title}
+                                  <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                                </a>  
                                 
                                 ${itemViewModel.item.excerpt ? `
                                   <p>${itemViewModel.item.excerpt}</p>
