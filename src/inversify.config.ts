@@ -50,7 +50,6 @@ function getMainContainer() {
       component: AppComponent
     })
 
-
     return app
 
   }
@@ -74,12 +73,17 @@ function getMainContainer() {
     }
   }
 
+  function baseURI() {
+    return window.location.pathname
+  }
+
 
   // container.bind('sketch').toConstantValue(sketch())
   container.bind("contracts").toConstantValue(contracts())
   container.bind("provider").toConstantValue(provider())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
+  container.bind("baseURI").toConstantValue(baseURI())
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()

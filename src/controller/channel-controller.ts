@@ -18,7 +18,6 @@ class ChannelController {
     async index() : Promise<ModelView> {
 
         return new ModelView(async (routeTo:RouteTo) => {
-
             let channelViewModel:ChannelViewModel = await this.channelWebService.get()
 
             return {

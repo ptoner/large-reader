@@ -1,5 +1,5 @@
 import axios from "axios"
-import { injectable } from "inversify"
+import { inject, injectable } from "inversify"
 import { Item } from "../dto/item"
 
 
@@ -9,10 +9,11 @@ class ItemRepository {
     static CHUNK_SIZE = 20
 
     constructor(
-    ) { }
+        @inject('baseURI') private baseURI:string
+    ) {}
 
     async get(_id: string): Promise<Item> {
-        const response = await axios.get(`/backup/items/${_id}.json`)
+        const response = await axios.get(`${this.baseURI}backup/items/${_id}.json`)
         return Object.assign(new Item(), response.data)
     }
 
@@ -27,7 +28,7 @@ class ItemRepository {
         //First chunk is at 0.json
         let chunkIndex = skip / ItemRepository.CHUNK_SIZE
 
-        const response = await axios.get(`/backup/itemChunks/${chunkIndex}.json`)
+        const response = await axios.get(`${this.baseURI}backup/itemChunks/${chunkIndex}.json`)
 
         items.push(...response.data.map( doc => Object.assign(new Item(), doc)))
 

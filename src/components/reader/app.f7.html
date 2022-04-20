@@ -29,6 +29,8 @@
   export default (props, { $on, $f7ready, $f7, $f7router, $update }) => {
 
     $f7ready(async () => {
+  
+      let baseURI = window.location.pathname
 
       let uiService = ContainerService.getInstance(UiService)
       let walletService = ContainerService.getWalletService()
@@ -49,6 +51,7 @@
       })
 
 
+
       async function initWallet() {
 
         uiService.showSpinner("Loading...")
@@ -59,7 +62,8 @@
         
         $f7.views.create('.view-main', {
           url: '/',
-          browserHistory: true
+          browserHistory: true,
+          browserHistoryRoot: baseURI
         })
 
         uiService.hideSpinner()
@@ -72,7 +76,8 @@
 
         $f7.views.create('.view-main', {
           url: '/',
-          browserHistory: true
+          browserHistory: true,
+          browserHistoryRoot: baseURI
         })
 
         uiService.hideSpinner()

@@ -1,17 +1,18 @@
 import axios from "axios"
-import { injectable } from "inversify"
+import { inject, injectable } from "inversify"
 import { Image } from "../dto/image"
 
 @injectable()
 class ImageRepository {
 
     constructor(
-    ) { }
+        @inject('baseURI') private baseURI:string
+    ) {}
 
     async get(_id: string): Promise<Image> {
 
         //If it's empty fetch it
-        const response = await axios.get(`/backup/images/${_id}`)
+        const response = await axios.get(`${this.baseURI}backup/images/${_id}`)
 
         let image = new Image()
 
