@@ -2,18 +2,14 @@ import { injectable } from "inversify";
 import moment from "moment";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
-import { Image } from "../../dto/image";
 import { Item } from "../../dto/item";
 import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selection-view-model";
-import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
-import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
+
 
 import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
-import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
-import { ChannelWebService } from "./channel-web-service";
 
 @injectable()
 class ItemWebService {
@@ -71,6 +67,7 @@ class ItemWebService {
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
             attributeSelections: attributeSelections,
+            coverImage: item.coverImageId
         }
 
     }
