@@ -27,7 +27,7 @@ class ChannelWebService {
             author = await this.authorService.get(channel.authorId)
         }
 
-        let itemCount = 0
+        let itemCount = channel.itemCount
 
         return {
             channel: channel,

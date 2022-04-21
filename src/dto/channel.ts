@@ -21,6 +21,7 @@ class Channel {
     attributeOptions:AttributeOptions[]
     sellerFeeBasisPoints:string
     royaltyPercent:string
+    itemCount:number
     dateCreated?:string
     lastUpdated?:string
 }

@@ -6,7 +6,7 @@ import { Item } from "../dto/item"
 @injectable()
 class ItemRepository {
 
-    static CHUNK_SIZE = 20
+    static CHUNK_SIZE = 10
 
     constructor(
         @inject('baseURI') private baseURI:string
