@@ -28,7 +28,7 @@ class ChannelController {
 
             let channelViewModel:ChannelViewModel = await this.channelWebService.get()
 
-            let pagingViewModel = this.pagingService.buildPagingViewModel(offset, ItemRepository.CHUNK_SIZE, channelViewModel.itemCount)
+            let pagingViewModel = this.pagingService.buildPagingViewModel(offset, ItemRepository.CHUNK_SIZE, channelViewModel.itemCount, 5)
 
             let items = await this.itemWebService.list(offset)
 

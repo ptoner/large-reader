@@ -77,27 +77,41 @@
             
             `)}
 
-            <div class="block row center margin-bottom">
 
-              ${pagingViewModel?.showPrevious ? $h`
-                <div class="col-50 previous">
+
+
+            ${pagingViewModel.endPage > 1 ? $h`
+
+              <div class="block segmented">
+
+                ${pagingViewModel?.showPrevious ? $h`
                   <a class="button button-outline" href="/${pagingViewModel.previousOffset}" >
                     <span class="material-icons">arrow_back</span>
-                    Previous
                   </a>
-                </div>
-                ` : $h`<span/>`}
+                ` : ''}
   
-              ${pagingViewModel?.showNext ? $h`
-                <div class="col-50 next">
+                <a class="button button-active" href="/${pagingViewModel.offset}" >
+                  ${pagingViewModel.page} of ${pagingViewModel.endPage} 
+                </a>
+
+                ${pagingViewModel?.showNext ? $h`
                   <a class="button button-outline" href="/${pagingViewModel.nextOffset}">
                     Next
                     <span class="material-icons">arrow_forward</span>
                   </a>
-                </div>
-                ` : $h`<span/>`}
-  
-            </div>
+                ` : ''}
+              </div>
+
+              <form class="block" @submit="${goFormSubmit}">
+                <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${pagingViewModel.page}" min="1" max="${pagingViewModel.endPage}" />
+                <span class="paging-label">Pages 1 - ${pagingViewModel.endPage}</span>
+                <button class="goto-button button button-small button-fill">Go</button>
+              </form>
+
+
+            ` : $h`<span/>`}
+
+
 
             <div class="block">
               <br />
@@ -161,10 +175,26 @@
     .channel-show-token-id {
         color: rgb(79, 79, 79);
     }
+
+    .goto-button {
+      display: inline-block;
+      margin-left: 10px;
+      width: 50px;
+    }
+
+    .paging-label {
+      font-size: 15px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
 </style>
 
 
 <script>
+
+    import { ItemRepository } from "../../../repository/item-repository"
+
 
     export default (props, { $, $on, $f7, $update }) => {
 
@@ -174,6 +204,19 @@
 
         let loadingItems = false
 
+        const goFormSubmit = async (e) => {
+          
+          e.preventDefault()
+
+          const val = $(e.currentTarget).children('.goto-input').val()
+
+          if (val > 0 && val <= pagingViewModel.endPage) {
+            $f7.views.main.router.navigate(`/${val * ItemRepository.CHUNK_SIZE - ItemRepository.CHUNK_SIZE}`)
+          } else {
+            $f7.dialog.alert("Invalid Page")
+          }
+
+        }
 
         return $render
     }
