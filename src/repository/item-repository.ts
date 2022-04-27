@@ -17,7 +17,7 @@ class ItemRepository {
         return Object.assign(new Item(), response.data)
     }
 
-    async list(skip: number): Promise<Item[]> {
+    async list(skip:number): Promise<Item[]> {
 
         let items:Item[] = []
 

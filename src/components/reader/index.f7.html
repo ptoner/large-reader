@@ -38,7 +38,7 @@
                     </div>
                     ` : ``}
   
-                    <div class="description" innerHTML="${channelViewModel.channel?.descriptionHTML}"></div>
+                    <div class="description" innerHTML="${channelViewModel.channel?.descriptionHTML}" id="channel-show-description-${channelViewModel.channel._id}"></div>
   
                     ${channelViewModel.channel?.contractAddress ? $h`
                     <div class="contract-address">
@@ -238,6 +238,15 @@
         if (channelViewModel?.channel.coverBannerId) {
           document.getElementById('banner').style.backgroundImage = `url('backup/images/${channelViewModel?.channel.coverBannerId}')`
         }
+
+        //Make links external
+        let links = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).getElementsByTagName('a')
+
+        for (let link of links) {
+          link.classList.add('external')
+        }
+
+
       }
 
     })

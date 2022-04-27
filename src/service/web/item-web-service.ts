@@ -78,7 +78,7 @@ class ItemWebService {
 
         //Get channel
         const channel = await this.channelService.get()
-
+        
         let items: Item[] = await this.itemService.list(skip)
 
         for (let item of items) {

@@ -25,7 +25,8 @@ class ChannelController {
         return new ModelView(async (routeTo:RouteTo) => {
 
             const offset = routeTo.params.offset ? parseInt(routeTo.params.offset) : 0
-
+            console.log(routeTo)
+            console.log(offset)
             let channelViewModel:ChannelViewModel = await this.channelWebService.get()
 
             let pagingViewModel = this.pagingService.buildPagingViewModel(offset, ItemRepository.CHUNK_SIZE, channelViewModel.itemCount, 5)

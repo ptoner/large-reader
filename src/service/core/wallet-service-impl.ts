@@ -25,7 +25,8 @@ class WalletServiceImpl implements WalletService {
     let accounts = await this.provider.send("eth_accounts", [])
 
     if (accounts?.length > 0) {
-      return this.connect()
+      this.address = accounts[0]
+      // return this.connect()
     }
     
     console.log("Init wallet complete") 
