@@ -3,7 +3,6 @@ import { Container } from "inversify";
 
 import AppComponent from './components/reader/app.f7.html'
 
-import ReaderIndexComponent from './components/reader/index.f7.html'
 import { AuthorController } from "./controller/author-controller";
 import { ChannelController } from "./controller/channel-controller";
 import { ItemController } from "./controller/item-controller";
@@ -28,6 +27,23 @@ import { AuthorWebService } from "./service/web/author-web-service";
 import { ChannelWebService } from "./service/web/channel-web-service";
 import { ItemWebService } from "./service/web/item-web-service";
 
+import Framework7 from 'framework7';
+
+
+// Import additional components
+import Dialog from 'framework7/components/dialog';
+import Toast from 'framework7/components/toast';
+import Preloader from 'framework7/components/preloader';
+import VirtualList from 'framework7/components/virtual-list'
+import ListIndex from 'framework7/components/list-index'
+import Card from 'framework7/components/card'
+import Chip from 'framework7/components/chip'
+
+import Form from 'framework7/components/form'
+import Grid from 'framework7/components/grid'
+
+// Install F7 Components using .use() method on Framework7 class:
+Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,  Form, Grid])
 
 
 let container:Container
@@ -40,14 +56,12 @@ function getMainContainer() {
 
   function framework7() {
 
-    //Init framework7
-    const Framework7 = require('framework7/bundle').default
-
     let app = new Framework7({
       el: '#app', // App root element
       id: 'large-reader', // App bundle ID
       name: 'Large Reader', // App name
       theme: 'auto', // Automatic theme detection
+      //@ts-ignore
       component: AppComponent
     })
 
