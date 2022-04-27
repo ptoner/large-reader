@@ -63,7 +63,7 @@ function getMainContainer() {
   function provider() {
 
     if (typeof window !== "undefined" && window['ethereum']) {
-
+      
       //@ts-ignore
       window.web3Provider = window.ethereum
 
@@ -75,7 +75,8 @@ function getMainContainer() {
   }
 
   function baseURI() {
-    return window.location.pathname
+    let base = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1)
+    return  base
   }
 
 
