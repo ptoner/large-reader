@@ -30,10 +30,7 @@
 
           <div class="card">
             <div class="card-header">
-              <span>
-                <i class="material-icons">label</i>
-                <label>Attributes</label>
-              </span>
+              <label>Attributes</label>
             </div>
             <div class="card-content card-content-padding">
 
@@ -54,7 +51,7 @@
             ${itemViewModel.item.previous ? $h`
               <div class="col-50 previous">
                 <a class="button button-outline" href="/item/show/${itemViewModel.item.previous._id}">
-                  <span class="material-icons">arrow_back</span>
+                  <i class="f7-icons">arrow_left</i>
                   ${itemViewModel.item.previous.tokenId}
                 </a>
               </div>
@@ -64,7 +61,7 @@
               <div class="col-50 next">
                 <a class="button button-outline" href="/item/show/${itemViewModel.item.next._id}">
                   ${itemViewModel.item.next.tokenId}
-                  <span class="material-icons">arrow_forward</span>
+                  <i class="f7-icons">arrow_right</i>
                 </a>
               </div>
               ` : $h``}
