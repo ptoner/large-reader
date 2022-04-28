@@ -10,6 +10,7 @@
     "start:dev": "webpack serve --config=webpack.dev.ts",
     "build": "node node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",
     "build:dev": "node node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",
+    "build:analyze": "node node_modules/webpack/bin/webpack.js --config=webpack.analyze.ts",
     "test": "cd test && mocha --require ts-node/register --timeout 999999 **/*.spec.ts --exit"
   },
   "keywords": [
@@ -46,6 +47,7 @@
 
     "html-inline-script-webpack-plugin": "2.0.3",
     "html-webpack-plugin": "5.5.0",
+    "compression-webpack-plugin": "9.2.0",
     "mocha": "9.2.0",
 
     "ts-loader": "9.2.7",
@@ -67,6 +69,7 @@
     "webpack-dev-server": "4.7.4",
     "webpack-merge": "5.8.0",
     "webpack-node-externals": "3.0.0",
+    "webpack-bundle-analyzer": "4.5.0",
     
     "dotenv": "16.0.0"
   },
@@ -85,12 +88,9 @@
     "pouchdb-find": "7.2.2",
 
     "it-to-buffer": "2.0.2",
-    "level-js": "6.1.0",
 
     "assert": "2.0.0",
     "buffer": "6.0.3",
-    "material-icons": "1.10.7",
-    "moment": "2.29.1",
     "path-browserify": "1.0.1",
     "process": "0.11.10",
     "stream-browserify": "3.0.0",

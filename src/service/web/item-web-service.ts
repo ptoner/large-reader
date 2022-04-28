@@ -1,5 +1,4 @@
 import { injectable } from "inversify";
-import moment from "moment";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
@@ -62,7 +61,6 @@ class ItemWebService {
 
         return {
             item: item,
-            dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
             channel: channel,
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),

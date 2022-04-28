@@ -10,7 +10,6 @@ import './html/css/framework7-bundle.css'
 import './html/css/framework7-icons.css'
 
 import './html/css/app.css'
-import 'material-icons/iconfont/material-icons.css';
 
 import { RoutingService } from "./service/core/routing-service"
 

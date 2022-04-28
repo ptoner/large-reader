@@ -4,7 +4,7 @@ import webpack from 'webpack'
 
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // const nodeExternals = require('webpack-node-externals')
 
@@ -81,7 +81,8 @@ let readerConfig = {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
           chunks: 'all'
-        }
+        },
+
       }
     }
   },
@@ -105,7 +106,10 @@ let readerConfig = {
       title: title,
       // favicon: 'src/html/favicon.ico',
       template: 'src/html/index.html',
-      filename: 'index.html'
+      filename: 'index.html',
+      // meta: {
+      //   "google-site-verification": "EfFTUZ9TFLOmpnMEJ1T4Fw3PVhq7ggPRubhVoqqkkL8"
+      // }
     }),
 
     new CopyWebpackPlugin({
