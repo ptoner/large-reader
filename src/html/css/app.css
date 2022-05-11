@@ -12,6 +12,12 @@ a {
   font-weight: bold;
 }
 
+.home {
+  font-size: 35px;
+  font-weight: bold;
+  margin: 10px;
+}
+
 .page-content {
   background-color: rgb(238, 240, 243);
 }
@@ -97,4 +103,182 @@ ul.breadcrumb li a:hover {
 
 .card-header .material-icons {
   float: left;
+}
+
+
+
+
+.channel-card-show .card-header {
+  display: block;
+  padding: 10px;
+}
+
+
+.channel-card-show .title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.channel-card-show .name,
+.channel-card-show .contract-address {
+  text-align: center;
+}
+
+.channel-card-show .name a {
+  color: var(--f7-theme-color);
+  font-weight: bold;
+}
+
+.channel-card-show .date {
+  font-size: 13px;
+  color: #8e8e93;
+}
+
+
+.channel-card-show .excerpt {
+  font-size: 17px;
+}
+
+
+.channel-card-show .card-content img {
+  display: block;
+  max-width: 100%;
+}
+
+.channel-card-show .banner {
+  height: 200px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  background-color: #f1f1f1;
+}
+
+.channel-card-show .avatar {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  left: calc(50% - 50px);
+  bottom: 0;
+  margin-bottom: -50px;
+  z-index: 10000;
+  border: 3px solid #ffffff;
+  font-size: 100px;
+  background: #ffffff;
+}
+
+.channel-card-show a {
+  color: var(--f7-text-color);
+}
+
+.channel-card-show .description {
+  font-size: 17px;
+  text-align: center;
+  width: 750px;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.item-card img {
+  max-width: 100%;
+}
+
+
+
+.item-preview {
+  width: 100%;
+  display: flex;
+}
+
+.item-preview p {
+  margin-top: 5px;
+}
+
+.item-card .title {
+  color: #000000;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.item-preview .right {
+  flex: 0 0 150px;
+  /* do not grow, do not shrink, start at 250px */
+}
+
+.item-preview .right img {
+  max-width: 100%;
+}
+
+.item-preview .left {
+  flex: 1;
+  /* grow */
+}
+
+.menu-dropdown-link.menu-close {
+  color: #ffffff;
+}
+
+.channel-show-token-id {
+  color: rgb(79, 79, 79);
+}
+
+.goto-button {
+display: inline-block;
+margin-left: 10px;
+width: 50px;
+}
+
+.paging-label {
+font-size: 15px;
+font-weight: bold;
+margin-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+html {
+  visibility: visible;
+  opacity: 1;
 }

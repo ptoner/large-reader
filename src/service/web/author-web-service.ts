@@ -3,13 +3,11 @@ import { Author } from "../../dto/author";
 import { AuthorViewModel } from "../../dto/viewmodel/author-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
 import { AuthorService } from "../author-service";
-import { ImageService } from "../image-service";
 
 @injectable()
 class AuthorWebService {
 
     constructor(
-        private imageService: ImageService,
         private authorService: AuthorService
     ) { }
 

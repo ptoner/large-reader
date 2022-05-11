@@ -1,0 +1,165 @@
+<% let channelViewModel=htmlWebpackPlugin.options.channelViewModel %>
+
+  <!DOCTYPE html>
+  <html>
+
+    <head>
+      <style>
+        html {
+          visibility: hidden;
+          opacity: 0;
+        }
+      </style>
+
+      <meta charset="utf-8">
+      <!-- Required meta tags-->
+      <meta charset="utf-8">
+      <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <!-- Color theme for statusbar -->
+      <title>
+        <%= htmlWebpackPlugin.options.title %>
+      </title>
+
+      <meta property="og:title" content="<%=channelViewModel.channel.title%>" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="" />
+      <meta property="og:image" content="backup/images/<%=channelViewModel.channel.coverImageId%>" />
+      <meta property="og:description" content="<%=channelViewModel.channel.description %>" />
+
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content="" />
+      <meta property="twitter:title" content="<%=channelViewModel.channel.title%>" />
+      <meta property="twitter:description" content="<%=channelViewModel.channel.description %>" />
+      <meta property="twitter:image" content="backup/images/<%=channelViewModel.channel.coverImageId%>" />
+
+      <%= htmlWebpackPlugin.tags.headTags %>
+      
+
+    </head>
+
+    <body>
+
+      <div id="app">
+
+        <div>
+
+          <div class="page" data-name="home">
+
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+
+              <div class="navbar-inner sliding">
+
+                <div class="left">
+                  <a href="#" class="home">
+                    <i class="f7-icons">house</i>
+                  </a>
+                </div>
+
+                <div class="title"></div>
+
+
+                <div class="right">
+
+
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="page-content">
+
+              <div class="row">
+
+                <div class="col-100 large-66 center">
+                  
+                  <div class="card channel-card-show">
+
+                    <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                      style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>')"
+                        <% } %>
+                          >
+
+                          <% if (channelViewModel?.channel.coverImageId) { %>
+                            <img src="backup/images/<%=channelViewModel.channel.coverImageId%>" class="avatar" />
+                          <% } else { %>
+                            <i class="f7-icons avatar">photo</i>
+                          <% } %>
+
+                    </div>
+
+                    <div class="card-content card-content-padding">
+
+                      <div class="title">
+                        <%= channelViewModel.channel.title %>
+                      </div>
+
+                      <% if(channelViewModel?.authorDisplayName) { %>
+                        <div class="name">
+                          By <a href="/author/show/<%=channelViewModel?.author._id%>">
+                            <%= channelViewModel?.authorDisplayName %>
+                          </a>
+                        </div>
+                      <% } %>
+
+                      <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
+                        <%= channelViewModel.channel?.descriptionHTML %>
+                      </div>
+
+                      <% if(channelViewModel.channel?.contractAddress) { %>
+                        <div class="contract-address">
+                          <strong>Contract Address:</strong>
+                          <%= channelViewModel?.channel?.contractAddress %>
+                        </div>
+                      <% } %>
+
+
+                    </div>
+
+                  </div>
+                  
+                  <div class="card">
+                    <div class="card-content card-content-padding">
+                      <a href="/list-1.html">Begin Reading</a>
+                    </div>
+                    
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <%= htmlWebpackPlugin.tags.bodyTags %>
+
+      
+      <script type="module" id="page-init-scripts">
+
+        const init = (props, { $, $f7, $on }) => {
+
+        }
+
+        globalThis.pageInit = init
+
+      </script>
+
+      <script type="module" id="page-scripts">
+
+        let app = reader.getApp(globalThis.pageInit)
+
+        app.init()
+
+      </script>
+
+    </body>
+
+  </html>

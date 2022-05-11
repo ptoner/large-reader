@@ -1,14 +1,14 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { Item } from "../dto/item";
 import { ItemRepository } from "../repository/item-repository";
-
-
 
 @injectable()
 class ItemService {
 
+    @inject("ItemRepository")
+    private itemRepository:ItemRepository
+  
     constructor(
-        private itemRepository: ItemRepository
     ) { }
 
     async get(_id: string): Promise<Item> {

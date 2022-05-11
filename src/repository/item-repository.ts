@@ -1,45 +1,12 @@
-import axios from "axios"
-import { inject, injectable } from "inversify"
 import { Item } from "../dto/item"
 
+let CHUNK_SIZE = 10
 
-@injectable()
-class ItemRepository {
-
-    static CHUNK_SIZE = 10
-
-    constructor(
-        @inject('baseURI') private baseURI:string
-    ) {}
-
-    async get(_id: string): Promise<Item> {
-        const response = await axios.get(`${this.baseURI}backup/items/${_id}.json`)
-        return Object.assign(new Item(), response.data)
-    }
-
-    async list(skip:number): Promise<Item[]> {
-
-        let items:Item[] = []
-
-        if (skip % ItemRepository.CHUNK_SIZE != 0) {
-            throw Error("Invalid skip value")
-        }
-
-        //First chunk is at 0.json
-        let chunkIndex = skip / ItemRepository.CHUNK_SIZE
-
-        const response = await axios.get(`${this.baseURI}backup/itemChunks/${chunkIndex}.json`)
-
-        items.push(...response.data.map( doc => Object.assign(new Item(), doc)))
-
-        return items
-
-    }
-
+interface ItemRepository {
+    get(_id:string): Promise<Item>
+    list(skip:number): Promise<Item[]>
 }
 
 export {
-    ItemRepository
+    ItemRepository, CHUNK_SIZE
 }
-
-

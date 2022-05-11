@@ -1,18 +1,20 @@
 import { merge } from 'webpack-merge'
-import configs from './webpack.common'
+import common from './webpack.common'
 
 let mainConfigs = []
 
-for (let config of configs) {
-    //@ts-ignore
-    mainConfigs.push(merge(config, {
+export default async () => {
+
+    let configs = await common()
+
+    for (let config of configs) {
         //@ts-ignore
-        mode: 'production'
-    }))
+        mainConfigs.push(merge(config, {
+            //@ts-ignore
+            mode: 'production'
+        }))
+    }
+    
+    return mainConfigs
+
 }
-
-
-
-
-export default mainConfigs
-

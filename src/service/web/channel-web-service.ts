@@ -3,23 +3,27 @@ import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
-import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
+import { CHUNK_SIZE, ItemRepository } from "../../repository/item-repository";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
+import { PagingService } from "../core/paging-service";
+import { ItemWebService } from "./item-web-service";
 
 @injectable()
 class ChannelWebService {
 
     constructor(
         private channelService:ChannelService,
-        private authorService:AuthorService
+        private authorService:AuthorService,
+        private pagingService:PagingService,
+        private itemWebService:ItemWebService
     ) {}
 
-    async get() : Promise<ChannelViewModel> {
-        return this.getViewModel(await this.channelService.get())
+    async get(offset:number) : Promise<ChannelViewModel> {
+        return this.getViewModel(await this.channelService.get(), offset)
     }
 
-    async getViewModel(channel:Channel) : Promise<ChannelViewModel> {
+    async getViewModel(channel:Channel, offset:number) : Promise<ChannelViewModel> {
  
         let author:Author
 
@@ -29,11 +33,17 @@ class ChannelWebService {
 
         let itemCount = channel.itemCount
 
+        let pagingViewModel = this.pagingService.buildPagingViewModel(offset, CHUNK_SIZE, itemCount, 5)
+
+        let items = await this.itemWebService.list(offset)
+
         return {
             channel: channel,
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
-            itemCount: itemCount
+            itemCount: itemCount,
+            pagingViewModel: pagingViewModel,
+            items: items
         }
 
     }

@@ -61,13 +61,9 @@
         await initNoWallet()
       }
 
-
-
-
-
       async function initWallet() {
 
-        uiService.showSpinner("Loading...")
+        // uiService.showSpinner("Loading...")
 
         await walletService.initWallet()
 
@@ -80,13 +76,13 @@
           reloadCurrent: true
         })
 
-        uiService.hideSpinner()
+        // uiService.hideSpinner()
 
       }
 
       async function initNoWallet() {
 
-        uiService.showSpinner("Loading...")
+        // uiService.showSpinner("Loading...")
 
         $f7.views.create('.view-main', {
           url: hash ? hash : '/',
@@ -95,7 +91,7 @@
           reloadCurrent: true,
         })
 
-        uiService.hideSpinner()
+        // uiService.hideSpinner()
 
       }
 

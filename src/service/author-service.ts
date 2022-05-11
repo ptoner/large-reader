@@ -1,16 +1,15 @@
 import { Author } from "../dto/author";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { AuthorRepository } from "../repository/author-repository";
 
 
 @injectable()
 class AuthorService {
 
-  db: any
+  @inject("AuthorRepository")
+  private authorRepository:AuthorRepository
 
-  constructor(
-    private authorRepository: AuthorRepository
-  ) { }
+  constructor() { }
 
   async get(_id: string): Promise<Author> {
     return this.authorRepository.get(_id)
