@@ -9,6 +9,20 @@ const RUNTIME = 'runtime'
 
 let parser = new DOMParser()
 
+const getBaseURL = () => {
+
+    let pathSplit = self.location.pathname.split("/")
+
+    pathSplit.pop() //remove last
+
+    let basepath = pathSplit.join("/") 
+
+    return basepath 
+}
+
+let baseURL = getBaseURL()
+
+console.log(`[SW] Base Path: ${baseURL}`)
 
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {
@@ -62,8 +76,9 @@ self.addEventListener('fetch', event => {
 
 
     //Skip backup folder
-    if (url.pathname.startsWith('/list')) process = true
-    if (url.pathname.startsWith('/index.html')) process = true
+    if (url.pathname.startsWith(`${baseURL}/list`)) process = true
+    if (url.pathname.startsWith(`${baseURL}/item-show`)) process = true
+    if (url.pathname.startsWith(`${baseURL}/index.html`)) process = true
 
     // This is a navigation request, so respond with a complete HTML document.
     if (event.request.mode === 'navigate') process = false 
@@ -96,7 +111,7 @@ const updateResponse = async (response:Response) => {
     let responseText = await response.text()
 
     let page = parser.parseFromString(responseText, 'text/html')
-    let pageElement = page.getElementsByClassName('page')[0]  //page.getElementById("page-div")
+    let pageElement = page.getElementsByClassName('page')[0]
 
     let script = page.getElementById('page-init-scripts')
 
@@ -106,8 +121,8 @@ const updateResponse = async (response:Response) => {
     let f = new Function(script.textContent)
     f()
 
-    //Remove named parameters because they will already exist
-    let code = globalThis.pageInit.toString().replace("props, { $, $f7, $on }", "")
+    //Remove parameters because they will already exist in scope
+    let code = globalThis.pageInit.toString().replace(/\((.*?)\)/, '()')
 
     let component = `
         <template>
@@ -115,8 +130,10 @@ const updateResponse = async (response:Response) => {
         </template>
 
         <script>
-            export default (props, { $, $f7, $h, $on }) => {  
+            export default (props, { $, $f7, $h, $on, $update }) => {  
                 
+                let baseURL = '${baseURL}'
+
                 let init = ${code}
 
                 init(props)
@@ -131,3 +148,6 @@ const updateResponse = async (response:Response) => {
 
 
 }
+
+
+

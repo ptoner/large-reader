@@ -76,7 +76,11 @@
     
     "dotenv": "16.0.0",
 
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+
+    "babel-loader": "8.2.3",
+    "@babel/core": "7.17.2",
+    "@babel/preset-env": "7.16.11"
   },
 
   "dependencies": {
@@ -108,5 +112,6 @@
 
     "excerpt-html": "1.2.2",
     "@xmldom/xmldom": "0.8.2"
+    
   }
 }

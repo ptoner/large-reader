@@ -1,0 +1,180 @@
+<% 
+
+    const excerptHtml = require('excerpt-html')
+    const he = require('he')
+
+    let baseURL = htmlWebpackPlugin.options.baseURL
+    let itemViewModel=htmlWebpackPlugin.options.itemViewModel 
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    }    
+
+    const escapeExcerpt = (excerpt) => {
+        excerpt = excerptHtml(excerpt, { pruneLength: 500 })
+        return he.encode(excerpt.toString())
+    }
+
+%>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    html {
+        visibility: hidden;
+        opacity: 0;
+    }
+    </style>
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <title><%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %></title>
+
+    <meta property="og:title" content="<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="<%= itemViewModel.coverImage ? link(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>" />
+    <meta property="og:description" content="<%= escapeExcerpt(itemViewModel.item.contentHTML)%>" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="" />
+    <meta property="twitter:title" content="<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>" />
+    <meta property="twitter:description" content="<%= escapeExcerpt(itemViewModel.item.contentHTML) %>" />
+    <meta property="twitter:image" content="<%= itemViewModel.coverImage ? link(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>" />
+
+    <%= htmlWebpackPlugin.tags.headTags %>
+    
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div>
+
+            <div class="page" data-name="item-show-<%=itemViewModel.item._id %>">
+
+                <div class="page-content no-padding">
+
+                    <div class="row">
+
+                        <div class="col-100 large-66 center">
+
+                            <ul class="breadcrumb">
+                                <li><a href="<%= link('index.html') %>"><%= itemViewModel.channel.title %></a></li>
+                                <li><%= itemViewModel.item.title ? itemViewModel.item.title + ' ' : '' %>#<%= itemViewModel.item.tokenId %></li>
+                            </ul>
+                    
+                            <div class="card item-card-show">
+                
+                                <div class="card-header">
+                                    <span><%= itemViewModel.item.title ? itemViewModel.item.title : itemViewModel.channel.title %> <span class="item-show-token-id">#<%= itemViewModel.item.tokenId %></span></span>
+                                </div>
+                    
+                                <div class="card-content card-content-padding">
+                                    <div class="content" id="item-content-<%= itemViewModel.item._id %>">
+                                        <%= itemViewModel.item.contentHTML %>
+                                    </div>
+                                </div>
+                
+                            </div>
+                
+                            <div class="card">
+                                
+                                <div class="card-header">
+                                    <label>Attributes</label>
+                                </div>
+
+                                <div class="card-content card-content-padding">
+                    
+                                    <div class="attribute-row"> 
+                                    <strong>Token ID:</strong> #<%= itemViewModel.item.tokenId %>
+                                    </div>
+                    
+                                    <% itemViewModel.attributeSelections?.map( (as)=> { %>
+                                    <div class="attribute-row">
+                                        <strong><%= as.traitType %>:</strong> <%= as.value %>
+                                        </div>
+                                    <% }) %>
+
+                                </div>
+
+                            </div>
+                
+                            <div class="block row center margin-bottom">
+                
+                                <% if (itemViewModel.item.previous) { %>
+                                    <div class="col-50 previous">
+                                        <a class="button button-outline" href="<%= link(`item-show-${itemViewModel.item.previous._id}.html`) %>">
+                                            <i class="f7-icons">arrow_left</i>
+                                            <%=itemViewModel.item.previous.tokenId%>
+                                        </a>
+                                    </div>
+                                <% } %>
+
+                    
+                                <% if (itemViewModel.item.next) { %>
+                                    <div class="col-50 previous">
+                                        <a class="button button-outline" href="<%= link(`item-show-${itemViewModel.item.next._id}.html`) %>">
+                                            <%=itemViewModel.item.next.tokenId%>
+                                            <i class="f7-icons">arrow_right</i>
+                                            </a>
+                                    </div>
+                                <% } %>
+                
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <%= htmlWebpackPlugin.tags.bodyTags %>
+
+    <script type="module" id="page-init-scripts">    
+
+        const init = (props, { $, $f7, $h, $on, $update }) => {
+            
+            document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
+            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? link(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>")
+            document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.item.contentHTML)%>")
+
+            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
+            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? link(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>")
+            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.item.contentHTML)%>" )
+
+            document.querySelector('title').innerHTML = "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>"
+
+            
+        }
+
+        globalThis.pageInit = init
+
+    </script>
+
+    <script type="module" id="page-scripts">
+
+        let app = reader.init(globalThis.pageInit, '<%= baseURL %>', '<%= VERSION %>')
+
+        
+
+    </script>
+
+</body>
+
+</html>

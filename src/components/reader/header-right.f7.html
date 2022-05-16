@@ -17,16 +17,11 @@
 
 
 <script>
-    import { ContainerService } from "../../service/core/container-service"
-    import { WalletService } from "../../service/core/wallet-service"
-
-
-    import { UiService } from "../../service/core/ui-service"
-
+  
     export default (props, { $on, $f7, $update }) => {
 
-        let walletService = ContainerService.getWalletService()
-        let uiService = ContainerService.getInstance(UiService)
+        let walletService = globalThis.container.get("WalletService")
+        let uiService = globalThis.container.get("UiService")
 
         let walletAddress = walletService.wallet?.address
         let walletAbbrev

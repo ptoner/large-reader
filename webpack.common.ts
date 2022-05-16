@@ -17,25 +17,32 @@ import { getMainContainer } from "./inversify.config"
 import { ChannelWebService } from './src/service/web/channel-web-service'
 import { ChannelService } from "./src/service/channel-service"
 import { CHUNK_SIZE } from "./src/repository/item-repository"
+import { ItemWebService } from "./src/service/web/item-web-service"
+import { ItemViewModel } from "./src/dto/viewmodel/item-view-model"
+
+const VERSION = JSON.stringify(require("./package.json").version)
 
 let configs = []
 
-export default async () => {
+
+
+
+export default async (baseURL) => {
+
+  let plugins = []
 
   let container = getMainContainer()
 
   let channelWebService:ChannelWebService = container.get(ChannelWebService)
   let channelService:ChannelService = container.get(ChannelService)
+  let itemWebService:ItemWebService = container.get(ItemWebService)
 
+  //Get channel
   let channel = await channelService.get()
-
-
-  let pages = Math.ceil(channel.itemCount / CHUNK_SIZE)
-
-  let plugins = []
-
-
   let channelViewModel = await channelWebService.get(0)
+
+  //Figure how many navigation pages we'll build
+  let pages = Math.ceil(channel.itemCount / CHUNK_SIZE)  
 
   //Build home page
   plugins.push(
@@ -46,6 +53,7 @@ export default async () => {
       template: 'src/html/index.ejs',
       filename: 'index.html',
       channelViewModel: channelViewModel,
+      baseURL: baseURL
     })
   )
 
@@ -64,11 +72,53 @@ export default async () => {
         template: 'src/html/pages/list.ejs',
         filename: `list-${i+1}.html`,
         channelViewModel: channelViewModel,
+        baseURL: baseURL
       })
     
     )
   }
 
+  // //Build individual item pages
+  for (let i=0; i < pages; i++) {
+
+    let itemViewModels:ItemViewModel[] = await itemWebService.list(i * CHUNK_SIZE)
+
+    for (let itemViewModel of itemViewModels) {
+
+      plugins.push(
+
+        new HtmlWebpackPlugin({
+          inject: false,
+          title: itemViewModel.item.title,
+          // favicon: 'src/html/favicon.ico',
+          template: 'src/html/pages/item-show.ejs',
+          filename: `item-show-${itemViewModel.item._id}.html`,
+          itemViewModel: itemViewModel,
+          baseURL: baseURL
+        })
+      
+      )
+    }
+
+  }
+
+
+  const babelLoader = {
+    loader: 'babel-loader',
+    options: {
+      cacheDirectory: false,
+      presets: [
+        [
+          "@babel/preset-env", {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
+      ]
+    }
+  }
+  
 
   const fileLoader = {
     loader: 'file-loader',
@@ -160,7 +210,7 @@ export default async () => {
       }),
 
       new webpack.DefinePlugin({
-        VERSION: JSON.stringify(require("./package.json").version)
+        VERSION: VERSION
       }),
 
       ...plugins,
@@ -181,6 +231,9 @@ export default async () => {
     ]
   }
 
+
+  let swFilename = `sw-${VERSION.replace('"', '').replace('"', '')}.js`
+
   let serviceWorkerConfig = {
     entry: './src/sw.ts',
     module: {
@@ -193,12 +246,12 @@ export default async () => {
       ],
     },
     output: {
-      filename: 'sw.js',
+      filename: swFilename,
       path: path.resolve(__dirname, 'public')
     },
     plugins: [
       new webpack.DefinePlugin({
-        VERSION: JSON.stringify(require("./package.json").version)
+        VERSION: VERSION
       })
     ]
   }

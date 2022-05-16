@@ -243,9 +243,54 @@ margin-left: 10px;
 
 
 
+.previous {
+  text-align: right;
+}
+
+.next {
+  text-align: left;
+}
 
 
+@media only screen and (max-width: 1024px) {
+  .previous {
+    text-align: center;
+  }
 
+  .next {
+    text-align: center;
+  }
+}
+
+
+.content {
+  width: 100%;
+}
+
+.content:after{
+  clear: both;
+  content: "";
+  display: block;
+}
+
+.content img {
+  max-width: 100%;
+}
+
+
+.menu-dropdown-link.menu-close {
+  color: #ffffff;
+}
+
+.item-show-token-id {
+  color: rgb(79, 79, 79);
+  font-weight: bold;
+}
+
+
+.f7-component {
+  display: none;
+}
 
 
 

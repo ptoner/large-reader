@@ -6,7 +6,7 @@
         <div class="navbar-inner sliding">
         
           <div class="left">
-            <a href="/" class="logo">
+            <a href="${baseURI}index.html" class="logo">
               <i class="f7-icons">house</i>
             </a>
           </div>
@@ -37,6 +37,8 @@
 
     export default (props, { $on, $f7, $update }) => {
     
+        let baseURI = globalThis.container.get("baseURI")
+
         return $render
     }
 </script>

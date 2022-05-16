@@ -1,136 +1,129 @@
-<% let channelViewModel=htmlWebpackPlugin.options.channelViewModel %>
+<% 
 
-  <!DOCTYPE html>
-  <html>
+    const excerptHtml = require('excerpt-html')
+    const he = require('he')
 
-    <head>
-      <style>
-        html {
-          visibility: hidden;
-          opacity: 0;
-        }
-      </style>
+    let baseURL = htmlWebpackPlugin.options.baseURL
+    let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
 
-      <meta charset="utf-8">
-      <!-- Required meta tags-->
-      <meta charset="utf-8">
-      <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
-      <meta name="apple-mobile-web-app-capable" content="yes">
-      <!-- Color theme for statusbar -->
-      <title>
-        <%= htmlWebpackPlugin.options.title %>
-      </title>
-
-      <meta property="og:title" content="<%=channelViewModel.channel.title%>" />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content="" />
-      <meta property="og:image" content="backup/images/<%=channelViewModel.channel.coverImageId%>" />
-      <meta property="og:description" content="<%=channelViewModel.channel.description %>" />
-
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content="" />
-      <meta property="twitter:title" content="<%=channelViewModel.channel.title%>" />
-      <meta property="twitter:description" content="<%=channelViewModel.channel.description %>" />
-      <meta property="twitter:image" content="backup/images/<%=channelViewModel.channel.coverImageId%>" />
-
-      <%= htmlWebpackPlugin.tags.headTags %>
-      
-
-    </head>
-
-    <body>
-
-      <div id="app">
-
-        <div>
-
-          <div class="page" data-name="home">
-
-            <div class="navbar">
-              <div class="navbar-bg"></div>
-
-              <div class="navbar-inner sliding">
-
-                <div class="left">
-                  <a href="#" class="home">
-                    <i class="f7-icons">house</i>
-                  </a>
-                </div>
-
-                <div class="title"></div>
+    const link = (href) => {
+        return `${baseURL + href}`
+    }   
+    
+    const escapeExcerpt = (excerpt) => {
+      excerpt = excerptHtml(excerpt, { pruneLength: 500 })
+      return he.encode(excerpt.toString())
+    }
 
 
-                <div class="right">
 
+%>
 
-                </div>
+<!DOCTYPE html>
+<html>
 
-              </div>
-            </div>
+  <head>
+    <style>
+      html {
+        visibility: hidden;
+        opacity: 0;
+      }
+    </style>
 
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <title>
+      <%= htmlWebpackPlugin.options.title %>
+    </title>
 
-            <div class="page-content">
+    <meta property="og:title" content="<%=channelViewModel.channel.title%>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= link(`index.html`) %>" />
+    <meta property="og:image" content="<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="og:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
 
-              <div class="row">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="<%= link(`index.html`) %>" />
+    <meta property="twitter:title" content="<%=channelViewModel.channel.title%>" />
+    <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
+    <meta property="twitter:image" content="<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
 
-                <div class="col-100 large-66 center">
-                  
-                  <div class="card channel-card-show">
+    <%= htmlWebpackPlugin.tags.headTags %>
+    
 
-                    <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                      style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>')"
+  </head>
+
+  <body>
+
+    <div id="app">
+
+      <div>
+
+        <div class="page" data-name="home">
+
+          <div class="page-content no-padding">
+
+            <div class="row">
+
+              <div class="col-100 large-66 center">
+                
+                <div class="card channel-card-show">
+
+                  <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                    style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>')"
+                      <% } %>
+                        >
+
+                        <% if (channelViewModel?.channel.coverImageId) { %>
+                          <img src="backup/images/<%=channelViewModel.channel.coverImageId%>" class="avatar" />
+                        <% } else { %>
+                          <i class="f7-icons avatar">photo</i>
                         <% } %>
-                          >
-
-                          <% if (channelViewModel?.channel.coverImageId) { %>
-                            <img src="backup/images/<%=channelViewModel.channel.coverImageId%>" class="avatar" />
-                          <% } else { %>
-                            <i class="f7-icons avatar">photo</i>
-                          <% } %>
-
-                    </div>
-
-                    <div class="card-content card-content-padding">
-
-                      <div class="title">
-                        <%= channelViewModel.channel.title %>
-                      </div>
-
-                      <% if(channelViewModel?.authorDisplayName) { %>
-                        <div class="name">
-                          By <a href="/author/show/<%=channelViewModel?.author._id%>">
-                            <%= channelViewModel?.authorDisplayName %>
-                          </a>
-                        </div>
-                      <% } %>
-
-                      <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
-                        <%= channelViewModel.channel?.descriptionHTML %>
-                      </div>
-
-                      <% if(channelViewModel.channel?.contractAddress) { %>
-                        <div class="contract-address">
-                          <strong>Contract Address:</strong>
-                          <%= channelViewModel?.channel?.contractAddress %>
-                        </div>
-                      <% } %>
-
-
-                    </div>
 
                   </div>
-                  
-                  <div class="card">
-                    <div class="card-content card-content-padding">
-                      <a href="/list-1.html">Begin Reading</a>
+
+                  <div class="card-content card-content-padding">
+
+                    <div class="title">
+                      <%= channelViewModel.channel.title %>
                     </div>
-                    
+
+                    <% if(channelViewModel?.authorDisplayName) { %>
+                      <div class="name">
+                        By <a href="author-<%=channelViewModel?.author._id%>.html">
+                          <%= channelViewModel?.authorDisplayName %>
+                        </a>
+                      </div>
+                    <% } %>
+
+                    <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
+                      <%= channelViewModel.channel?.descriptionHTML %>
+                    </div>
+
+                    <% if(channelViewModel.channel?.contractAddress) { %>
+                      <div class="contract-address">
+                        <strong>Contract Address:</strong>
+                        <%= channelViewModel?.channel?.contractAddress %>
+                      </div>
+                    <% } %>
+
+
                   </div>
 
                 </div>
-              </div>
+                
+                <div class="card">
+                  <div class="card-content card-content-padding">
+                    <a href="<%= link('list-1.html') %>">Begin Reading</a>
+                  </div>
+                  
+                </div>
 
+              </div>
             </div>
 
           </div>
@@ -139,27 +132,48 @@
 
       </div>
 
-      <%= htmlWebpackPlugin.tags.bodyTags %>
+    </div>
 
-      
-      <script type="module" id="page-init-scripts">
+    <%= htmlWebpackPlugin.tags.bodyTags %>
 
-        const init = (props, { $, $f7, $on }) => {
+    
+    <script type="module" id="page-init-scripts">
 
-        }
+      const init = (props, { $, $f7, $h, $on, $update }) => {
+              
+            // console.log(HeaderRight().toString())
 
-        globalThis.pageInit = init
+            // console.log(HeaderRight(props, {
+            //   $:$,
+            //   $on: $on,
+            //   $f7: $f7,
+            //   $update: $update
+            // }))
 
-      </script>
+            document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`index.html`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>")
 
-      <script type="module" id="page-scripts">
+            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`index.html`) %>")
+            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
 
-        let app = reader.getApp(globalThis.pageInit)
+            document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"
 
-        app.init()
+      }
 
-      </script>
+      globalThis.pageInit = init
 
-    </body>
+    </script>
 
-  </html>
+    <script type="module" id="page-scripts">
+
+      let app = reader.init(globalThis.pageInit, '<%= baseURL %>', '<%= VERSION %>')
+
+    </script>
+
+  </body>
+
+</html>

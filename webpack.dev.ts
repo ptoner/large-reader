@@ -7,7 +7,7 @@ let mainConfigs = []
 
 export default async () => {
 
-    let configs = await common()
+    let configs = await common("/")
 
     for (let config of configs) {
         //@ts-ignore
@@ -25,8 +25,7 @@ export default async () => {
             directory: path.join(__dirname, 'public'),
         },
         compress: false,
-        port: 8081,
-    
+        port: 8081
     }
     
     return mainConfigs
