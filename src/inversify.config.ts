@@ -67,6 +67,8 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
       //Load content from initial div on page
       let pageElement = document.getElementsByClassName('page')[0]
 
+      //Get a copy of page attributes
+
       //Get content
       let content = new XMLSerializer().serializeToString(pageElement)
 
@@ -90,16 +92,17 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
       return () => $h` 
          
           <div id="app">
-              
-              <${Navbar} />
-
+          
               <div class="view view-main view-init" 
                    data-browser-history="true" 
                    data-browser-history-separator=""    
                    data-browser-history-on-load="false" 
                    data-browser-history-initial-match="true"
-                   innerHTML="${content}"
+                   
               >
+                <${Navbar} />
+
+                <div innerHTML="${content}"></div>
               
               </div>
           </div>
@@ -108,13 +111,15 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
 
     const resolveWithSpinner = (resolve, url) => {
 
-      let uiService:UiService = container.get("UiService")
-      
-      uiService.showSpinner()
+      let currentUrl = window.location.pathname.split('/').pop()
+
+      //Navigating to same page freezes it. So don't.
+      if (url === currentUrl) return 
+
+      app.preloader.show()
       
       resolve({ componentUrl: url })
-      
-      uiService.hideSpinner()
+
     }
 
     let app = new Framework7({
@@ -127,19 +132,19 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
         {
           path: `${baseURI}index.html`,
           async async({ resolve, reject }) {
-            resolveWithSpinner(resolve, 'index.html')
+            await resolveWithSpinner(resolve, 'index.html')
           }
         },
         {
           path: `${baseURI}list-:page.html`,
           async async({ resolve, reject }) {
-            resolveWithSpinner(resolve, 'list-{{page}}.html')
+            await resolveWithSpinner(resolve, 'list-{{page}}.html')
           }
         },
         {
           path: `${baseURI}item-show-:id.html`,
           async async({ resolve, reject }) {
-            resolveWithSpinner(resolve, 'item-show-{{id}}.html')
+            await resolveWithSpinner(resolve, 'item-show-{{id}}.html')
           }
 
         },

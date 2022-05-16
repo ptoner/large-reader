@@ -61,7 +61,7 @@
 
             <div class="page" data-name="item-show-<%=itemViewModel.item._id %>">
 
-                <div class="page-content no-padding">
+                <div class="page-content">
 
                     <div class="row">
 
@@ -160,7 +160,8 @@
 
             document.querySelector('title').innerHTML = "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>"
 
-            
+            $f7.preloader.hide()
+
         }
 
         globalThis.pageInit = init

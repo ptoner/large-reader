@@ -62,7 +62,7 @@
 
             <div class="page" data-name="list-<%=channelViewModel.pagingViewModel.page %>">
 
-                <div class="page-content no-padding">
+                <div class="page-content">
 
                     <div class="row">
 
@@ -223,6 +223,9 @@
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>"
+
+            $f7.preloader.hide()
+
 
 
             const formSubmit = (e) => {

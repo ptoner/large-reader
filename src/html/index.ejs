@@ -65,7 +65,7 @@
 
         <div class="page" data-name="home">
 
-          <div class="page-content no-padding">
+          <div class="page-content">
 
             <div class="row">
 
@@ -141,15 +141,6 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
-            // console.log(HeaderRight().toString())
-
-            // console.log(HeaderRight(props, {
-            //   $:$,
-            //   $on: $on,
-            //   $f7: $f7,
-            //   $update: $update
-            // }))
-
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`index.html`) %>")
             document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
@@ -161,6 +152,8 @@
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"
+
+            $f7.preloader.hide()
 
       }
 
