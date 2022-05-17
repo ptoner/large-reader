@@ -3,12 +3,17 @@
     const excerptHtml = require('excerpt-html')
     const he = require('he')
 
+    let hostname = htmlWebpackPlugin.options.hostname
     let baseURL = htmlWebpackPlugin.options.baseURL
     let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
 
     const link = (href) => {
         return `${baseURL + href}`
     }    
+
+    const absoluteLink = (href) => {
+        return `${hostname + baseURL + href}`
+    }   
 
     const escapeExcerpt = (excerpt) => {
         excerpt = excerptHtml(excerpt, { pruneLength: 500 })
@@ -41,14 +46,14 @@
     <meta property="og:title" content="<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>" />
-    <meta property="og:image" content="<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
     <meta property="og:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>" />
     <meta property="twitter:title" content="<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>" />
     <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
-    <meta property="twitter:image" content="<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
     
@@ -214,12 +219,12 @@
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
             document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>")
 
             document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= link(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>"
