@@ -27,7 +27,7 @@ let configs = []
 
 
 
-export default async (baseURL) => {
+export default async (hostname, baseURL) => {
 
   let plugins = []
 
@@ -53,7 +53,8 @@ export default async (baseURL) => {
       template: 'src/html/index.ejs',
       filename: 'index.html',
       channelViewModel: channelViewModel,
-      baseURL: baseURL
+      baseURL: baseURL,
+      hostname: hostname
     })
   )
 
@@ -72,7 +73,8 @@ export default async (baseURL) => {
         template: 'src/html/pages/list.ejs',
         filename: `list-${i+1}.html`,
         channelViewModel: channelViewModel,
-        baseURL: baseURL
+        baseURL: baseURL,
+        hostname: hostname
       })
     
     )
@@ -80,6 +82,7 @@ export default async (baseURL) => {
 
   // //Build individual item pages
   for (let i=0; i < pages; i++) {
+  // for (let i=0; i < 1; i++) {
 
     let itemViewModels:ItemViewModel[] = await itemWebService.list(i * CHUNK_SIZE)
 
@@ -94,7 +97,8 @@ export default async (baseURL) => {
           template: 'src/html/pages/item-show.ejs',
           filename: `item-show-${itemViewModel.item._id}.html`,
           itemViewModel: itemViewModel,
-          baseURL: baseURL
+          baseURL: baseURL,
+          hostname: hostname
         })
       
       )
@@ -102,6 +106,16 @@ export default async (baseURL) => {
 
   }
 
+  //404 page
+  plugins.push(new HtmlWebpackPlugin({
+    inject: false,
+    title: channel.title,
+    // favicon: 'src/html/favicon.ico',
+    template: 'src/html/404.ejs',
+    filename: `404.html`,
+    baseURL: baseURL,
+    hostname: hostname
+  }))
 
   const babelLoader = {
     loader: 'babel-loader',

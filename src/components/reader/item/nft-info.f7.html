@@ -1,0 +1,45 @@
+<template>
+
+  <div class="card">
+    <div class="card-header">
+        <label>NFT Information</label>
+    </div>
+    <div class="card-content card-content-padding">
+
+        <div class="attribute-row"> 
+            <strong>Contract Address:</strong> <%= itemViewModel.channel.contractAddress %>
+        </div>
+
+        <div class="attribute-row"> 
+            <strong>Token ID:</strong> ${id}
+        </div>
+
+        <div class="attribute-row"> 
+            <strong>Owner:</strong> ${owner}
+        </div>
+        <div class="attribute-row"> 
+            <strong>Token Standard:</strong> ERC-721A
+        </div>
+        <div class="attribute-row"> 
+            <strong>Blockchain:</strong> Ethereum
+        </div>
+    </div>
+  </div>
+
+</template>
+
+
+<style>
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let id = props.id
+    let owner = props.owner 
+
+    return $render
+  }
+
+</script>

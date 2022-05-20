@@ -91,28 +91,33 @@
                 
                             </div>
                 
-                            <div class="card">
+
+                            <% if (itemViewModel.attributeSelections?.length > 0) { %>
+                                <div class="card">
                                 
-                                <div class="card-header">
-                                    <label>Attributes</label>
-                                </div>
-
-                                <div class="card-content card-content-padding">
-                    
-                                    <div class="attribute-row"> 
-                                    <strong>Token ID:</strong> #<%= itemViewModel.item.tokenId %>
+                                    <div class="card-header">
+                                        <label>Attributes</label>
                                     </div>
-                    
-                                    <% itemViewModel.attributeSelections?.map( (as)=> { %>
-                                    <div class="attribute-row">
-                                        <strong><%= as.traitType %>:</strong> <%= as.value %>
+    
+                                    <div class="card-content card-content-padding">
+                        
+                                        <% itemViewModel.attributeSelections?.map( (as)=> { %>
+                                        <div class="attribute-row">
+                                            <strong><%= as.traitType %>:</strong> <%= as.value %>
                                         </div>
-                                    <% }) %>
-
+                                        <% }) %>
+    
+                                    </div>
+    
                                 </div>
+                            <% } %>
 
-                            </div>
-                
+
+
+                            <% if (itemViewModel.channel.contractAddress) { %>
+                            <% } %>
+
+
                             <div class="block row center margin-bottom">
                 
                                 <% if (itemViewModel.item.previous) { %>
@@ -153,6 +158,13 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
+            // let itemService = globalThis.container.get("ItemService")
+
+            // props.id = "Yoo"
+            // props.owner = "YOOOOOO"
+
+            // $update()
+
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
             document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>")
@@ -176,8 +188,6 @@
     <script type="module" id="page-scripts">
 
         let app = reader.init(globalThis.pageInit, '<%= baseURL %>', '<%= VERSION %>')
-
-        
 
     </script>
 

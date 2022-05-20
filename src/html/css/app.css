@@ -1,7 +1,6 @@
 :root {
   --f7-font-size: 19px;
   --f7-list-font-size: 19px
-
 }
 
 html {
@@ -226,15 +225,15 @@ ul.breadcrumb li a:hover {
 }
 
 .goto-button {
-display: inline-block;
-margin-left: 10px;
-width: 50px;
+  display: inline-block;
+  margin-left: 10px;
+  width: 50px;
 }
 
 .paging-label {
-font-size: 15px;
-font-weight: bold;
-margin-left: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 10px;
 }
 
 
@@ -267,7 +266,7 @@ margin-left: 10px;
   width: 100%;
 }
 
-.content:after{
+.content:after {
   clear: both;
   content: "";
   display: block;

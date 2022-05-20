@@ -48,8 +48,6 @@ import Navbar from './components/reader/navbar.f7.html'
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid])
 
 
-
-
 let container: Container
 
 function getMainContainer(init:Function, baseURI:string, version:string) {
@@ -60,7 +58,7 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
 
   function framework7() {
 
-    Framework7.registerComponent('main-navbar', Navbar)
+    // Framework7.registerComponent('nft-info', NftInfo)
 
     const component = (props, { $, $f7, $h, $on, $update, $f7ready }) => {
 
@@ -86,6 +84,14 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
         $update: $update
       })
 
+
+      // const getContent = () => {  
+      //   console.log($h)
+      //   return $h(`<span>Hello <strong>${name}</strong></span>`);
+      // }
+
+      // console.log(getContent())
+
       //Clean up
       delete globalThis.pageInit
 
@@ -98,7 +104,7 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
                    data-browser-history-separator=""    
                    data-browser-history-on-load="false" 
                    data-browser-history-initial-match="true"
-                   
+                   data-load-initial-page="false"
               >
                 <${Navbar} />
 
@@ -136,6 +142,12 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
           }
         },
         {
+          path: `${baseURI}`,
+          async async({ resolve, reject }) {
+            await resolveWithSpinner(resolve, 'index.html')
+          }
+        },
+        {
           path: `${baseURI}list-:page.html`,
           async async({ resolve, reject }) {
             await resolveWithSpinner(resolve, 'list-{{page}}.html')
@@ -146,12 +158,12 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
           async async({ resolve, reject }) {
             await resolveWithSpinner(resolve, 'item-show-{{id}}.html')
           }
-
         },
         {
           path: '(.*)',
-          async async(ctx) {
-            console.log(`404 error: ${ctx.to.path}`, ctx)
+          async async({ resolve, reject, to }) {
+            console.log(`404 error: ${to.path}`)
+            await resolveWithSpinner(resolve, '404.html')
           }
         }
       ],
@@ -196,15 +208,14 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
   container.bind(ItemWebService).toSelf().inSingletonScope()
   container.bind(AuthorWebService).toSelf().inSingletonScope()
 
-  container.bind(ChannelService).toSelf().inSingletonScope()
-  container.bind(AuthorService).toSelf().inSingletonScope()
-  container.bind(ItemService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(PagingService).toSelf().inSingletonScope()
 
 
   container.bind<UiService>("UiService").to(UiService).inSingletonScope()
-
+  container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
+  container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
+  container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
   
   
   

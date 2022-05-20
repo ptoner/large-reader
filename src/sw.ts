@@ -84,7 +84,7 @@ self.addEventListener('fetch', event => {
     if (event.request.mode === 'navigate') process = false 
 
     if (DEBUG) {
-        console.log(`[SW] Process URL ${url.pathname}: ${process}`)
+        console.log(`[SW] Process URL ${url.pathname}: ${process} / Mode: ${event.request.mode}`)
     }
 
     if (process) {
