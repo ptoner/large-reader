@@ -23,7 +23,7 @@ import { AuthorWebService } from "./service/web/author-web-service";
 import { ChannelWebService } from "./service/web/channel-web-service";
 import { ItemWebService } from "./service/web/item-web-service";
 
-import { providers } from "ethers"
+import { ethers, providers } from "ethers"
 
 
 import Framework7, { Dom7 } from 'framework7';
@@ -34,6 +34,9 @@ import Toast from 'framework7/components/toast';
 import Preloader from 'framework7/components/preloader';
 import VirtualList from 'framework7/components/virtual-list'
 import ListIndex from 'framework7/components/list-index'
+import Range from 'framework7/components/range'
+import Accordion from 'framework7/components/accordion'
+
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
 
@@ -42,15 +45,26 @@ import Grid from 'framework7/components/grid'
 import { UiService } from "./service/core/ui-service";
 
 import Navbar from './components/reader/navbar.f7.html'
+import NftInfo from './components/reader/item/nft-info.f7.html'
+import MintList from './components/reader/item/mint-list.f7.html'
+
+
+import { TokenService } from "./service/token-service";
+import { MetadataRepository } from "./repository/metadata-repository";
+import { MetadataRepositoryImpl } from "./repository/browser/metadata-repository-impl";
+import { MintWebService } from "./service/web/mint-web-service";
+import { SchemaService } from "./service/core/schema-service";
 
 
 // Install F7 Components using .use() method on Framework7 class:
-Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid])
+Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, Range, Accordion])
+
+
 
 
 let container: Container
 
-function getMainContainer(init:Function, baseURI:string, version:string) {
+function getMainContainer(baseURI:string, version:string) {
 
   if (container) return container
 
@@ -58,72 +72,19 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
 
   function framework7() {
 
-    // Framework7.registerComponent('nft-info', NftInfo)
-
-    const component = (props, { $, $f7, $h, $on, $update, $f7ready }) => {
-
-      //Load content from initial div on page
-      let pageElement = document.getElementsByClassName('page')[0]
-
-      //Get a copy of page attributes
-
-      //Get content
-      let content = new XMLSerializer().serializeToString(pageElement)
-
-      //Get script
-      let script = document.getElementById('page-init-scripts')
-
-      //Execute it. Will put init in globalThis.pageInit
-      let f = new Function(script.textContent)
-      f()
-
-      init(props, {
-        $: $,
-        $f7: $f7,
-        $on: $on,
-        $update: $update
-      })
-
-
-      // const getContent = () => {  
-      //   console.log($h)
-      //   return $h(`<span>Hello <strong>${name}</strong></span>`);
-      // }
-
-      // console.log(getContent())
-
-      //Clean up
-      delete globalThis.pageInit
-
-      return () => $h` 
-         
-          <div id="app">
-          
-              <div class="view view-main view-init" 
-                   data-browser-history="true" 
-                   data-browser-history-separator=""    
-                   data-browser-history-on-load="false" 
-                   data-browser-history-initial-match="true"
-                   data-load-initial-page="false"
-              >
-                <${Navbar} />
-
-                <div innerHTML="${content}"></div>
-              
-              </div>
-          </div>
-      `
-    }
+    Framework7.registerComponent("nav-bar", Navbar)
+    Framework7.registerComponent("nft-info", NftInfo)
+    Framework7.registerComponent("mint-list", MintList)
 
     const resolveWithSpinner = (resolve, url) => {
-
+      
       let currentUrl = window.location.pathname.split('/').pop()
 
       //Navigating to same page freezes it. So don't.
-      if (url === currentUrl) return 
+      if (url != currentUrl)  {
+        app.preloader.show()
+      } 
 
-      app.preloader.show()
-      
       resolve({ componentUrl: url })
 
     }
@@ -134,19 +95,36 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
       name: 'Large Reader', // App name
       theme: 'auto', // Automatic theme detection
       init: false,
+      
+      view: {
+        browserHistory: true,
+        browserHistorySeparator: "",
+        browserHistoryOnLoad: false,
+        browserHistoryInitialMatch: false
+      },
+      
       routes: [
-        {
-          path: `${baseURI}index.html`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, 'index.html')
-          }
-        },
         {
           path: `${baseURI}`,
           async async({ resolve, reject }) {
             await resolveWithSpinner(resolve, 'index.html')
           }
         },
+        {
+          path: `${baseURI}index.html`,
+          async async({ resolve, reject }) {
+            await resolveWithSpinner(resolve, 'index.html')
+          }
+        },
+
+
+        {
+          path: `${baseURI}mint.html`,
+          async async({ resolve, reject }) {
+            await resolveWithSpinner(resolve, 'mint.html')
+          }
+        },
+
         {
           path: `${baseURI}list-:page.html`,
           async async({ resolve, reject }) {
@@ -166,14 +144,7 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
             await resolveWithSpinner(resolve, '404.html')
           }
         }
-      ],
-      //@ts-ignore
-      component: component,
-
-      serviceWorker: {
-        path: `./sw-${version}.js`,
-        scope: baseURI,
-      }
+      ]
     })
 
     return app
@@ -192,7 +163,21 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
     }
   }
 
+  function contracts() {
+        
+    const contract = require('../backup/contract.json')
 
+    if (!contract.contractAddress) return []
+
+    const c = require('../backup/contract-abi.json')
+
+    //Override address
+    c['Channel'].address = contract.contractAddress
+
+    return c
+  }
+
+  container.bind("contracts").toConstantValue(contracts())
   container.bind("framework7").toConstantValue(framework7())
   container.bind("baseURI").toConstantValue(baseURI)
   container.bind("version").toConstantValue(version)
@@ -203,25 +188,27 @@ function getMainContainer(init:Function, baseURI:string, version:string) {
   container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryImpl).inSingletonScope()
   container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryImpl).inSingletonScope()
   container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryImpl).inSingletonScope()
+  container.bind<MetadataRepository>("MetadataRepository").to(MetadataRepositoryImpl).inSingletonScope()
 
-  container.bind(ChannelWebService).toSelf().inSingletonScope()
-  container.bind(ItemWebService).toSelf().inSingletonScope()
-  container.bind(AuthorWebService).toSelf().inSingletonScope()
+  container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
+  container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
+  container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
+  container.bind<MintWebService>("MintWebService").to(MintWebService).inSingletonScope()
 
-  container.bind(DatabaseService).toSelf().inSingletonScope()
-  container.bind(PagingService).toSelf().inSingletonScope()
 
+  container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
+  container.bind<DatabaseService>("DatabaseService").to(DatabaseService).inSingletonScope()
 
   container.bind<UiService>("UiService").to(UiService).inSingletonScope()
   container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
   container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
-  
-  
-  
+  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
+  container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
+
   //Attach container to window so we can easily access it from the browser console
   globalThis.container = container
-
+  globalThis.ethers = ethers
 
   return container
 }
@@ -235,22 +222,3 @@ export {
 
 
 
-
-
-
-
-
-//serializeToString escapes the tags f7 needs to initalize the components. So were going to swap 
-//back the original text in after serializing
-// for (let i=0; i < f7Components.length; i++) {
-
-//   let escaped = f7Components[i].innerHTML.trim()
-//   //@ts-ignore
-//   let original = f7Components[i].innerText.trim()
-
-//   content = content.replace(escaped, original)
-
-// }
-
-
-// console.log(content)

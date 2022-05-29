@@ -7,15 +7,15 @@
     <div class="card-content card-content-padding">
 
         <div class="attribute-row"> 
-            <strong>Contract Address:</strong> <%= itemViewModel.channel.contractAddress %>
+            <strong>Contract Address:</strong> ${contractAddress}
         </div>
 
         <div class="attribute-row"> 
-            <strong>Token ID:</strong> ${id}
+            <strong>Token ID:</strong> #${id}
         </div>
 
         <div class="attribute-row"> 
-            <strong>Owner:</strong> ${owner}
+            <strong>Owner:</strong> ${owner ? $h`${owner}` : $h`<a href="${link(`mint.html`)}">Unminted</a>`}
         </div>
         <div class="attribute-row"> 
             <strong>Token Standard:</strong> ERC-721A
@@ -38,6 +38,13 @@
 
     let id = props.id
     let owner = props.owner 
+    let contractAddress = props.contract
+
+    let baseURL = props.baseurl 
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    } 
 
     return $render
   }

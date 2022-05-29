@@ -1,19 +1,34 @@
 import { injectable } from "inversify"
 import { Item } from "../../dto/item"
 import fs from "fs"
-import { ItemRepository, CHUNK_SIZE } from "./../item-repository"
+import { ItemRepository, CHUNK_SIZE } from "../item-repository"
 
 @injectable()
 class ItemRepositoryImpl implements ItemRepository {
 
     static CHUNK_SIZE = CHUNK_SIZE
 
+    items:Item[] = []
+
     constructor() {}
 
-    async get(_id: string): Promise<Item> {
-        const fileContents = JSON.parse(fs.readFileSync(`backup/items/${_id}.json`, 'utf8'))
-        return Object.assign(new Item(), fileContents)
+    async get(_id: string): Promise<Item> {        
+        
+        if (this.items?.length > 0) {
+            this.items = JSON.parse(fs.readFileSync('backup/items.json', 'utf8'))
+        }
+
+        let matches = this.items.filter( item => item._id == _id)
+
+        if (matches?.length > 0) {
+            return matches[0]
+        }
+
+        return matches[0]
+
     }
+
+
 
     async list(skip:number): Promise<Item[]> {
 
@@ -32,6 +47,10 @@ class ItemRepositoryImpl implements ItemRepository {
 
         return items
 
+    }
+
+    async listByTokenId(startTokenId:number, limit:number=CHUNK_SIZE) : Promise<Item[]> {
+        return []
     }
 
 }

@@ -7,7 +7,7 @@ import { ChannelRepository } from "./src/repository/channel-repository";
 import { ChannelRepositoryImpl } from "./src/repository/node/channel-repository-impl";
 
 import { ItemRepository } from "./src/repository/item-repository";
-import { ItemRepositoryImpl } from "./src/repository/node/item-repository-impl";
+import {  ItemRepositoryImpl } from "./src/repository/node/item-repository-impl";
 
 import { AuthorService } from "./src/service/author-service";
 import { ChannelService } from "./src/service/channel-service";
@@ -34,15 +34,16 @@ function getMainContainer() {
   container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryImpl).inSingletonScope()
   container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryImpl).inSingletonScope()
 
-  container.bind(ChannelWebService).toSelf().inSingletonScope()
-  container.bind(ItemWebService).toSelf().inSingletonScope()
-  container.bind(AuthorWebService).toSelf().inSingletonScope()
+  container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
+  container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
+  container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
 
-  container.bind(ChannelService).toSelf().inSingletonScope()
-  container.bind(AuthorService).toSelf().inSingletonScope()
-  container.bind(ItemService).toSelf().inSingletonScope()
-  container.bind(PagingService).toSelf().inSingletonScope()
+  container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
 
+
+  container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
+  container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
+  container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
 
   return container
 }

@@ -1,23 +1,28 @@
-import axios from "axios"
 import {  inject, injectable } from "inversify"
 import { Author } from "../../dto/author"
+import { DatabaseService } from "../../service/core/database-service"
 import { AuthorRepository } from "../author-repository"
 
 @injectable()
 class AuthorRepositoryImpl implements AuthorRepository {
 
+    db:any
+
+    @inject('DatabaseService')
+    private databaseService: DatabaseService
+
+    async load() {
+        this.db = await this.databaseService.getDatabase({
+            name: "authors"
+        })
+    }
+
     constructor(
-        @inject('baseURI') private baseURI:string
     ) {}
 
 
     async get(_id:string): Promise<Author> {        
-        
-        const response = await axios.get(`${this.baseURI}backup/authors.json`)
-        
-        let author:Author = response.data.filter( author => author._id == _id)[0]
-
-        return author
+        return Object.assign(new Author(), await this.db.get(_id))
     }
 
 }

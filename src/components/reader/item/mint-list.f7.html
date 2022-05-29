@@ -1,0 +1,205 @@
+<template>
+
+  <div>
+
+    ${mintingViewModel ? $h`
+      <div class="block-title block-title-medium">Mint NFTs</div>
+      
+      <div class="block block-strong inset">
+        <p>
+          <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+        </p>
+      </div>
+
+      <form class="list no-hairlines inset" @submit="${mintSubmit}">
+        <ul>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Select number of NFTs to mint.</div>
+              <div class="item-input-wrap">
+                <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
+                  <input type="range" value="1" min="0" max="10" step="1" />
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title mint-detail">
+                      <p>
+                        <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
+                      </p>
+                      <p>
+                        <strong>Quantity:</strong> ${quantity} 
+                      </p>
+                      <p>
+                        <strong>Total:</strong> ${total} ETH
+                      </p>
+                    </div>
+                </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+                <div class="item-inner">
+                  <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
+                </div>
+            </div>
+          </li>
+        </ul>
+
+      </form>
+
+      ` : $h`
+        <li class="card skeleton-text skeleton-effect-wave">
+          <div class="card-header">Loading Loading Loading</div>
+          <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
+              interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
+              Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
+              aliquet urna, nec imperdiet felis sapien at enim.</div>
+        </li>
+      `}
+    
+    
+    ${mintingViewModel ? $h`
+      <div class="block-title block-title-medium">Next Up</div>
+      <div class="list cards-list" id="mint-list">
+        <ul>
+          ${mintingViewModel.items?.map( (itemViewModel) => $h`
+          
+            <li class="card item-card">
+  
+              <div class="card-content">
+  
+                  <div class="card-content card-content-padding">
+  
+                    ${itemViewModel.item.excerpt ? $h`
+                          
+                        <div class="item-preview">
+  
+                          <div class="left">
+  
+                            <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
+                              ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                            </a>  
+                            
+                            ${itemViewModel.item.excerpt ? $h`
+                              <p>${itemViewModel.item.excerpt}</p>
+                            ` : `<span/>`}
+  
+                          </div>
+  
+                          ${itemViewModel.coverImage ? $h`
+                            <div class="right">
+                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
+                                <img src="${itemViewModel.coverImage.url}" />
+                              </a>
+                            </div>
+                          ` : $h`<span/>`}
+  
+                        </div> 
+  
+                    ` : $h`
+  
+                        <div class="item-preview">
+  
+                          <div class="left">
+                            
+                            <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
+                              ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                            </a> 
+  
+                            <div class="content" innerHTML="${itemViewModel.item.contentHTML}"></div>
+  
+                          </div>
+  
+                        </div>
+  
+                    `}
+  
+                     
+                  </div>
+              </div>
+            </li>
+          
+          `)}
+        </ul>
+      </div>
+    ` : $h`<span/>`}
+
+  </div>
+
+
+
+</template>
+
+
+<style>
+
+  .wrapper {
+    display: flex;
+  }
+
+  #mint-number {
+    border: 1px solid #cccccc;
+    display: inline-block;
+    margin-right: 15px;
+    width: 200px;
+  }
+
+  #mint-button {
+    width: 100px;
+    display: inline-block;
+  }
+
+  .mint-detail strong {
+    width: 100px;
+    display: inline-block;
+  }
+
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+    console.log('here')
+    let mintingWebService = globalThis.container.get("MintWebService")
+
+    let mintingViewModel = undefined
+    let quantity = 1
+    let total = 0
+    let mintPriceWei
+
+    $f7.preloader.show()
+
+    mintingWebService.getMintingViewModel().then (m => {
+      
+      mintingViewModel = m 
+
+      mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
+
+      updateTotal()
+
+      $f7.preloader.hide()
+
+    } )
+  
+    const mintSubmit = (e) => {
+      e.preventDefault()
+    }
+
+    const updateTotal = () => {
+      total = globalThis.ethers.utils.formatUnits(mintPriceWei.mul(quantity))
+      $update()
+    }
+
+    $on('range:change', (e) => {
+      quantity = parseInt(e.detail)
+      updateTotal()
+    })
+
+    return $render
+  }
+
+</script>

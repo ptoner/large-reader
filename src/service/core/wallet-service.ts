@@ -3,6 +3,7 @@ interface WalletService {
   address:string
   initWallet() : Promise<void>
   getWallet() : Promise<any>
+  getContract(name:string)
 }
 
 export {

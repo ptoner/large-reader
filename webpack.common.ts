@@ -33,9 +33,10 @@ export default async (hostname, baseURL) => {
 
   let container = getMainContainer()
 
-  let channelWebService:ChannelWebService = container.get(ChannelWebService)
-  let channelService:ChannelService = container.get(ChannelService)
-  let itemWebService:ItemWebService = container.get(ItemWebService)
+  let channelWebService:ChannelWebService = container.get("ChannelWebService")
+
+  let channelService:ChannelService = container.get("ChannelService")
+  let itemWebService:ItemWebService = container.get("ItemWebService")
 
   //Get channel
   let channel = await channelService.get()
@@ -58,6 +59,19 @@ export default async (hostname, baseURL) => {
     })
   )
 
+  //Mint page
+  plugins.push(
+    new HtmlWebpackPlugin({
+      inject: false,
+      title: channelViewModel.channel.title,
+      // favicon: 'src/html/favicon.ico',
+      template: 'src/html/mint.ejs',
+      filename: 'mint.html',
+      channelViewModel: channelViewModel,
+      baseURL: baseURL,
+      hostname: hostname
+    })
+  )
 
   //Build pages for navigation
   for (let i=0; i < pages; i++) {
@@ -81,8 +95,8 @@ export default async (hostname, baseURL) => {
   }
 
   // //Build individual item pages
-  for (let i=0; i < pages; i++) {
-  // for (let i=0; i < 1; i++) {
+  // for (let i=0; i < pages; i++) {
+  for (let i=0; i < 1; i++) {
 
     let itemViewModels:ItemViewModel[] = await itemWebService.list(i * CHUNK_SIZE)
 

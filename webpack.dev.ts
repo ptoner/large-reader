@@ -7,7 +7,7 @@ let mainConfigs = []
 
 export default async () => {
 
-    let configs = await common("/")
+    let configs = await common("http://localhost:8081", "/")
 
     for (let config of configs) {
         //@ts-ignore

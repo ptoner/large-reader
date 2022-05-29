@@ -1,4 +1,4 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
@@ -13,11 +13,16 @@ import { ItemService } from "../item-service";
 @injectable()
 class ItemWebService {
 
-    constructor(
-        private itemService: ItemService,
-        private channelService: ChannelService,
-        private authorService: AuthorService
-    ) { }
+    @inject("ItemService")
+    private itemService: ItemService
+
+    @inject("ChannelService")
+    private channelService: ChannelService
+
+    @inject("AuthorService")
+    private authorService: AuthorService
+
+    constructor() {}
 
     async get(_id: string): Promise<ItemViewModel> {
 
@@ -70,14 +75,14 @@ class ItemWebService {
 
     }
 
-    async list(skip: number): Promise<ItemViewModel[]> {
+    async list(skip: number, limit?:number): Promise<ItemViewModel[]> {
 
         let result: ItemViewModel[] = []
 
         //Get channel
         const channel = await this.channelService.get()
         
-        let items: Item[] = await this.itemService.list(skip)
+        let items: Item[] = await this.itemService.list(skip, limit)
 
         for (let item of items) {
             result.push(await this.getViewModel(item, channel))

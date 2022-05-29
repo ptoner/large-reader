@@ -48,7 +48,7 @@ self.addEventListener('activate', event => {
 
 
 self.addEventListener('fetch', event => {
-  
+
     const request = event.request
     // console.log(request)
     // Ignore not GET request.
@@ -73,12 +73,13 @@ self.addEventListener('fetch', event => {
 
 
     let process = false
-
+    
 
     //Skip backup folder
-    if (url.pathname.startsWith(`${baseURL}/list`)) process = true
-    if (url.pathname.startsWith(`${baseURL}/item-show`)) process = true
-    if (url.pathname.startsWith(`${baseURL}/index.html`)) process = true
+    if (url.pathname.endsWith(`.html`)) process = true
+    // if (url.pathname.startsWith(`${baseURL}/item-show`)) process = true
+    // if (url.pathname.startsWith(`${baseURL}/index`)) process = true
+    // if (url.pathname.startsWith(`${baseURL}/mint`)) process = true
 
     // This is a navigation request, so respond with a complete HTML document.
     if (event.request.mode === 'navigate') process = false 
@@ -117,29 +118,16 @@ const updateResponse = async (response:Response) => {
 
     let content = new XMLSerializer().serializeToString(pageElement)
 
-    //Execute it. Will put init in globalThis.pageInit
-    let f = new Function(script.textContent)
-    f()
-
-    //Remove parameters because they will already exist in scope
-    let code = globalThis.pageInit.toString().replace(/\((.*?)\)/, '()')
-
     let component = `
         <template>
             ${content}
         </template>
 
         <script>
-            export default (props, { $, $f7, $h, $on, $update }) => {  
-                
-                let baseURL = '${baseURL}'
 
-                let init = ${code}
+            ${script.textContent}
 
-                init(props)
-
-                return $render;
-            }
+            export default init
         </script>
     `
 

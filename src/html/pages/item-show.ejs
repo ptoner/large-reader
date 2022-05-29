@@ -62,9 +62,11 @@
 
     <div id="app">
 
-        <div>
+        <div class="view view-main">
 
             <div class="page" data-name="item-show-<%=itemViewModel.item._id %>">
+
+                <nav-bar></nav-bar>
 
                 <div class="page-content">
 
@@ -115,6 +117,7 @@
 
 
                             <% if (itemViewModel.channel.contractAddress) { %>
+                                <nft-info id="<%= itemViewModel.item.tokenId %>" owner="${owner}" baseurl="<%= baseURL %>" contract="<%= itemViewModel.channel.contractAddress %>"></nft-info>
                             <% } %>
 
 
@@ -147,7 +150,6 @@
                 </div>
 
             </div>
-
         </div>
 
     </div>
@@ -158,12 +160,9 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
-            // let itemService = globalThis.container.get("ItemService")
+            let tokenService = globalThis.container.get("TokenService")
 
-            // props.id = "Yoo"
-            // props.owner = "YOOOOOO"
-
-            // $update()
+            let owner
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
@@ -179,15 +178,26 @@
 
             $f7.preloader.hide()
 
+            
+
+            $on('pageInit', async () => {
+                
+                try {
+                    owner = await tokenService.ownerOf(parseInt('<%= itemViewModel.item.tokenId %>'))
+                } catch(ex) {}
+
+            })
+
+            return $render;
+
         }
 
-        globalThis.pageInit = init
 
     </script>
 
     <script type="module" id="page-scripts">
 
-        let app = reader.init(globalThis.pageInit, '<%= baseURL %>', '<%= VERSION %>')
+        let app = reader.init('<%= baseURL %>', '<%= VERSION %>')
 
     </script>
 

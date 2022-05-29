@@ -1,4 +1,4 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { AuthorViewModel } from "../../dto/viewmodel/author-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
@@ -7,9 +7,11 @@ import { AuthorService } from "../author-service";
 @injectable()
 class AuthorWebService {
 
+    @inject("AuthorService")
+    private authorService:AuthorService
+
     constructor(
-        private authorService: AuthorService
-    ) { }
+    ) {}
 
     async get(_id: string): Promise<AuthorViewModel> {
         return this.getViewModel(await this.authorService.get(_id))

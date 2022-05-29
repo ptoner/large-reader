@@ -1,4 +1,4 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 
@@ -12,12 +12,19 @@ import { ItemWebService } from "./item-web-service";
 @injectable()
 class ChannelWebService {
 
-    constructor(
-        private channelService:ChannelService,
-        private authorService:AuthorService,
-        private pagingService:PagingService,
-        private itemWebService:ItemWebService
-    ) {}
+    @inject("ChannelService")
+    private channelService:ChannelService
+
+    @inject("AuthorService")
+    private authorService:AuthorService
+
+    @inject("PagingService")
+    private pagingService:PagingService
+
+    @inject("ItemWebService")
+    private itemWebService:ItemWebService
+
+    constructor() {}
 
     async get(offset:number) : Promise<ChannelViewModel> {
         return this.getViewModel(await this.channelService.get(), offset)

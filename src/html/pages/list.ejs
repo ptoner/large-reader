@@ -63,9 +63,11 @@
 
     <div id="app">
 
-        <div>
+        <div class="view view-main">
 
             <div class="page" data-name="list-<%=channelViewModel.pagingViewModel.page %>">
+
+                <nav-bar></nav-bar>
 
                 <div class="page-content">
 
@@ -270,17 +272,18 @@
                 
             })
 
+
+            return $render;
+
+
         }
 
-        globalThis.pageInit = init
 
     </script>
 
     <script type="module" id="page-scripts">
 
-        let app = reader.init(globalThis.pageInit, '<%= baseURL %>', '<%= VERSION %>')
-
-        
+        let app = reader.init('<%= baseURL %>', '<%= VERSION %>')
 
     </script>
 

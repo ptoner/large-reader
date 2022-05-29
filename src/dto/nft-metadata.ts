@@ -1,6 +1,6 @@
 import { AttributeSelection } from "./attribute";
 
-interface NFTMetadata {
+class NFTMetadata {
 
     tokenId:string
 

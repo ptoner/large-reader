@@ -1,4 +1,6 @@
-import { injectable } from 'inversify';
+import axios from "axios"
+
+import { inject, injectable } from 'inversify';
 
 import PouchDB from 'pouchdb';
 import PouchFind from 'pouchdb-find'
@@ -8,7 +10,9 @@ class DatabaseService {
 
     dbCache = {}
 
-    constructor() {
+    constructor(
+        @inject('baseURI') private baseURI:string
+    ) {
         //Enable find plugin
         PouchDB.plugin(PouchFind)
     }
@@ -33,9 +37,14 @@ class DatabaseService {
                 await config.buildIndexes(this.dbCache[fullName])
             }
 
-            if (config.initialRecords?.length > 0) {
-                console.log(`Loading ${config.initialRecords?.length} initial records for ${fullName}`)
-                await this.dbCache[fullName].bulkDocs(config.initialRecords)
+            //Load initial records
+            const response = await axios.get(`${this.baseURI}backup/${config.name}.json`)
+
+            let initialRecords = response.data
+
+            if (initialRecords?.length > 0) {
+                console.log(`Loading ${initialRecords?.length} initial records for ${fullName}`)
+                await this.dbCache[fullName].bulkDocs(initialRecords)
             }
 
         }

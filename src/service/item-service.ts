@@ -15,12 +15,8 @@ class ItemService {
         return this.itemRepository.get(_id)
     }
     
-    async list(skip: number): Promise<Item[]> {
-        return this.itemRepository.list(skip)
-    }
-
-    async mint(_id: string) {
-
+    async list(skip: number, limit?:number): Promise<Item[]> {
+        return this.itemRepository.list(skip, limit)
     }
 
 }
