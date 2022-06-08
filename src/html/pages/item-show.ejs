@@ -94,25 +94,28 @@
                             </div>
                 
 
-                            <% if (itemViewModel.attributeSelections?.length > 0) { %>
-                                <div class="card">
+                            <div class="card">
                                 
-                                    <div class="card-header">
-                                        <label>Attributes</label>
-                                    </div>
-    
-                                    <div class="card-content card-content-padding">
-                        
-                                        <% itemViewModel.attributeSelections?.map( (as)=> { %>
-                                        <div class="attribute-row">
-                                            <strong><%= as.traitType %>:</strong> <%= as.value %>
-                                        </div>
-                                        <% }) %>
-    
-                                    </div>
-    
+                                <div class="card-header">
+                                    <label>Attributes</label>
                                 </div>
-                            <% } %>
+
+                                <div class="card-content card-content-padding">
+                    
+                                    <% itemViewModel.attributeSelections?.map( (as)=> { %>
+                                    <div class="attribute-row">
+                                        <strong><%= as.traitType %>:</strong> <%= as.value %>
+                                    </div>
+                                    <% }) %>
+
+                                    <div class="attribute-row">
+                                        <strong>Cover Image:</strong> 
+                                        <img src="backup/images/<%= `${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'} ` %>" class="cover-image-preview" />
+                                    </div>
+
+                                </div>
+
+                            </div>
 
 
 

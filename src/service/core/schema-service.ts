@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify"
 import { AuthorRepositoryImpl } from "../../repository/browser/author-repository-impl"
 import { ChannelRepositoryImpl } from "../../repository/browser/channel-repository-impl"
+import { ImageRepositoryImpl } from "../../repository/browser/image-repository-impl"
 import { ItemRepositoryImpl } from "../../repository/browser/item-repository-impl"
 import { ChannelRepository } from "../../repository/channel-repository"
 import { UiService } from "./ui-service"
@@ -19,6 +20,9 @@ class SchemaService {
 
     @inject("AuthorRepository")
     private authorRepository:AuthorRepositoryImpl
+
+    @inject("ImageRepository")
+    private imageRepository:ImageRepositoryImpl
 
     @inject("framework7")
     private app:any
@@ -40,6 +44,11 @@ class SchemaService {
         if (!this.authorRepository.db) {
             this.app.preloader.show()
             await this.authorRepository.load()
+        }
+
+        if (!this.imageRepository.db) {
+            this.app.preloader.show()
+            await this.imageRepository.load()
         }
 
 

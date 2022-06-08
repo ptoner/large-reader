@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
+import { Image } from "../../dto/image";
 import { Item } from "../../dto/item";
 import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selection-view-model";
 
@@ -8,6 +9,7 @@ import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selec
 import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
+import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
 
 @injectable()
@@ -21,6 +23,9 @@ class ItemWebService {
 
     @inject("AuthorService")
     private authorService: AuthorService
+
+    @inject("ImageService")
+    private imageService: ImageService
 
     constructor() {}
 
@@ -39,6 +44,7 @@ class ItemWebService {
         let attributeSelections:AttributeSelectionViewModel[] = []
 
         let author: Author
+        let coverImage:Image
 
         //Get author
         if (channel.authorId) {
@@ -64,13 +70,18 @@ class ItemWebService {
 
         }
 
+        //Get image
+        if (item.coverImageId) {
+            coverImage = await this.imageService.get(item.coverImageId)
+        }
+
         return {
             item: item,
             channel: channel,
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
             attributeSelections: attributeSelections,
-            coverImage: item.coverImageId
+            coverImage: coverImage
         }
 
     }

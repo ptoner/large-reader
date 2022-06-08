@@ -1,5 +1,6 @@
 import { Author } from "../author";
 import { Channel } from "../channel";
+import { Image } from "../image";
 import { Item } from "../item";
 import { AttributeSelectionViewModel } from "./attribute-selection-view-model";
 
@@ -9,7 +10,7 @@ interface ItemViewModel {
     
     item?:Item 
     dateDisplay?:string
-    coverImage?:string
+    coverImage?:Image
 
     author?:Author
     authorDisplayName?:string 

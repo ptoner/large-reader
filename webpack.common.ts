@@ -95,8 +95,8 @@ export default async (hostname, baseURL) => {
   }
 
   // //Build individual item pages
-  // for (let i=0; i < pages; i++) {
-  for (let i=0; i < 1; i++) {
+  for (let i=0; i < pages; i++) {
+  // for (let i=0; i < 1; i++) {
 
     let itemViewModels:ItemViewModel[] = await itemWebService.list(i * CHUNK_SIZE)
 

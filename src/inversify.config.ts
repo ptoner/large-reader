@@ -13,6 +13,8 @@ import { WalletService } from "./service/core/wallet-service";
 import { WalletServiceImpl } from "./service/core/wallet-service-impl";
 
 import { AuthorService } from "./service/author-service";
+import { ImageService } from "./service/image-service";
+
 import { ChannelService } from "./service/channel-service";
 import { DatabaseService } from "./service/core/database-service";
 import { PagingService } from "./service/core/paging-service";
@@ -54,6 +56,8 @@ import { MetadataRepository } from "./repository/metadata-repository";
 import { MetadataRepositoryImpl } from "./repository/browser/metadata-repository-impl";
 import { MintWebService } from "./service/web/mint-web-service";
 import { SchemaService } from "./service/core/schema-service";
+import { ImageRepositoryImpl } from "./repository/browser/image-repository-impl";
+import { ImageRepository } from "./repository/image-repository";
 
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -189,6 +193,7 @@ function getMainContainer(baseURI:string, version:string) {
   container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryImpl).inSingletonScope()
   container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryImpl).inSingletonScope()
   container.bind<MetadataRepository>("MetadataRepository").to(MetadataRepositoryImpl).inSingletonScope()
+  container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
@@ -201,6 +206,7 @@ function getMainContainer(baseURI:string, version:string) {
 
   container.bind<UiService>("UiService").to(UiService).inSingletonScope()
   container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
+  container.bind<ImageService>("ImageService").to(ImageService).inSingletonScope()
   container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()

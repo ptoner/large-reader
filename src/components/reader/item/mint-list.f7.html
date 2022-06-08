@@ -64,67 +64,35 @@
     
     ${mintingViewModel ? $h`
       <div class="block-title block-title-medium">Next Up</div>
-      <div class="list cards-list" id="mint-list">
-        <ul>
-          ${mintingViewModel.items?.map( (itemViewModel) => $h`
+      <div class="row">
+        ${mintingViewModel.items?.map( (itemViewModel) => $h`
           
-            <li class="card item-card">
-  
-              <div class="card-content">
-  
-                  <div class="card-content card-content-padding">
-  
-                    ${itemViewModel.item.excerpt ? $h`
-                          
-                        <div class="item-preview">
-  
-                          <div class="left">
-  
-                            <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
-                              ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                            </a>  
-                            
-                            ${itemViewModel.item.excerpt ? $h`
-                              <p>${itemViewModel.item.excerpt}</p>
-                            ` : `<span/>`}
-  
-                          </div>
-  
-                          ${itemViewModel.coverImage ? $h`
-                            <div class="right">
-                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
-                                <img src="${itemViewModel.coverImage.url}" />
-                              </a>
-                            </div>
-                          ` : $h`<span/>`}
-  
-                        </div> 
-  
-                    ` : $h`
-  
-                        <div class="item-preview">
-  
-                          <div class="left">
-                            
-                            <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
-                              ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                            </a> 
-  
-                            <div class="content" innerHTML="${itemViewModel.item.contentHTML}"></div>
-  
-                          </div>
-  
-                        </div>
-  
-                    `}
-  
-                     
-                  </div>
+          <div class="card col-100 large-20">
+            <div class="card-content">
+              <div class="card-content card-content-padding">
+
+                <div class="square">
+
+                  ${itemViewModel.item.coverImageId ? $h`
+                    <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">
+                      <img src="${link(`backup/images/${itemViewModel.coverImage._id}`)}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
+                    </a>
+                  ` : $h`
+                    No preview
+                  `}
+
+                </div>
+
+                <div class="preview-info">
+                  <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">${itemViewModel.item.title ? itemViewModel.item.title + ' ' : ''} #${itemViewModel.item.tokenId}</a>
+                  
+                </div>
+
               </div>
-            </li>
-          
-          `)}
-        </ul>
+            </div>
+          </div>
+        
+        `)}
       </div>
     ` : $h`<span/>`}
 
@@ -137,17 +105,6 @@
 
 <style>
 
-  .wrapper {
-    display: flex;
-  }
-
-  #mint-number {
-    border: 1px solid #cccccc;
-    display: inline-block;
-    margin-right: 15px;
-    width: 200px;
-  }
-
   #mint-button {
     width: 100px;
     display: inline-block;
@@ -158,12 +115,16 @@
     display: inline-block;
   }
 
+
+
+
+
 </style>
 
 <script>
 
   export default (props, { $, $on, $f7, $update }) => {
-    console.log('here')
+
     let mintingWebService = globalThis.container.get("MintWebService")
 
     let mintingViewModel = undefined
@@ -171,11 +132,19 @@
     let total = 0
     let mintPriceWei
 
+    let baseURL = props.baseurl 
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    } 
+
+
     $f7.preloader.show()
 
     mintingWebService.getMintingViewModel().then (m => {
       
       mintingViewModel = m 
+      console.log(mintingViewModel)
 
       mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
 
