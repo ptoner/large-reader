@@ -53,6 +53,10 @@ class ItemRepositoryImpl implements ItemRepository {
         return []
     }
 
+    async query(query:string) : Promise<Item[]> {
+        return []
+    }
+
 }
 
 export {

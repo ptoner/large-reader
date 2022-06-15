@@ -2,6 +2,10 @@
 //@ts-nocheck
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
+import he from 'he'
+
+
+
 // console.log(VERSION)
 
 const DEBUG = true
@@ -111,13 +115,19 @@ const updateResponse = async (response:Response) => {
 
     let responseText = await response.text()
 
-    let page = parser.parseFromString(responseText, 'text/html')
+    let page
+
+    try {
+        page = parser.parseFromString(responseText, 'text/html')
+    } catch(ex) {}
+    
+ 
     let pageElement = page.getElementsByClassName('page')[0]
 
     let script = page.getElementById('page-init-scripts')
-
-    let content = new XMLSerializer().serializeToString(pageElement)
-
+ 
+    let content = he.unescape(new XMLSerializer().serializeToString(pageElement))
+ 
     let component = `
         <template>
             ${content}

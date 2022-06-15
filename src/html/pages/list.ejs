@@ -46,14 +46,14 @@
     <meta property="og:title" content="<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
     <meta property="og:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>" />
     <meta property="twitter:title" content="<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>" />
     <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
     
@@ -114,7 +114,7 @@
                                                         <% if (itemViewModel.coverImage) { %>
                                                         <div class="right">
                                                             <a class="title" href="<%= link(`item-show-${itemViewModel.item._id}.html`) %>">
-                                                            <img src="backup/images/<%= itemViewModel.coverImage %>" />
+                                                            <img src="backup/images/<%= itemViewModel.coverImage._id %>.<%= itemViewModel.coverImage.generated ? 'svg' : 'jpg'%>" />
                                                             </a>
                                                         </div>
                                                         <% } %>
@@ -214,19 +214,27 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+
             let baseURL = '<%= baseURL %>'
 
             let pageNumber = parseInt("<%= channelViewModel.pagingViewModel.page %>");
             let endPageNumber = parseInt("<%= channelViewModel.pagingViewModel.endPage %>");
 
+            $on('pageInit', async () => {
+            })
+
+            $on('pageBeforeOut', async () => {
+            })
+
+
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>")
 
             document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`list-${channelViewModel.pagingViewModel.page}.html`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%> - Page <%= channelViewModel.pagingViewModel.page %>"

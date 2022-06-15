@@ -49,14 +49,14 @@
     <meta property="og:title" content="<%=channelViewModel.channel.title%>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= link(`index.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
     <meta property="og:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<%= link(`index.html`) %>" />
     <meta property="twitter:title" content="<%=channelViewModel.channel.title%>" />
     <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
     
@@ -73,6 +73,7 @@
 
           <nav-bar></nav-bar>
 
+
           <div class="page-content">
 
             <div class="row">
@@ -82,12 +83,12 @@
                 <div class="card channel-card-show">
 
                   <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                    style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>')"
+                    style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>.jpg')"
                       <% } %>
                         >
 
                         <% if (channelViewModel?.channel.coverImageId) { %>
-                          <img src="backup/images/<%=channelViewModel.channel.coverImageId%>" class="avatar" />
+                          <img src="backup/images/<%=channelViewModel.channel.coverImageId %>.jpg" class="avatar" />
                         <% } else { %>
                           <i class="f7-icons avatar">photo</i>
                         <% } %>
@@ -115,7 +116,7 @@
                     <% if(channelViewModel.channel?.contractAddress) { %>
                       <div class="contract-address">
                         <strong>Contract Address:</strong>
-                        <%= channelViewModel?.channel?.contractAddress %>
+                        <%= channelViewModel?.channelContractAbbrev %>
                       </div>
                     <% } %>
 
@@ -128,7 +129,10 @@
                   <div class="card-content card-content-padding">
                     <a href="<%= link('list-1.html') %>" class="button button-fill color-green">Begin Reading</a>
                   </div>
-                  
+                </div>
+
+                <div class="block">
+                  <br />
                 </div>
 
               </div>
@@ -149,14 +153,20 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
+            $on('pageInit', async () => {
+            })
+
+            $on('pageBeforeOut', async () => {
+            })
+
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`index.html`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>")
 
             document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`index.html`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"

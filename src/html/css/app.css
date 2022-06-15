@@ -125,6 +125,10 @@ ul.breadcrumb li a:hover {
   text-align: center;
 }
 
+.contract-address strong {
+  margin-right: 10px;
+}
+
 .channel-card-show .name a {
   color: var(--f7-theme-color);
   font-weight: bold;
@@ -274,6 +278,7 @@ ul.breadcrumb li a:hover {
 
 .content img {
   max-width: 100%;
+  object-fit: cover;
 }
 
 
@@ -351,12 +356,21 @@ ul.breadcrumb li a:hover {
 
 
 
+#customSearchResults {
+  margin-top: 65px;
+  border-top: 1px solid #cccccc;
+}
 
 
 
 
-
-
+.animation-preview {
+  margin-left: 5px;
+  height: 500px; 
+  width: 500px;
+  max-width: 100%;
+  border: 1px solid #cccccc;
+}
 
 
 

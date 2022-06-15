@@ -4,6 +4,8 @@ import { inject, injectable } from 'inversify';
 
 import PouchDB from 'pouchdb';
 import PouchFind from 'pouchdb-find'
+import PouchQuickSearch from 'pouchdb-quick-search'
+
 
 @injectable()
 class DatabaseService {
@@ -15,6 +17,9 @@ class DatabaseService {
     ) {
         //Enable find plugin
         PouchDB.plugin(PouchFind)
+
+        //Enable quicksearch
+        PouchDB.plugin(PouchQuickSearch)
     }
 
     async getDatabase(config:DatabaseConfig) {

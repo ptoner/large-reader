@@ -1,6 +1,7 @@
 import { Author } from "../dto/author";
 import { inject, injectable } from "inversify";
 import { AuthorRepository } from "../repository/author-repository";
+import { WalletService } from "./core/wallet-service";
 
 
 @injectable()
@@ -9,6 +10,9 @@ class AuthorService {
   @inject("AuthorRepository")
   private authorRepository:AuthorRepository
 
+  @inject("WalletService")
+  private walletService:WalletService
+
   constructor() { }
 
   async get(_id: string): Promise<Author> {
@@ -16,12 +20,9 @@ class AuthorService {
   }
 
   getDisplayName(author: Author): string {
-
     if (!author) return
     if (author.name) return author.name
-
-    return "..." + author._id.slice(author._id.length - 10) //shorten
-
+    return this.walletService.truncateEthAddress(author._id)
   }
 
 

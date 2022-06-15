@@ -4,6 +4,7 @@ interface WalletService {
   initWallet() : Promise<void>
   getWallet() : Promise<any>
   getContract(name:string)
+  truncateEthAddress(address) : string
 }
 
 export {

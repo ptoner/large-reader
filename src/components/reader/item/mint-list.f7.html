@@ -2,6 +2,12 @@
 
   <div>
 
+    
+      <div class="block block-strong inset block-mint">
+        Note: This screen requires local search indexes and will take longer to load the first time you visit.
+      </div>
+
+
     ${mintingViewModel ? $h`
       <div class="block-title block-title-medium">Mint NFTs</div>
       
@@ -51,15 +57,15 @@
 
       </form>
 
-      ` : $h`
-        <li class="card skeleton-text skeleton-effect-wave">
-          <div class="card-header">Loading Loading Loading</div>
-          <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
-              interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
-              Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
-              aliquet urna, nec imperdiet felis sapien at enim.</div>
-        </li>
-      `}
+    ` : $h`
+      <li class="card skeleton-text skeleton-effect-wave">
+        <div class="card-header">Loading Loading Loading</div>
+        <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
+            interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
+            Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
+            aliquet urna, nec imperdiet felis sapien at enim.</div>
+      </li>
+    `}
     
     
     ${mintingViewModel ? $h`
@@ -115,7 +121,9 @@
     display: inline-block;
   }
 
-
+  .block-mint {
+    font-size: 14px;
+  }
 
 
 
@@ -144,7 +152,6 @@
     mintingWebService.getMintingViewModel().then (m => {
       
       mintingViewModel = m 
-      console.log(mintingViewModel)
 
       mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
 

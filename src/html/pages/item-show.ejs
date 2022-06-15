@@ -45,14 +45,14 @@
     <meta property="og:title" content="<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="" />
-    <meta property="og:image" content="<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>" />
+    <meta property="og:image" content="<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>" />
     <meta property="og:description" content="<%= escapeExcerpt(itemViewModel.item.contentHTML)%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="" />
     <meta property="twitter:title" content="<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>" />
     <meta property="twitter:description" content="<%= escapeExcerpt(itemViewModel.item.contentHTML) %>" />
-    <meta property="twitter:image" content="<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>" />
+    <meta property="twitter:image" content="<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
     
@@ -167,14 +167,27 @@
 
             let owner
 
+            $on('pageInit', async () => {
+                
+                try {
+                    owner = await tokenService.ownerOf(parseInt('<%= itemViewModel.item.tokenId %>'))
+                } catch(ex) {}
+
+
+            })          
+
+            $on('pageBeforeOut', async () => {
+            })
+
+
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>")
             document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.item.contentHTML)%>")
 
             document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.item.coverImageId}`)  : '' %>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>")
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.item.contentHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>"
@@ -183,13 +196,7 @@
 
             
 
-            $on('pageInit', async () => {
-                
-                try {
-                    owner = await tokenService.ownerOf(parseInt('<%= itemViewModel.item.tokenId %>'))
-                } catch(ex) {}
 
-            })
 
             return $render;
 

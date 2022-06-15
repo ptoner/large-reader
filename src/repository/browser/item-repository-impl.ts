@@ -3,6 +3,9 @@ import { Item } from "../../dto/item"
 import { ItemRepository, CHUNK_SIZE } from "./../item-repository"
 import { DatabaseService } from "../../service/core/database-service"
 
+import he from 'he'
+
+
 @injectable()
 class ItemRepositoryImpl implements ItemRepository {
 
@@ -20,6 +23,11 @@ class ItemRepositoryImpl implements ItemRepository {
             index: {
                 fields: ['dateCreated']
             }
+        })
+
+        await db.search({
+            build: true,
+            fields: ['contentHTML', 'title', 'tokenId']
         })
 
         await db.put({
@@ -133,6 +141,27 @@ class ItemRepositoryImpl implements ItemRepository {
         if (response.docs?.length > 0) {
             return Object.assign(new Item(), response.docs[0])
         }
+    }
+
+    async query(query:string) : Promise<Item[]> {
+
+        let response = await this.db.search({
+            query: query,
+            fields: ['contentHTML', 'title', 'tokenId'],
+            include_docs: true,
+            highlighting: true, 
+            limit: CHUNK_SIZE
+        })
+
+        return response.rows.map( row => {
+
+            if (row.highlighting.contentHTML) {
+                row.doc.contentHTML = row.highlighting.contentHTML
+            }
+            
+            return row.doc
+        })
+
     }
 
 }

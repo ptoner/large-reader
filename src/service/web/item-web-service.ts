@@ -9,6 +9,7 @@ import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selec
 import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
+import { SchemaService } from "../core/schema-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
 
@@ -26,6 +27,9 @@ class ItemWebService {
 
     @inject("ImageService")
     private imageService: ImageService
+
+    @inject("SchemaService")
+    private schemaService: SchemaService
 
     constructor() {}
 
@@ -101,6 +105,27 @@ class ItemWebService {
 
         return result
 
+    }
+
+
+    async query(query:string) : Promise<Item[]> {
+
+        await this.schemaService.load()
+
+        let results = await this.itemService.query(query)
+
+
+        //Get channel
+        const channel = await this.channelService.get()
+
+        let viewModels: ItemViewModel[] = []
+
+        for (let item of results) {
+            viewModels.push(await this.getViewModel(item, channel))
+        }
+
+
+        return viewModels
     }
 
 }

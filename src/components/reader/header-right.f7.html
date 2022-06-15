@@ -2,6 +2,11 @@
 
     <div class="right">
 
+        <!-- Link to enable searchbar -->
+        <a class="link icon-only searchbar-enable" href="${baseURI}search.html">
+            <i class="f7-icons">search</i>
+        </a>
+
         ${walletAddress != undefined ? $h`
           <a class="button button-fill">${truncateEthAddress(walletAddress)}</a>
         ` : $h`
@@ -22,18 +27,13 @@
 
         let walletService = globalThis.container.get("WalletService")
         let uiService = globalThis.container.get("UiService")
+        let baseURI = globalThis.container.get("baseURI")
 
         let walletAddress = walletService.wallet?.address
-        let walletAbbrev
-
-
-        // Captures 0x + 4 characters, then the last 4 characters.
-        const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/
+        
 
         const truncateEthAddress = (address) => {
-            const match = address.match(truncateRegex)
-            if (!match) return address
-            return `${match[1]}…${match[2]}`
+            return walletService.truncateEthAddress(address)
         }
 
         const displayAddress = async (e) => {
@@ -46,13 +46,7 @@
 
 
             if (walletService.wallet) {
-
                 walletAddress = await walletService.getAddress()
-
-                if (walletAddress) {
-                    walletAbbrev = walletAddress.slice(walletAddress.length - 10)
-                }
-
             }
 
             $update()

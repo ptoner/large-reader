@@ -32,27 +32,21 @@ class SchemaService {
     async load() {
 
         if (!this.itemRepository.db) {
-            this.app.preloader.show()
             await this.itemRepository.load()
         }
 
         if (!this.channelRepository.db) {
-            this.app.preloader.show()
             await this.channelRepository.load()
         }
 
         if (!this.authorRepository.db) {
-            this.app.preloader.show()
             await this.authorRepository.load()
         }
 
         if (!this.imageRepository.db) {
-            this.app.preloader.show()
             await this.imageRepository.load()
         }
 
-
-        this.app.preloader.hide()
     }
 
 }

@@ -11,11 +11,13 @@ class Item {
     description?:string
     content?:any
     contentHTML?:string
+    searchableContent?:string
     excerpt?:string
     authorId?:string
     category?:string[]
     attributeSelections?: AttributeSelection[] 
     coverImageId?:string
+    animationId?:string
     datePublished?:string
     dateCreated?:string
     lastUpdated?:string

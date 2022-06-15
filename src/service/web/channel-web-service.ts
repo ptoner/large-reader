@@ -7,6 +7,7 @@ import { CHUNK_SIZE, ItemRepository } from "../../repository/item-repository";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { PagingService } from "../core/paging-service";
+import { WalletService } from "../core/wallet-service";
 import { ItemWebService } from "./item-web-service";
 
 @injectable()
@@ -23,6 +24,11 @@ class ChannelWebService {
 
     @inject("ItemWebService")
     private itemWebService:ItemWebService
+
+    @inject("WalletService")
+    private walletService:WalletService
+
+
 
     constructor() {}
 
@@ -45,6 +51,7 @@ class ChannelWebService {
         let items = await this.itemWebService.list(offset)
 
         return {
+            channelContractAbbrev: channel.contractAddress ? this.walletService.truncateEthAddress(channel.contractAddress) : undefined,
             channel: channel,
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),

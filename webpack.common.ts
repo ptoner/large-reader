@@ -41,6 +41,7 @@ export default async (hostname, baseURL) => {
   //Get channel
   let channel = await channelService.get()
   let channelViewModel = await channelWebService.get(0)
+  
 
   //Figure how many navigation pages we'll build
   let pages = Math.ceil(channel.itemCount / CHUNK_SIZE)  
@@ -72,6 +73,22 @@ export default async (hostname, baseURL) => {
       hostname: hostname
     })
   )
+
+  //Search page
+  plugins.push(
+    new HtmlWebpackPlugin({
+      inject: false,
+      title: channelViewModel.channel.title,
+      // favicon: 'src/html/favicon.ico',
+      template: 'src/html/search.ejs',
+      filename: 'search.html',
+      channelViewModel: channelViewModel,
+      baseURL: baseURL,
+      hostname: hostname
+    })
+  )
+
+
 
   //Build pages for navigation
   for (let i=0; i < pages; i++) {
@@ -197,7 +214,8 @@ export default async (hostname, baseURL) => {
         "path": require.resolve("path-browserify"),
         "util": require.resolve("util/"),
         "assert": require.resolve("assert/"),
-        "stream": require.resolve("stream-browserify")
+        "stream": require.resolve("stream-browserify"),
+        "crypto": require.resolve("crypto-browserify")
       }
     },
     output: {

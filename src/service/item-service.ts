@@ -19,6 +19,10 @@ class ItemService {
         return this.itemRepository.list(skip, limit)
     }
 
+    async query(query:string) {
+        return this.itemRepository.query(query)
+    }
+
 }
 
 export {

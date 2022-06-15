@@ -47,14 +47,14 @@
     <meta property="og:title" content="Mint '<%=channelViewModel.channel.title%>'" />
     <meta property="og:type" content="" />
     <meta property="og:url" content="<%= link(`mint.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
     <meta property="og:description" content="Mint '<%=channelViewModel.channel.title%>' NFTs" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<%= link(`mint.html`) %>" />
     <meta property="twitter:title" content="Mint '<%=channelViewModel.channel.title%>'" />
     <meta property="twitter:description" content="Mint '<%=channelViewModel.channel.title%>' NFTs" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
     
@@ -79,12 +79,12 @@
                 <div class="card channel-card-show">
 
                   <div class="card-header banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                    style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>')"
+                    style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>.jpg')"
                       <% } %>
                         >
 
                         <% if (channelViewModel?.channel.coverImageId) { %>
-                          <img src="backup/images/<%=channelViewModel.channel.coverImageId%>" class="avatar" />
+                          <img src="backup/images/<%=channelViewModel.channel.coverImageId%>.jpg" class="avatar" />
                         <% } else { %>
                           <i class="f7-icons avatar">photo</i>
                         <% } %>
@@ -108,7 +108,7 @@
                     <% if(channelViewModel.channel?.contractAddress) { %>
                       <div class="contract-address">
                         <strong>Contract Address:</strong>
-                        <%= channelViewModel?.channel?.contractAddress %>
+                        <%= channelViewModel?.channelContractAbbrev %>
                       </div>
                     <% } %>
 
@@ -137,21 +137,29 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {   
 
-            document.querySelector('meta[property="og:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs")
 
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
-            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}`) %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs" )
+        $on('pageInit', async () => {
+        })
 
-            document.querySelector('title').innerHTML = "Mint '<%=channelViewModel.channel.title%>' NFTs."
+        $on('pageBeforeOut', async () => {
+        })        
 
-            $f7.preloader.hide()
-        
-            return $render
+
+        document.querySelector('meta[property="og:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
+        document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
+        document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+        document.querySelector('meta[property="og:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs")
+
+        document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
+        document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
+        document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+        document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs" )
+
+        document.querySelector('title').innerHTML = "Mint '<%=channelViewModel.channel.title%>' NFTs."
+
+        $f7.preloader.hide()
+    
+        return $render
 
 
       }

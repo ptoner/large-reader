@@ -38,17 +38,21 @@ import VirtualList from 'framework7/components/virtual-list'
 import ListIndex from 'framework7/components/list-index'
 import Range from 'framework7/components/range'
 import Accordion from 'framework7/components/accordion'
+import Autocomplete from 'framework7/components/autocomplete'
 
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
 
 import Form from 'framework7/components/form'
 import Grid from 'framework7/components/grid'
+import Searchbar from 'framework7/components/searchbar'
+
 import { UiService } from "./service/core/ui-service";
 
 import Navbar from './components/reader/navbar.f7.html'
 import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
+import SearchList from './components/reader/item/search-list.f7.html'
 
 
 import { TokenService } from "./service/token-service";
@@ -58,10 +62,11 @@ import { MintWebService } from "./service/web/mint-web-service";
 import { SchemaService } from "./service/core/schema-service";
 import { ImageRepositoryImpl } from "./repository/browser/image-repository-impl";
 import { ImageRepository } from "./repository/image-repository";
+import { SearchbarService } from "./service/web/searchbar-service";
 
 
 // Install F7 Components using .use() method on Framework7 class:
-Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, Range, Accordion])
+Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, Range, Accordion, Searchbar, Autocomplete])
 
 
 
@@ -79,6 +84,7 @@ function getMainContainer(baseURI:string, version:string) {
     Framework7.registerComponent("nav-bar", Navbar)
     Framework7.registerComponent("nft-info", NftInfo)
     Framework7.registerComponent("mint-list", MintList)
+    Framework7.registerComponent("search-list", SearchList)
 
     const resolveWithSpinner = (resolve, url) => {
       
@@ -107,6 +113,10 @@ function getMainContainer(baseURI:string, version:string) {
         browserHistoryInitialMatch: false
       },
       
+      navbar: {
+        hideOnPageScroll: true
+      },
+
       routes: [
         {
           path: `${baseURI}`,
@@ -126,6 +136,13 @@ function getMainContainer(baseURI:string, version:string) {
           path: `${baseURI}mint.html`,
           async async({ resolve, reject }) {
             await resolveWithSpinner(resolve, 'mint.html')
+          }
+        },
+
+        {
+          path: `${baseURI}search.html`,
+          async async({ resolve, reject }) {
+            await resolveWithSpinner(resolve, 'search.html')
           }
         },
 
@@ -199,6 +216,7 @@ function getMainContainer(baseURI:string, version:string) {
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
   container.bind<MintWebService>("MintWebService").to(MintWebService).inSingletonScope()
+  container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
 
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()

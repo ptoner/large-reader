@@ -36,15 +36,20 @@
 
   export default (props, { $, $on, $f7, $update }) => {
 
+    let walletService = globalThis.container.get("WalletService")
+
     let id = props.id
     let owner = props.owner 
-    let contractAddress = props.contract
+    let contractAddress = walletService.truncateEthAddress(props.contract)
 
     let baseURL = props.baseurl 
+
 
     const link = (href) => {
         return `${baseURL + href}`
     } 
+
+
 
     return $render
   }

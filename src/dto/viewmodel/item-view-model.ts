@@ -21,6 +21,7 @@ interface ItemViewModel {
     next?:Item
     previous?:Item 
 
+
 }
 
 export {
