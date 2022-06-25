@@ -42,43 +42,17 @@
       let walletService = ContainerService.getWalletService()
 
       //If Ethereum connection is available then initialize the wallet
-      if (typeof window !== "undefined" && window['ethereum']) {
+      // if (typeof window !== "undefined" && window['ethereum']) {
 
-        await initWallet()
-
-        //Listen for changes
-        window['ethereum'].on('accountsChanged', async (accounts) => {
-          
-          if (accounts?.length > 0) {
-            await initWallet()
-            $f7.views.main.router.navigate("/", { reloadCurrent : true })
-          }
-
-        })
+      //   await initWallet()
 
 
-      } else {
+
+
+      // } else {
         await initNoWallet()
-      }
+      // }
 
-      async function initWallet() {
-
-        // uiService.showSpinner("Loading...")
-
-        await walletService.initWallet()
-
-        let walletAddress = await walletService.getAddress()
-        
-        $f7.views.create('.view-main', {
-          url: hash ? hash : '/',
-          browserHistory: true,
-          browserHistoryRoot: baseURI,
-          reloadCurrent: true
-        })
-
-        // uiService.hideSpinner()
-
-      }
 
       async function initNoWallet() {
 

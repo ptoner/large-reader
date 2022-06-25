@@ -39,6 +39,8 @@ import ListIndex from 'framework7/components/list-index'
 import Range from 'framework7/components/range'
 import Accordion from 'framework7/components/accordion'
 import Autocomplete from 'framework7/components/autocomplete'
+import PhotoBrowser from 'framework7/components/photo-browser'
+import Swiper from 'framework7/components/swiper'
 
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
@@ -46,6 +48,7 @@ import Chip from 'framework7/components/chip'
 import Form from 'framework7/components/form'
 import Grid from 'framework7/components/grid'
 import Searchbar from 'framework7/components/searchbar'
+import Popup from 'framework7/components/popup'
 
 import { UiService } from "./service/core/ui-service";
 
@@ -63,10 +66,15 @@ import { SchemaService } from "./service/core/schema-service";
 import { ImageRepositoryImpl } from "./repository/browser/image-repository-impl";
 import { ImageRepository } from "./repository/image-repository";
 import { SearchbarService } from "./service/web/searchbar-service";
+import { QuillService } from "./service/core/quill-service";
+import { AnimationService } from "./service/animation-service";
+import { AnimationRepositoryImpl } from "./repository/browser/animation-repository-impl";
+import { AnimationRepository } from "./repository/animation-repository";
 
 
 // Install F7 Components using .use() method on Framework7 class:
-Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, Range, Accordion, Searchbar, Autocomplete])
+Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
+  Range, Accordion, Searchbar, Autocomplete, Popup, PhotoBrowser, Swiper])
 
 
 
@@ -171,18 +179,6 @@ function getMainContainer(baseURI:string, version:string) {
     return app
   }
 
-  function provider() {
-
-    if (typeof window !== "undefined" && window['ethereum']) {
-
-      //@ts-ignore
-      window.web3Provider = window.ethereum
-
-      //@ts-ignore
-      return new providers.Web3Provider(window.ethereum)
-
-    }
-  }
 
   function contracts() {
         
@@ -202,7 +198,19 @@ function getMainContainer(baseURI:string, version:string) {
   container.bind("framework7").toConstantValue(framework7())
   container.bind("baseURI").toConstantValue(baseURI)
   container.bind("version").toConstantValue(version)
-  container.bind("provider").toConstantValue(provider())
+  container.bind("provider").toConstantValue(() => {
+
+    if (typeof window !== "undefined" && window['ethereum']) {
+
+      //@ts-ignore
+      window.web3Provider = window.ethereum
+
+      //@ts-ignore
+      return new providers.Web3Provider(window.ethereum)
+
+    }
+
+  })
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
@@ -211,6 +219,7 @@ function getMainContainer(baseURI:string, version:string) {
   container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryImpl).inSingletonScope()
   container.bind<MetadataRepository>("MetadataRepository").to(MetadataRepositoryImpl).inSingletonScope()
   container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
+  container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryImpl).inSingletonScope()
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
@@ -221,6 +230,7 @@ function getMainContainer(baseURI:string, version:string) {
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
   container.bind<DatabaseService>("DatabaseService").to(DatabaseService).inSingletonScope()
+  container.bind<AnimationService>("AnimationService").to(AnimationService).inSingletonScope()
 
   container.bind<UiService>("UiService").to(UiService).inSingletonScope()
   container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
@@ -229,6 +239,7 @@ function getMainContainer(baseURI:string, version:string) {
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
+  container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
 
   //Attach container to window so we can easily access it from the browser console
   globalThis.container = container

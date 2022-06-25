@@ -7,11 +7,17 @@
             <i class="f7-icons">search</i>
         </a>
 
-        ${walletAddress != undefined ? $h`
-          <a class="button button-fill">${truncateEthAddress(walletAddress)}</a>
-        ` : $h`
-          <button class="button button-outline button-fill" @click=${connectWallet}>Connect Wallet</button>
-        `}
+        ${showConnect ? $h`
+            
+            ${walletAddress != undefined ? $h`
+                <a class="button button-fill">${truncateEthAddress(walletAddress)}</a>
+            ` : $h`
+                <button class="button button-outline button-fill" @click=${connectWallet}>Connect Wallet</button>
+            `}
+
+        ` : $h`<span />`}
+        
+
 
     </div>
 
@@ -31,6 +37,7 @@
 
         let walletAddress = walletService.wallet?.address
         
+        let showConnect = true
 
         const truncateEthAddress = (address) => {
             return walletService.truncateEthAddress(address)
@@ -40,19 +47,25 @@
 
             walletAddress = undefined
 
-            if (!walletService.wallet && walletService.provider) {
-                await walletService.connect()
+            if (!walletService.provider) {
+                await walletService.initProvider()
             }
 
+            walletAddress = await walletService.getAddress()
 
-            if (walletService.wallet) {
-                walletAddress = await walletService.getAddress()
+            //If no provider still then clear the address so we don't show the button
+            if (!walletService.provider) {
+                showConnect = false
             }
+
 
             $update()
         }
 
         const connectWallet = async (e) => {
+
+            await walletService.initWallet()
+
             //Connect to metamask
             await walletService.connect()
             displayAddress()

@@ -11,7 +11,6 @@ class Item {
     description?:string
     content?:any
     contentHTML?:string
-    searchableContent?:string
     excerpt?:string
     authorId?:string
     category?:string[]

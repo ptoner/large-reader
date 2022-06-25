@@ -10,17 +10,40 @@ class WalletServiceImpl implements WalletService {
   public address: any
   public ethersContracts:any = {}
 
+  public provider 
   
 
   constructor(
     @inject("contracts") private contracts:Contract[],
-    @inject("provider") private provider
-  ) {}
+    @inject("provider") private getProvider:Function,
+    @inject("framework7") private $f7
+  ) {
+
+  }
+
+  async initProvider() {
+
+    this.provider = this.getProvider()
+
+    globalThis.ethereum?.on('accountsChanged', async (accounts) => {
+          
+      if (accounts?.length > 0) {
+        await this.initWallet()
+        this.$f7.views.main.router.refreshPage()
+      }
+
+    })
+
+  }
 
   async initWallet() {
 
     console.log('Init wallet')
 
+    if (!this.provider) {
+      await this.initProvider()
+    }
+    
     //@ts-ignore
     let accounts = await this.provider.send("eth_accounts", [])
 
@@ -49,6 +72,8 @@ class WalletServiceImpl implements WalletService {
   }
 
   async getAddress() {
+
+      if (!this.provider) return
 
       let accounts = await this.provider.send("eth_accounts", []);
 

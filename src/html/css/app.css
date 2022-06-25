@@ -114,15 +114,15 @@ ul.breadcrumb li a:hover {
 
 
 .channel-card-show .title {
-  font-size: 30px;
+  font-size: 22px;
   font-weight: bold;
   margin-top: 50px;
-  text-align: center;
+  text-align: left;
 }
 
 .channel-card-show .name,
 .channel-card-show .contract-address {
-  text-align: center;
+  text-align: left;
 }
 
 .contract-address strong {
@@ -162,14 +162,15 @@ ul.breadcrumb li a:hover {
   position: absolute;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
-  left: calc(50% - 50px);
+  border-radius: 25%;
+  left: 10px;
   bottom: 0;
   margin-bottom: -50px;
   z-index: 10000;
   border: 3px solid #ffffff;
   font-size: 100px;
   background: #ffffff;
+  float: left;
 }
 
 .channel-card-show a {
@@ -178,11 +179,8 @@ ul.breadcrumb li a:hover {
 
 .channel-card-show .description {
   font-size: 17px;
-  text-align: center;
-  width: 750px;
+  text-align: left;
   max-width: 100%;
-  margin-right: auto;
-  margin-left: auto;
 }
 
 .item-card img {
@@ -374,13 +372,45 @@ ul.breadcrumb li a:hover {
 
 
 
+.iframe-container {
+  overflow: hidden;
+  padding-top: 100%;
+  position: relative;
+}
+
+
+.iframe-container iframe {
+  border: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+
+
+.mint-card.selected {
+  background-color: rgba(227, 227, 233, 0.811);
+  border: 3px solid rgb(66, 66, 144);
+}
+
+
+
+.photo-browser-slide {
+  margin-top: var(--f7-navbar-height);
+  padding-bottom: var(--f7-navbar-height);
+}
 
 
 
 
 
-
-
+.animation-card {
+  overflow:auto; 
+  margin-bottom: 25px;
+  cursor: pointer;
+}
 
 
 

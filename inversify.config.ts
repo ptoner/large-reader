@@ -8,6 +8,7 @@ import { ChannelRepositoryImpl } from "./src/repository/node/channel-repository-
 
 import { ItemRepository } from "./src/repository/item-repository";
 import {  ItemRepositoryImpl } from "./src/repository/node/item-repository-impl";
+import {  AnimationRepositoryImpl } from "./src/repository/node/animation-repository-impl";
 
 import { ImageRepository } from "./src/repository/image-repository";
 import { ImageRepositoryImpl } from "./src/repository/node/image-repository-impl";
@@ -20,6 +21,7 @@ import { DatabaseService } from "./src/service/core/database-service";
 import { PagingService } from "./src/service/core/paging-service";
 import { WalletService } from "./src/service/core/wallet-service";
 import { WalletServiceImpl } from "./src/service/core/wallet-service-impl";
+import { QuillService } from "./src/service/core/quill-service";
 
 
 import { ItemService } from "./src/service/item-service";
@@ -31,6 +33,8 @@ import TYPES from "./src/service/core/types";
 import { ImageService } from "./src/service/image-service";
 import { SchemaService } from "./src/service/core/schema-service";
 import { UiService } from "./src/service/core/ui-service";
+import { AnimationService } from "./src/service/animation-service";
+import { AnimationRepository } from "./src/repository/animation-repository";
 
 
 
@@ -46,13 +50,15 @@ function getMainContainer() {
   container.bind("framework7").toConstantValue({})
   container.bind("contracts").toConstantValue({})
   container.bind("provider").toConstantValue({})
-  
+  container.bind("baseURI").toConstantValue("")
+
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
   container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryImpl).inSingletonScope()
   container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryImpl).inSingletonScope()
   container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryImpl).inSingletonScope()
   container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
+  container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryImpl).inSingletonScope()
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
@@ -60,6 +66,7 @@ function getMainContainer() {
   container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
+  container.bind<AnimationService>("AnimationService").to(AnimationService).inSingletonScope()
 
   container.bind<ImageService>("ImageService").to(ImageService).inSingletonScope()
   container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
@@ -67,6 +74,9 @@ function getMainContainer() {
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
   container.bind<UiService>("UiService").to(UiService).inSingletonScope()
+
+  container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
+
 
   return container
 }

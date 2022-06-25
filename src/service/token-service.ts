@@ -33,6 +33,10 @@ class TokenService {
         await this.channelContract.mint(quantity)
     }
 
+    async mintFromStartOrFail(quantity:number, start:number) {
+        await this.channelContract.mintFromStartOrFail(quantity, start)
+    }
+
     async ownerOf(tokenId:number)  {
         return this.channelContract.ownerOf(tokenId)
     }
@@ -49,6 +53,7 @@ class TokenService {
 
 interface ChannelContract {
     mint(quantity:number)
+    mintFromStartOrFail(quantity:number, start:number)
     ownerOf(tokenId:number) : string
     tokenURI(tokenId:number) : string
     balanceOf(address) : string

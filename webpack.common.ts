@@ -19,6 +19,9 @@ import { ChannelService } from "./src/service/channel-service"
 import { CHUNK_SIZE } from "./src/repository/item-repository"
 import { ItemWebService } from "./src/service/web/item-web-service"
 import { ItemViewModel } from "./src/dto/viewmodel/item-view-model"
+import { ItemRepositoryImpl } from "./src/repository/node/item-repository-impl"
+import { ItemService } from "./src/service/item-service"
+import { QuillService } from "./src/service/core/quill-service"
 
 const VERSION = JSON.stringify(require("./package.json").version)
 
@@ -37,6 +40,11 @@ export default async (hostname, baseURL) => {
 
   let channelService:ChannelService = container.get("ChannelService")
   let itemWebService:ItemWebService = container.get("ItemWebService")
+  let quillService:QuillService = container.get("QuillService")
+
+  //Not great to get the impl here. Maybe load should be part of interface. 
+  let itemRepository:ItemRepositoryImpl = container.get("ItemRepository")
+  await itemRepository.load()
 
   //Get channel
   let channel = await channelService.get()
@@ -87,8 +95,6 @@ export default async (hostname, baseURL) => {
       hostname: hostname
     })
   )
-
-
 
   //Build pages for navigation
   for (let i=0; i < pages; i++) {

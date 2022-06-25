@@ -12,12 +12,12 @@ class ItemRepositoryImpl implements ItemRepository {
 
     constructor() {}
 
+    async load() {
+        this.items = JSON.parse(fs.readFileSync('backup/items.json', 'utf8'))
+    }
+
     async get(_id: string): Promise<Item> {        
         
-        if (this.items?.length > 0) {
-            this.items = JSON.parse(fs.readFileSync('backup/items.json', 'utf8'))
-        }
-
         let matches = this.items.filter( item => item._id == _id)
 
         if (matches?.length > 0) {
@@ -32,20 +32,11 @@ class ItemRepositoryImpl implements ItemRepository {
 
     async list(skip:number): Promise<Item[]> {
 
-        let items:Item[] = []
-
         if (skip % ItemRepositoryImpl.CHUNK_SIZE != 0) {
             throw Error("Invalid skip value")
         }
 
-        //First chunk is at 0.json
-        let chunkIndex = skip / ItemRepositoryImpl.CHUNK_SIZE
-
-        const fileContents = JSON.parse(fs.readFileSync(`backup/itemChunks/${chunkIndex}.json`, 'utf8'))
-
-        items.push(...fileContents.map( doc => Object.assign(new Item(), doc)))
-
-        return items
+        return this.items.slice(skip, skip + ItemRepositoryImpl.CHUNK_SIZE)
 
     }
 
@@ -56,6 +47,7 @@ class ItemRepositoryImpl implements ItemRepository {
     async query(query:string) : Promise<Item[]> {
         return []
     }
+
 
 }
 

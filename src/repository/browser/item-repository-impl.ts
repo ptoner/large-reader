@@ -153,14 +153,22 @@ class ItemRepositoryImpl implements ItemRepository {
             limit: CHUNK_SIZE
         })
 
-        return response.rows.map( row => {
+
+        let rows = response.rows.map( row => {
 
             if (row.highlighting.contentHTML) {
                 row.doc.contentHTML = row.highlighting.contentHTML
-            }
-            
+            } 
+
+            //Remove image tags
+            row.doc.contentHTML = row.doc.contentHTML.replace(/<img .*?>/g,""); 
+
+
             return row.doc
         })
+
+
+        return rows
 
     }
 

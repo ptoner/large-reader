@@ -46,10 +46,30 @@
                 </div>
             </div>
           </li>
+
+          <li>
+            <label class="item-checkbox item-content">
+
+                <input type="checkbox" checked="${exactTokensOnly}"  @change="${forceStartOnChange}" />
+                
+                <i class="icon icon-checkbox"></i>
+                <div class="item-inner">
+                    <div class="item-title-row">
+                        <div class="item-title">Exact Tokens Only</div>
+                    </div>
+                    <div class="item-text exact-tokens-only">
+                        <p>If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</p>
+
+                    </div>
+                </div>
+            </label>
+          </li>
+
+
           <li>
             <div class="item-content">
                 <div class="item-inner">
-                  <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
+                  <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button" @click="${mintButtonClick}">Mint</button>
                 </div>
             </div>
           </li>
@@ -70,30 +90,34 @@
     
     ${mintingViewModel ? $h`
       <div class="block-title block-title-medium">Next Up</div>
+
       <div class="row">
+
         ${mintingViewModel.items?.map( (itemViewModel) => $h`
           
-          <div class="card col-100 large-20">
-            <div class="card-content">
-              <div class="card-content card-content-padding">
-
-                <div class="square">
-
-                  ${itemViewModel.item.coverImageId ? $h`
-                    <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">
-                      <img src="${link(`backup/images/${itemViewModel.coverImage._id}`)}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
-                    </a>
-                  ` : $h`
-                    No preview
-                  `}
-
+          <div class="col-100 large-20">
+            <div class="card mint-card">
+              <div class="card-content">
+                <div class="card-content card-content-padding">
+  
+                  <div class="square">
+  
+                    ${itemViewModel.item.coverImageId ? $h`
+                      <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">
+                        <img src="${link(`backup/images/${itemViewModel.coverImage._id}`)}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
+                      </a>
+                    ` : $h`
+                      No preview
+                    `}
+  
+                  </div>
+  
+                  <div class="preview-info">
+                    <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">${itemViewModel.item.title ? itemViewModel.item.title + ' ' : ''} #${itemViewModel.item.tokenId}</a>
+                    
+                  </div>
+  
                 </div>
-
-                <div class="preview-info">
-                  <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">${itemViewModel.item.title ? itemViewModel.item.title + ' ' : ''} #${itemViewModel.item.tokenId}</a>
-                  
-                </div>
-
               </div>
             </div>
           </div>
@@ -125,7 +149,9 @@
     font-size: 14px;
   }
 
-
+  .exact-tokens-only {
+    font-size: 15px;
+  }
 
 </style>
 
@@ -140,11 +166,70 @@
     let total = 0
     let mintPriceWei
 
+    let exactTokensOnly = false
+
     let baseURL = props.baseurl 
 
     const link = (href) => {
         return `${baseURL + href}`
     } 
+  
+    const mintSubmit = (e) => {
+      e.preventDefault()
+    }
+
+    const updateTotal = async () => {
+      total = globalThis.ethers.utils.formatUnits(mintPriceWei.mul(quantity))
+      await $update()
+    }
+
+    const selectPreviews = (amount) => {
+
+      let selected = 0
+      $('.mint-card').each( (ele) => {
+        
+        //Remove selected from all
+        $(ele).removeClass('selected')
+
+        if (selected < amount ) {
+          $(ele).addClass('selected')
+          selected++
+          console.log(ele)
+        }
+      
+
+      })
+
+    }
+
+    const mintButtonClick = async (e) => {
+
+      if (exactTokensOnly) {
+
+        let start = parseInt(mintingViewModel.totalMinted + 1)
+
+        console.log(start)
+
+        await mintingWebService.mintFromStartOrFail(quantity, start)
+      } else {
+        await mintingWebService.mint(quantity)
+
+      }
+
+      
+    }
+
+    const forceStartOnChange = async (e) => {
+      exactTokensOnly = e.currentTarget.checked
+     
+      await $update()
+    }
+
+    $on('range:change', async (e) => {
+      quantity = parseInt(e.detail)
+      await updateTotal()
+      selectPreviews(quantity)
+    })
 
 
     $f7.preloader.show()
@@ -155,25 +240,17 @@
 
       mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
 
-      updateTotal()
+      return updateTotal()
+
+    } ).then( () => {
+
+      selectPreviews(quantity)
 
       $f7.preloader.hide()
 
-    } )
-  
-    const mintSubmit = (e) => {
-      e.preventDefault()
-    }
-
-    const updateTotal = () => {
-      total = globalThis.ethers.utils.formatUnits(mintPriceWei.mul(quantity))
-      $update()
-    }
-
-    $on('range:change', (e) => {
-      quantity = parseInt(e.detail)
-      updateTotal()
     })
+
+
 
     return $render
   }

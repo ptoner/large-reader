@@ -18,11 +18,23 @@ class ImageRepositoryImpl implements ImageRepository {
 
         let matches = this.images.filter( image => image._id == _id)
 
+        let image:Image
+
         if (matches?.length > 0) {
-            return matches[0]
+            image = matches[0]
         }
 
-        return matches[0]
+        if (image) {
+            //Load content
+            if (image.generated) {
+                image.svg = fs.readFileSync(`backup/images/${image.cid}.svg`, 'utf8')
+            } else {
+                image.buffer = fs.readFileSync(`backup/images/${image.cid}.jpg`)
+            }
+        }
+
+
+        return image
     }
 
 

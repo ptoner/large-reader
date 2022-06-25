@@ -127,9 +127,51 @@
                 
                 <div class="card">
                   <div class="card-content card-content-padding">
-                    <a href="<%= link('list-1.html') %>" class="button button-fill color-green">Begin Reading</a>
+                    <a href="<%= link('list-1.html') %>" class="button button-fill color-green">Browse</a>
                   </div>
                 </div>
+
+                <div class="card">
+                  <div class="card-content card-content-padding">
+                    <a href="#" class="button button-fill color-green start-slideshow">Ready to read?</a>
+                  </div>
+                </div>
+
+                <% if (channelViewModel?.channel.license) { %>
+
+                  <div class="block">
+                    
+                    <a href="#" data-popup=".license-popup" class="popup-open">
+                      License
+                    </a>
+
+                    <div class="popup license-popup">
+                      <div class="view">
+                        <div class="page">
+                          <div class="navbar">
+                            <div class="navbar-bg"></div>
+                            <div class="navbar-inner">
+                              <div class="title">License</div>
+                              <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="page-content">
+                            <div class="block block-strong inset">
+                              <%= channelViewModel?.channel.licenseHTML %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                <% } %>
+
 
                 <div class="block">
                   <br />
@@ -153,11 +195,57 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
+            let itemWebService = globalThis.container.get("ItemWebService")
+            let schemaService = globalThis.container.get("SchemaService")
+
+            let photoBrowser 
+
             $on('pageInit', async () => {
+
+              $('.start-slideshow').click( async (e) => {
+                await startSlideshow()
+              })
+
+
             })
 
             $on('pageBeforeOut', async () => {
             })
+
+            const startSlideshow = async (e) => {
+
+              $f7.preloader.show()
+
+              if (!photoBrowser) {
+                await schemaService.load()
+
+                let list = await itemWebService.slideshow()
+
+                photoBrowser = $f7.photoBrowser.create({
+                  photos:list,
+                  renderPage: () => `
+                  <div class="page">
+
+                    <div class="page-content" style="margin-top:75px">
+
+
+                    </div>
+
+                  </div>
+                  
+                  
+                  `
+                })
+
+              }
+
+
+              photoBrowser.open()
+
+              $f7.preloader.hide()
+
+            }
+
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`index.html`) %>")

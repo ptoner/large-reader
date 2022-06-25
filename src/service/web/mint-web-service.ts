@@ -36,7 +36,7 @@ class MintWebService {
             let totalMinted:BigNumber = await this.tokenService.getTotalMinted()
 
         
-            let items = await this.itemWebService.list(totalMinted.toNumber(), 30)
+            let items = await this.itemWebService.mintList(totalMinted.toNumber(), 100)
     
             return {
                 items: items,
@@ -49,6 +49,15 @@ class MintWebService {
 
 
 
+    }
+
+
+    async mint(quantity:number) {
+        await this.tokenService.mint(quantity)
+    }
+
+    async mintFromStartOrFail(quantity:number, start:number) {
+        await this.tokenService.mintFromStartOrFail(quantity, start)
     }
 
 

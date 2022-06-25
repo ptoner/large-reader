@@ -91,26 +91,28 @@
                                 <% if(channelViewModel.items?.length> 0) { %>
 
                                     <% channelViewModel.items?.map( (itemViewModel)=> { %>
-                                        <li class="card item-card">
 
-                                            <div class="card-content card-content-padding">
-                                                <% if (itemViewModel.item.excerpt) { %>
+                                        <% if (itemViewModel.item.excerpt) { %>
+
+                                            <li class="card item-card">
+
+                                                <div class="card-content card-content-padding">
                                                     <div class="item-preview">
 
                                                         <div class="left">
-
+        
                                                             <a class="title" href="<%= link(`item-show-${itemViewModel.item._id}.html`) %>">
                                                                 <%= itemViewModel.item.title %>
                                                                 <span class="channel-show-token-id">#<%= itemViewModel.item.tokenId %>
                                                                 </span>
                                                             </a>
-
+        
                                                             <p>
                                                                 <%= itemViewModel.item.excerpt %>
                                                             </p>
-
+        
                                                         </div>
-
+        
                                                         <% if (itemViewModel.coverImage) { %>
                                                         <div class="right">
                                                             <a class="title" href="<%= link(`item-show-${itemViewModel.item._id}.html`) %>">
@@ -118,26 +120,24 @@
                                                             </a>
                                                         </div>
                                                         <% } %>
-
+        
                                                     </div>
-                                                <% } else { %>
-                                                    <div class="item-preview">
-                                                        <div class="left">
+                                                </div>
+                                            </li>
+    
 
-                                                            <a class="title" href="<%= link(`item-show-${itemViewModel.item._id}.html`) %>">
-                                                            <%= itemViewModel.item.title %> <span class="channel-show-token-id">#<%=
-                                                                    itemViewModel.item.tokenId %></span>
-                                                            </a>
+                                        <% } else { %>
+                                            <li class="card animation-card" data-href="<%= link(`item-show-${itemViewModel.item._id}.html`) %>">
+                                                <%=itemViewModel.animationContentHTML %>
+                                            </li>
+                                            
+                
 
-                                                            <div class="content">
-                                                            <%= itemViewModel.item.contentHTML %>
-                                                            </div>
+                                        <% } %>
 
-                                                        </div>
-                                                    </div>
-                                                <% } %>
-                                            </div>
-                                        </li>
+
+
+
                                     <% }) %>
 
                                     <% if (channelViewModel.pagingViewModel.endPage> 1) { %>
@@ -182,7 +182,7 @@
 
                                 <% } else { %>
 
-                                    <li class="card item-card">
+                                    <li class="card item-card" >
                                         <div class="card-content">
                                         <div class="card-content card-content-padding">
                                             There are no NFTs in this collection yet. <br /><br />Click the 'Create
@@ -221,6 +221,23 @@
             let endPageNumber = parseInt("<%= channelViewModel.pagingViewModel.endPage %>");
 
             $on('pageInit', async () => {
+
+                $(`.animation-container a`).addClass('external')
+
+                $('.animation-card').on('click', (e) => {
+
+                    console.log(e.currentTarget)
+
+                    const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a"
+
+                    
+                    if (!islink) {
+                        let href = $(e.currentTarget).data('href')
+                        console.log(href)
+                        $f7.views.main.router.navigate(href)
+                    } 
+                })
+
             })
 
             $on('pageBeforeOut', async () => {

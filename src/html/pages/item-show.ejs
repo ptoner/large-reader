@@ -46,12 +46,12 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="" />
     <meta property="og:image" content="<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>" />
-    <meta property="og:description" content="<%= escapeExcerpt(itemViewModel.item.contentHTML)%>" />
+    <meta property="og:description" content="<%= escapeExcerpt(itemViewModel.contentHTML)%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="" />
     <meta property="twitter:title" content="<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>" />
-    <meta property="twitter:description" content="<%= escapeExcerpt(itemViewModel.item.contentHTML) %>" />
+    <meta property="twitter:description" content="<%= escapeExcerpt(itemViewModel.contentHTML) %>" />
     <meta property="twitter:image" content="<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
@@ -79,20 +79,10 @@
                                 <li><%= itemViewModel.item.title ? itemViewModel.item.title + ' ' : '' %>#<%= itemViewModel.item.tokenId %></li>
                             </ul>
                     
-                            <div class="card item-card-show">
-                
-                                <div class="card-header">
-                                    <span><%= itemViewModel.item.title ? itemViewModel.item.title : itemViewModel.channel.title %> <span class="item-show-token-id">#<%= itemViewModel.item.tokenId %></span></span>
-                                </div>
-                    
-                                <div class="card-content card-content-padding">
-                                    <div class="content" id="item-content-<%= itemViewModel.item._id %>">
-                                        <%= itemViewModel.item.contentHTML %>
-                                    </div>
-                                </div>
-                
+                            <div class="card" style="overflow:auto; margin-bottom: 25px;">
+                                <%=itemViewModel.animationContentHTML %>
                             </div>
-                
+
 
                             <div class="card">
                                 
@@ -166,6 +156,10 @@
             let tokenService = globalThis.container.get("TokenService")
 
             let owner
+            
+            const testLoad = (e) => {
+                console.log('got here')
+            }
 
             $on('pageInit', async () => {
                 
@@ -173,6 +167,11 @@
                     owner = await tokenService.ownerOf(parseInt('<%= itemViewModel.item.tokenId %>'))
                 } catch(ex) {}
 
+                // $('.iframe-container iframe').on('load', (e) => {
+                //     $('.iframe-container iframe').css('display', 'block')
+                // })
+
+                // $('.iframe-container iframe').attr("src","backup/animations/<%=itemViewModel.item.animationId %>.html")
 
             })          
 
@@ -183,12 +182,12 @@
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
             document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.item.contentHTML)%>")
+            document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.contentHTML)%>")
 
             document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`item-show-${itemViewModel.item._id}`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
             document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= itemViewModel.coverImage ? absoluteLink(`backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`)  : '' %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.item.contentHTML)%>" )
+            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.contentHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>"
 
