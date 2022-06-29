@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import { ImageRepository } from "../repository/image-repository";
 import { Image } from "../dto/image";
 import { Blob } from 'blob-polyfill'
+import svgToMiniDataURI from 'mini-svg-data-uri'
 
 
 @injectable()
@@ -42,7 +43,9 @@ class ImageService {
 
 
   public svgToDataURL(svgStr) {  
-    return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
+    return svgToMiniDataURI(svgStr)
+
+    // return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
   }
 
   public bufferToDataURL (mimeType, buffer) {

@@ -184,6 +184,32 @@ class ItemWebService {
 
     }
 
+    async getSearchViewModel(item: Item, channel:Channel): Promise<ItemViewModel> {
+
+        let attributeSelections:AttributeSelectionViewModel[] = []
+
+        let author: Author
+        let coverImage:Image
+        let animation:Animation
+
+        //Get image
+        if (item.coverImageId) {
+            coverImage = await this.imageService.get(item.coverImageId)
+        }
+
+        return {
+            item: item,
+            animation:animation,
+            channel: channel,
+            author: author,
+            attributeSelections: attributeSelections,
+            coverImage: coverImage
+        }
+
+    }
+
+
+
     async list(skip: number, limit?:number): Promise<ItemViewModel[]> {
 
         let result: ItemViewModel[] = []
@@ -233,7 +259,7 @@ class ItemWebService {
         let viewModels: ItemViewModel[] = []
 
         for (let item of results) {
-            viewModels.push(await this.getViewModel(item, channel))
+            viewModels.push(await this.getSearchViewModel(item, channel))
         }
 
 

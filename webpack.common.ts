@@ -22,6 +22,10 @@ import { ItemViewModel } from "./src/dto/viewmodel/item-view-model"
 import { ItemRepositoryImpl } from "./src/repository/node/item-repository-impl"
 import { ItemService } from "./src/service/item-service"
 import { QuillService } from "./src/service/core/quill-service"
+import { StaticPageService } from "./src/service/static-page-service"
+import { StaticPageRepository } from "./src/repository/static-page-repository"
+import { StaticPageRepositoryImpl } from "./src/repository/node/static-page-repository-impl"
+import { StaticPage } from "./src/dto/static-page"
 
 const VERSION = JSON.stringify(require("./package.json").version)
 
@@ -41,15 +45,24 @@ export default async (hostname, baseURL) => {
   let channelService:ChannelService = container.get("ChannelService")
   let itemWebService:ItemWebService = container.get("ItemWebService")
   let quillService:QuillService = container.get("QuillService")
+  let staticPageService:StaticPageService = container.get("StaticPageService")
 
   //Not great to get the impl here. Maybe load should be part of interface. 
   let itemRepository:ItemRepositoryImpl = container.get("ItemRepository")
   await itemRepository.load()
 
+  let staticPageRepository:StaticPageRepositoryImpl = container.get("StaticPageRepository")
+  await staticPageRepository.load()
+
+
   //Get channel
   let channel = await channelService.get()
   let channelViewModel = await channelWebService.get(0)
   
+
+  //The list of routable pages to generate.
+  let routablePages = await staticPageService.listRoutablePages()
+
 
   //Figure how many navigation pages we'll build
   let pages = Math.ceil(channel.itemCount / CHUNK_SIZE)  
@@ -63,6 +76,7 @@ export default async (hostname, baseURL) => {
       template: 'src/html/index.ejs',
       filename: 'index.html',
       channelViewModel: channelViewModel,
+      routablePages: routablePages,
       baseURL: baseURL,
       hostname: hostname
     })
@@ -77,6 +91,7 @@ export default async (hostname, baseURL) => {
       template: 'src/html/mint.ejs',
       filename: 'mint.html',
       channelViewModel: channelViewModel,
+      routablePages: routablePages,
       baseURL: baseURL,
       hostname: hostname
     })
@@ -91,10 +106,37 @@ export default async (hostname, baseURL) => {
       template: 'src/html/search.ejs',
       filename: 'search.html',
       channelViewModel: channelViewModel,
+      routablePages: routablePages,
       baseURL: baseURL,
       hostname: hostname
     })
   )
+
+  //Build static pages
+  if (channelViewModel.staticPagesViewModel?.links?.length > 0) {
+
+    for (let staticPage of channelViewModel.staticPagesViewModel?.links) {
+
+      plugins.push(
+        new HtmlWebpackPlugin({
+          inject: false,
+          title: channelViewModel.channel.title,
+          // favicon: 'src/html/favicon.ico',
+          template: 'src/html/pages/static-page.ejs',
+          filename: `${staticPage.slug}.html`,
+          channelViewModel: channelViewModel,
+          routablePages: routablePages,
+          staticPage: staticPage,
+          baseURL: baseURL,
+          hostname: hostname
+        })
+      )
+
+    }
+
+
+  }
+
 
   //Build pages for navigation
   for (let i=0; i < pages; i++) {
@@ -110,6 +152,7 @@ export default async (hostname, baseURL) => {
         template: 'src/html/pages/list.ejs',
         filename: `list-${i+1}.html`,
         channelViewModel: channelViewModel,
+        routablePages: routablePages,
         baseURL: baseURL,
         hostname: hostname
       })
@@ -134,6 +177,7 @@ export default async (hostname, baseURL) => {
           template: 'src/html/pages/item-show.ejs',
           filename: `item-show-${itemViewModel.item._id}.html`,
           itemViewModel: itemViewModel,
+          routablePages: routablePages,
           baseURL: baseURL,
           hostname: hostname
         })

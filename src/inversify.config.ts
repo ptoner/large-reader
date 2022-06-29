@@ -70,6 +70,10 @@ import { QuillService } from "./service/core/quill-service";
 import { AnimationService } from "./service/animation-service";
 import { AnimationRepositoryImpl } from "./repository/browser/animation-repository-impl";
 import { AnimationRepository } from "./repository/animation-repository";
+import { StaticPageService } from "./service/static-page-service";
+import { StaticPageRepository } from "./repository/static-page-repository";
+import { StaticPageRepositoryImpl } from "./repository/browser/static-page-repository-impl";
+import { StaticPage } from "./dto/static-page";
 
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -81,7 +85,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Fo
 
 let container: Container
 
-function getMainContainer(baseURI:string, version:string) {
+function getMainContainer(baseURI:string, version:string, routablePages:StaticPage[]) {
 
   if (container) return container
 
@@ -107,6 +111,75 @@ function getMainContainer(baseURI:string, version:string) {
 
     }
 
+    const routes = [
+      {
+        path: `${baseURI}`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'index.html')
+        }
+      },
+      {
+        path: `${baseURI}index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}mint.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'mint.html')
+        }
+      },
+
+      {
+        path: `${baseURI}search.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'search.html')
+        }
+      },
+
+      {
+        path: `${baseURI}list-:page.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'list-{{page}}.html')
+        }
+      },
+      {
+        path: `${baseURI}item-show-:id.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'item-show-{{id}}.html')
+        }
+      }
+    ]
+
+
+    if (routablePages?.length > 0) {
+
+      for (let routablePage of routablePages) {
+        
+        routes.push({
+          path: `${baseURI}${routablePage.slug}.html`,
+          async async({ resolve, reject }) {
+            await resolveWithSpinner(resolve, `${routablePage.slug}.html`)
+          }
+        })
+
+      }
+
+    }
+
+    routes.push({
+      path: '(.*)',
+      //@ts-ignore
+      async async({ resolve, reject, to }) {
+        console.log(`404 error: ${to.path}`)
+        await resolveWithSpinner(resolve, '404.html')
+      }
+    })
+
+
     let app = new Framework7({
       el: '#app', // App root element
       id: 'large-reader', // App bundle ID
@@ -125,55 +198,7 @@ function getMainContainer(baseURI:string, version:string) {
         hideOnPageScroll: true
       },
 
-      routes: [
-        {
-          path: `${baseURI}`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, 'index.html')
-          }
-        },
-        {
-          path: `${baseURI}index.html`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, 'index.html')
-          }
-        },
-
-
-        {
-          path: `${baseURI}mint.html`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, 'mint.html')
-          }
-        },
-
-        {
-          path: `${baseURI}search.html`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, 'search.html')
-          }
-        },
-
-        {
-          path: `${baseURI}list-:page.html`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, 'list-{{page}}.html')
-          }
-        },
-        {
-          path: `${baseURI}item-show-:id.html`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, 'item-show-{{id}}.html')
-          }
-        },
-        {
-          path: '(.*)',
-          async async({ resolve, reject, to }) {
-            console.log(`404 error: ${to.path}`)
-            await resolveWithSpinner(resolve, '404.html')
-          }
-        }
-      ]
+      routes: routes
     })
 
     return app
@@ -220,12 +245,14 @@ function getMainContainer(baseURI:string, version:string) {
   container.bind<MetadataRepository>("MetadataRepository").to(MetadataRepositoryImpl).inSingletonScope()
   container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
   container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryImpl).inSingletonScope()
+  container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryImpl).inSingletonScope()
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
   container.bind<MintWebService>("MintWebService").to(MintWebService).inSingletonScope()
   container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
+  container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
 
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()

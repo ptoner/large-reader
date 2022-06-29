@@ -8,6 +8,7 @@ import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { PagingService } from "../core/paging-service";
 import { WalletService } from "../core/wallet-service";
+import { StaticPageService } from "../static-page-service";
 import { ItemWebService } from "./item-web-service";
 
 @injectable()
@@ -28,7 +29,8 @@ class ChannelWebService {
     @inject("WalletService")
     private walletService:WalletService
 
-
+    @inject("StaticPageService")
+    private staticPageService:StaticPageService
 
     constructor() {}
 
@@ -50,9 +52,19 @@ class ChannelWebService {
 
         let items = await this.itemWebService.list(offset)
 
+        
+        let locations = ["navbar", "links", "index"]
+
+        let staticPagesViewModel = {}
+
+        for (let location of locations) {
+            staticPagesViewModel[location] = await this.staticPageService.listByLocation(location, 0)
+        }
+
         return {
             channelContractAbbrev: channel.contractAddress ? this.walletService.truncateEthAddress(channel.contractAddress) : undefined,
             channel: channel,
+            staticPagesViewModel: staticPagesViewModel,
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
             itemCount: itemCount,

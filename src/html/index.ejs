@@ -6,6 +6,7 @@
     let hostname = htmlWebpackPlugin.options.hostname
     let baseURL = htmlWebpackPlugin.options.baseURL
     let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
+    let routablePages = htmlWebpackPlugin.options.routablePages
 
     const link = (href) => {
         return `${baseURL + href}`
@@ -121,53 +122,78 @@
                     <% } %>
 
 
-                  </div>
+                    <div class="start-buttons">
+                      <a href="<%= link('list-1.html') %>" class="button button-fill text-color-white explore-button">Explore</a>
 
-                </div>
-                
-                <div class="card">
-                  <div class="card-content card-content-padding">
-                    <a href="<%= link('list-1.html') %>" class="button button-fill color-green">Browse</a>
-                  </div>
-                </div>
-
-                <div class="card">
-                  <div class="card-content card-content-padding">
-                    <a href="#" class="button button-fill color-green start-slideshow">Ready to read?</a>
-                  </div>
-                </div>
-
-                <% if (channelViewModel?.channel.license) { %>
-
-                  <div class="block">
-                    
-                    <a href="#" data-popup=".license-popup" class="popup-open">
-                      License
-                    </a>
-
-                    <div class="popup license-popup">
-                      <div class="view">
-                        <div class="page">
-                          <div class="navbar">
-                            <div class="navbar-bg"></div>
-                            <div class="navbar-inner">
-                              <div class="title">License</div>
-                              <div class="right">
-                                <!-- Link to close popup -->
-                                <a class="link popup-close">Close</a>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="page-content">
-                            <div class="block block-strong inset">
-                              <%= channelViewModel?.channel.licenseHTML %>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <a href="#" class="button button-outline color-blue start-slideshow ready-button">Ready to read?</a>
                     </div>
 
 
+                  </div>
+
+                </div>
+
+                
+                <% 
+                  if (channelViewModel.staticPagesViewModel.index?.length > 0) {
+
+                    for (let staticPage of channelViewModel.staticPagesViewModel.index) {
+                 %>
+
+                  <div class="card static-page-card">   
+                    <div class="card-content card-content-padding">
+                      <%= staticPage.contentHTML %>
+                    </div>               
+                  </div>
+
+                <%
+                    }
+                  }                  
+                %>
+
+
+
+
+
+
+
+                <% 
+                  if (channelViewModel.staticPagesViewModel.links?.length > 0) {
+
+                %>
+                
+                <div class="block-title block-title-medium">Links</div>
+                <div class="list links-list inset">   
+                    
+                    <ul>
+                  
+                <%
+                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                %>
+                      <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
+                <%
+                  }
+                %>    
+                    </ul>
+
+                </div>
+                <%
+                  }                  
+                %>
+
+
+
+
+
+
+                <% if (channelViewModel?.channel.license) { %>
+
+                  <div class="block-title block-title-small">License</div>
+                  <div class="card">
+                    <div class="card-content card-content-padding license">
+                      <%= channelViewModel?.channel.licenseHTML %>
+                    </div>
+                    
                   </div>
 
                 <% } %>
@@ -178,6 +204,7 @@
                 </div>
 
               </div>
+              
             </div>
 
           </div>
@@ -205,6 +232,14 @@
               $('.start-slideshow').click( async (e) => {
                 await startSlideshow()
               })
+
+
+              //Make links external
+              let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')
+
+              for (let link of links) {
+                link.classList.add('external')
+              }
 
 
             })
@@ -271,7 +306,8 @@
 
     <script type="module" id="page-scripts">
 
-      let app = reader.init('<%= baseURL %>', '<%= VERSION %>')
+      let routablePages = JSON.parse(`<%= JSON.stringify(routablePages) %>`)
+      let app = reader.init('<%= baseURL %>', '<%= VERSION %>', routablePages )
 
     </script>
 

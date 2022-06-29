@@ -1,6 +1,7 @@
 import { PagingViewModel } from "../../service/core/paging-service";
 import { Author } from "../author";
 import { Channel } from "../channel";
+import { StaticPage } from "../static-page";
 import { ItemViewModel } from "./item-view-model";
 
 interface ChannelViewModel {
@@ -17,6 +18,8 @@ interface ChannelViewModel {
 
     items:ItemViewModel[]
 
+    //Get static pages
+    staticPagesViewModel: any
 
 }
 

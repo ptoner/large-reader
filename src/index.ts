@@ -12,9 +12,11 @@ import './html/css/app.css'
 import Framework7 from "framework7"
 
 import {Workbox} from 'workbox-window'
+import { StaticPageService } from "./service/static-page-service"
+import { StaticPage } from "./dto/static-page"
 
 
-let init = (baseURL:string, version:string) => {
+let init = (baseURL:string, version:string, routablePages:StaticPage[]) => {
 
 
     if ('serviceWorker' in navigator) {
@@ -24,10 +26,10 @@ let init = (baseURL:string, version:string) => {
         })
 
         if (navigator.serviceWorker.controller) {
-            startApp(baseURL, version, window.location.pathname)
+            startApp(baseURL, version, window.location.pathname, routablePages)
         } else {
             wb.addEventListener('controlling', e => {
-                startApp(baseURL, version, window.location.pathname)
+                startApp(baseURL, version, window.location.pathname, routablePages)
             })
         }
 
@@ -38,15 +40,16 @@ let init = (baseURL:string, version:string) => {
 
 } 
 
-let startApp = (baseURL:string, version:string, pathName:string) => {
+let startApp = async (baseURI:string, version:string, pathName:string, routablePages:StaticPage[]) => {
 
-    console.log(baseURL, version, pathName)
+    console.log(baseURI, version, pathName)
 
-    let container = getMainContainer(baseURL, version)            
+    let container = getMainContainer(baseURI, version, routablePages)            
     let app:Framework7 = container.get("framework7")
     
-    const url = `${baseURL}${pathName.split('/').pop()}`
 
+    //Create the main view
+    const url = `${baseURI}${pathName.split('/').pop()}`
     const mainView = app.views.create('.view-main', {
         url: url
     })

@@ -6,6 +6,7 @@
     let hostname = htmlWebpackPlugin.options.hostname
     let baseURL = htmlWebpackPlugin.options.baseURL
     let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
+    let routablePages = htmlWebpackPlugin.options.routablePages
 
     const link = (href) => {
         return `${baseURL + href}`
@@ -127,7 +128,7 @@
     
 
                                         <% } else { %>
-                                            <li class="card animation-card" data-href="<%= link(`item-show-${itemViewModel.item._id}.html`) %>">
+                                            <li class="card animation-list-card" data-href="<%= link(`item-show-${itemViewModel.item._id}.html`) %>">
                                                 <%=itemViewModel.animationContentHTML %>
                                             </li>
                                             
@@ -222,9 +223,9 @@
 
             $on('pageInit', async () => {
 
-                $(`.animation-container a`).addClass('external')
+                $(`.animation-list-card a`).addClass('external')
 
-                $('.animation-card').on('click', (e) => {
+                $('.animation-list-card').on('click', (e) => {
 
                     console.log(e.currentTarget)
 
@@ -308,7 +309,8 @@
 
     <script type="module" id="page-scripts">
 
-        let app = reader.init('<%= baseURL %>', '<%= VERSION %>')
+      let routablePages = JSON.parse(`<%= JSON.stringify(routablePages) %>`)
+      let app = reader.init('<%= baseURL %>', '<%= VERSION %>', routablePages )
 
     </script>
 

@@ -13,6 +13,11 @@ import {  AnimationRepositoryImpl } from "./src/repository/node/animation-reposi
 import { ImageRepository } from "./src/repository/image-repository";
 import { ImageRepositoryImpl } from "./src/repository/node/image-repository-impl";
 
+import { StaticPageService } from "./src/service/static-page-service";
+
+import { StaticPageRepository } from "./src/repository/static-page-repository";
+import { StaticPageRepositoryImpl } from "./src/repository/node/static-page-repository-impl";
+
 import { AuthorService } from "./src/service/author-service";
 import { ChannelService } from "./src/service/channel-service";
 import { SearchbarService } from "./src/service/web/searchbar-service";
@@ -59,11 +64,13 @@ function getMainContainer() {
   container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryImpl).inSingletonScope()
   container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
   container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryImpl).inSingletonScope()
+  container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryImpl).inSingletonScope()
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
   container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
+  container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
   container.bind<AnimationService>("AnimationService").to(AnimationService).inSingletonScope()
