@@ -1,5 +1,5 @@
 {
-  "name": "alice-large-reader",
+  "name": "large-reader",
   "version": "0.0.4",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
