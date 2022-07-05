@@ -8,7 +8,7 @@ import he from 'he'
 
 // console.log(VERSION)
 
-const DEBUG = true
+const DEBUG = false
 const RUNTIME = 'runtime'
 
 let parser = new DOMParser()

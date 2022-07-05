@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { Item } from "../dto/item";
 import { ItemRepository } from "../repository/item-repository";
+import { SlideshowRepository } from "../repository/slideshow-repository";
 
 @injectable()
 class ItemService {
@@ -8,6 +9,9 @@ class ItemService {
     @inject("ItemRepository")
     private itemRepository:ItemRepository
   
+    @inject("SlideshowRepository")
+    private slideshowRepository:SlideshowRepository
+
     constructor(
     ) { }
 
@@ -22,6 +26,15 @@ class ItemService {
     async query(query:string) {
         return this.itemRepository.query(query)
     }
+    
+    async all() {
+        return this.itemRepository.all()
+    }
+    
+    async getSlideshow() {
+        return this.slideshowRepository.get()
+    }
+
 
 }
 

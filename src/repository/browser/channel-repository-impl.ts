@@ -1,6 +1,8 @@
 import axios from "axios"
 import {  inject, injectable } from "inversify"
 import { Channel } from "../../dto/channel"
+import { Item } from "../../dto/item"
+import { AttributeReport } from "../../dto/viewmodel/attribute-report"
 import { DatabaseService } from "../../service/core/database-service"
 import { ChannelRepository } from "../channel-repository"
 
@@ -17,6 +19,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
     }
 
     db:any
+    dbName:string = "channels"
 
     @inject('DatabaseService')
     private databaseService: DatabaseService
@@ -27,7 +30,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: "channels"
+            name: this.dbName
         })
     }
 
@@ -47,6 +50,10 @@ class ChannelRepositoryImpl implements ChannelRepository {
         }
 
         return channel
+    }
+
+    async getAttributeReport(items:Item[]) : Promise<AttributeReport> {
+        return 
     }
 
 

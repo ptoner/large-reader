@@ -27,15 +27,13 @@ class MintWebService {
 
     async getMintingViewModel() : Promise<MintingViewModel> {
 
-        await this.schemaService.load()
+        await this.schemaService.load(["items", "channels", "images"])
 
         let channel:Channel = await this.channelService.get()
 
         if (channel.contractAddress) {
 
-            let totalMinted:BigNumber = await this.tokenService.getTotalMinted()
-
-        
+            let totalMinted:BigNumber = await this.tokenService.getTotalMinted()       
             let items = await this.itemWebService.mintList(totalMinted.toNumber(), 100)
     
             return {

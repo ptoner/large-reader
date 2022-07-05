@@ -18,9 +18,17 @@ import { StaticPageService } from "./src/service/static-page-service";
 import { StaticPageRepository } from "./src/repository/static-page-repository";
 import { StaticPageRepositoryImpl } from "./src/repository/node/static-page-repository-impl";
 
+import { ItemPageRepository } from "./src/repository/item-page-repository";
+import { ItemPageRepositoryImpl } from "./src/repository/node/item-page-repository-impl";
+
+
+import { SlideshowRepository } from "./src/repository/slideshow-repository";
+import { SlideshowRepositoryImpl } from "./src/repository/node/slideshow-repository-impl";
+
 import { AuthorService } from "./src/service/author-service";
 import { ChannelService } from "./src/service/channel-service";
 import { SearchbarService } from "./src/service/web/searchbar-service";
+import { ItemPageService } from "./src/service/item-page-service";
 
 import { DatabaseService } from "./src/service/core/database-service";
 import { PagingService } from "./src/service/core/paging-service";
@@ -65,12 +73,17 @@ function getMainContainer() {
   container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
   container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryImpl).inSingletonScope()
   container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryImpl).inSingletonScope()
+  container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryImpl).inSingletonScope()
+  container.bind<SlideshowRepository>("SlideshowRepository").to(SlideshowRepositoryImpl).inSingletonScope()
+
+
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
   container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
+  container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
   container.bind<AnimationService>("AnimationService").to(AnimationService).inSingletonScope()

@@ -221,23 +221,27 @@
             let pageNumber = parseInt("<%= channelViewModel.pagingViewModel.page %>");
             let endPageNumber = parseInt("<%= channelViewModel.pagingViewModel.endPage %>");
 
+            const cardClick = (e) => {
+                const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a"
+                    
+                    if (!islink) {
+                        let href = $(e.currentTarget).data('href')
+                        $f7.views.main.router.navigate(href)
+                    } 
+            }
+
             $on('pageInit', async () => {
 
                 $(`.animation-list-card a`).addClass('external')
 
                 $('.animation-list-card').on('click', (e) => {
-
-                    console.log(e.currentTarget)
-
-                    const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a"
-
-                    
-                    if (!islink) {
-                        let href = $(e.currentTarget).data('href')
-                        console.log(href)
-                        $f7.views.main.router.navigate(href)
-                    } 
+                    cardClick(e)
                 })
+
+                $('.item-card').on('click', (e) => {
+                    cardClick(e)
+                })
+
 
             })
 

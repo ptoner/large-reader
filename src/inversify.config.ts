@@ -41,6 +41,7 @@ import Accordion from 'framework7/components/accordion'
 import Autocomplete from 'framework7/components/autocomplete'
 import PhotoBrowser from 'framework7/components/photo-browser'
 import Swiper from 'framework7/components/swiper'
+import InfiniteScroll from 'framework7/components/infinite-scroll'
 
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
@@ -56,6 +57,7 @@ import Navbar from './components/reader/navbar.f7.html'
 import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
 import SearchList from './components/reader/item/search-list.f7.html'
+import InfiniteScrollContent from './components/reader/item/infinite-scroll-content.f7.html'
 
 
 import { TokenService } from "./service/token-service";
@@ -74,11 +76,16 @@ import { StaticPageService } from "./service/static-page-service";
 import { StaticPageRepository } from "./repository/static-page-repository";
 import { StaticPageRepositoryImpl } from "./repository/browser/static-page-repository-impl";
 import { StaticPage } from "./dto/static-page";
-
+import he from 'he'
+import { ItemPageService } from "./service/item-page-service";
+import { ItemPageRepository } from "./repository/item-page-repository";
+import { ItemPageRepositoryImpl } from "./repository/browser/item-page-repository-impl";
+import { SlideshowRepository } from "./repository/slideshow-repository";
+import { SlideshowRepositoryImpl } from "./repository/browser/slideshow-repository-impl";
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
-  Range, Accordion, Searchbar, Autocomplete, Popup, PhotoBrowser, Swiper])
+  Range, Accordion, Searchbar, Autocomplete, Popup, PhotoBrowser, Swiper, InfiniteScroll])
 
 
 
@@ -97,6 +104,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
     Framework7.registerComponent("nft-info", NftInfo)
     Framework7.registerComponent("mint-list", MintList)
     Framework7.registerComponent("search-list", SearchList)
+    Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
 
     const resolveWithSpinner = (resolve, url) => {
       
@@ -139,6 +147,14 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
           await resolveWithSpinner(resolve, 'search.html')
         }
       },
+
+      {
+        path: `${baseURI}explore.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'explore.html')
+        }
+      },
+
 
       {
         path: `${baseURI}list-:page.html`,
@@ -246,6 +262,10 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
   container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryImpl).inSingletonScope()
   container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryImpl).inSingletonScope()
+  container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryImpl).inSingletonScope()
+  container.bind<SlideshowRepository>("SlideshowRepository").to(SlideshowRepositoryImpl).inSingletonScope()
+
+
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
@@ -253,6 +273,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   container.bind<MintWebService>("MintWebService").to(MintWebService).inSingletonScope()
   container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
+  container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()
 
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
@@ -271,6 +292,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   //Attach container to window so we can easily access it from the browser console
   globalThis.container = container
   globalThis.ethers = ethers
+  globalThis.he = he 
 
   return container
 }

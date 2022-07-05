@@ -30,14 +30,8 @@ class ItemRepositoryImpl implements ItemRepository {
 
 
 
-    async list(skip:number): Promise<Item[]> {
-
-        if (skip % ItemRepositoryImpl.CHUNK_SIZE != 0) {
-            throw Error("Invalid skip value")
-        }
-
-        return this.items.slice(skip, skip + ItemRepositoryImpl.CHUNK_SIZE)
-
+    async list(skip:number, limit?:number): Promise<Item[]> {
+        return this.items.slice(skip, limit)
     }
 
     async listByTokenId(startTokenId:number, limit:number=CHUNK_SIZE) : Promise<Item[]> {
@@ -47,6 +41,11 @@ class ItemRepositoryImpl implements ItemRepository {
     async query(query:string) : Promise<Item[]> {
         return []
     }
+
+    async all(): Promise<Item[]> {
+        return this.items
+    }
+
 
 
 }

@@ -1,6 +1,8 @@
 import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
+import { Item } from "../../dto/item";
+import { AttributeReport } from "../../dto/viewmodel/attribute-report";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
 import { CHUNK_SIZE, ItemRepository } from "../../repository/item-repository";
@@ -8,6 +10,7 @@ import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { PagingService } from "../core/paging-service";
 import { WalletService } from "../core/wallet-service";
+import { ItemService } from "../item-service";
 import { StaticPageService } from "../static-page-service";
 import { ItemWebService } from "./item-web-service";
 
@@ -25,6 +28,10 @@ class ChannelWebService {
 
     @inject("ItemWebService")
     private itemWebService:ItemWebService
+
+    
+    @inject("ItemService")
+    private itemService:ItemService
 
     @inject("WalletService")
     private walletService:WalletService
@@ -72,6 +79,14 @@ class ChannelWebService {
             items: items
         }
 
+    }
+
+
+    async getAttributeReport() : Promise<AttributeReport> {
+
+        let items:Item[] = await this.itemService.all()
+
+        return this.channelService.getAttributeReport(items)
     }
 
 

@@ -7,6 +7,7 @@ interface ItemRepository {
     list(skip:number, limit?:number): Promise<Item[]>
     listByTokenId(startTokenId:number, limit?:number) : Promise<Item[]>
     query(query:string) : Promise<Item[]>
+    all() : Promise<Item[]>
 }
 
 export {

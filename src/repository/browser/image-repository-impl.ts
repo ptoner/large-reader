@@ -7,13 +7,14 @@ import { ImageRepository } from "../image-repository"
 class ImageRepositoryImpl implements ImageRepository {
 
     db:any
+    dbName:string = "images"
 
     @inject('DatabaseService')
     private databaseService: DatabaseService
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: "images"
+            name: this.dbName
         })
     }
 

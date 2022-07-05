@@ -527,16 +527,92 @@ ul.breadcrumb li a:hover {
 
 .data-table .label-cell {
   font-weight: bold;
+}
+
+
+.scarcity-report-card.data-table table {
+  max-width: 600px;
+  margin-bottom: 50px;
+}
+
+.scarcity-report-card.data-table tr {
+  height: 15px;
+}
+
+.scarcity-report-card.data-table th {
+  font-size: 18px;
+}
+
+.scarcity-report-card.data-table th .label-cell {
+  color: #000000;
+  font-weight: bold;
   width: 250px;
+}
+
+.scarcity-report-card.data-table td .label-cell {
+  font-weight: normal;
+  width: 250px;
+}
+
+.scarcity-report-card.data-table th .numeric-cell {
+  font-weight: normal;
 }
 
 
 
 
 
+.item-card {
+  cursor: pointer;
+} 
+
+
+.fixed-width-content {
+  width: 1135px;
+  max-width: 100%;
+}
+
+.item-flex {
+  display: flex; 
+  flex-flow: row wrap; 
+  align-content: start;
+}
+
+
+.flex-card {
+  flex: 0 0 20%;
+  margin: 0px;
+  height: 300px;
+}
+
+.flex-card .card {
+  background: white;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+.flex-card img {
+  max-width: 100%;
+  border: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .fixed-width-content {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+ 
+  .flex-card {
+    flex: 0 0 50%;
+    margin: 0px;
+  }
+}
 
 
 
+ 
 html {
   visibility: visible;
   opacity: 1;

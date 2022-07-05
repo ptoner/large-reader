@@ -7,13 +7,14 @@ import { AuthorRepository } from "../author-repository"
 class AuthorRepositoryImpl implements AuthorRepository {
 
     db:any
+    dbName:string = "authors"
 
     @inject('DatabaseService')
     private databaseService: DatabaseService
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: "authors"
+            name: this.dbName
         })
     }
 

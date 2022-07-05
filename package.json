@@ -1,6 +1,6 @@
 {
   "name": "large-reader",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
@@ -90,7 +90,7 @@
 
     "reflect-metadata": "0.1.13",
 
-    "framework7": "6.3.16",
+    "framework7": "7.0.5",
     "framework7-icons": "5.0.5",
 
     "inversify": "6.0.1",

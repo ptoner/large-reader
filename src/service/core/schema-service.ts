@@ -4,14 +4,10 @@ import { AuthorRepositoryImpl } from "../../repository/browser/author-repository
 import { ChannelRepositoryImpl } from "../../repository/browser/channel-repository-impl"
 import { ImageRepositoryImpl } from "../../repository/browser/image-repository-impl"
 import { ItemRepositoryImpl } from "../../repository/browser/item-repository-impl"
-import { ChannelRepository } from "../../repository/channel-repository"
-import { UiService } from "./ui-service"
+
 
 @injectable()
 class SchemaService {
-
-    @inject("UiService")
-    private uiService:UiService
 
     @inject("ItemRepository")
     private itemRepository:ItemRepositoryImpl //ugh
@@ -24,37 +20,38 @@ class SchemaService {
 
     @inject("ImageRepository")
     private imageRepository:ImageRepositoryImpl
-
     
     @inject("AnimationRepository")
     private animationRepository:AnimationRepositoryImpl
 
-    @inject("framework7")
-    private app:any
 
-    constructor() {}
 
-    async load() {
+    constructor() {
 
-        if (!this.itemRepository.db) {
-            await this.itemRepository.load()
+    }
+
+    async load(dbs:string[]) {
+
+        const repositories = []
+
+        repositories.push(this.itemRepository)
+        repositories.push(this.channelRepository)
+        repositories.push(this.authorRepository)
+        repositories.push(this.imageRepository)
+        repositories.push(this.animationRepository)
+
+
+        for (let db of dbs) {
+
+            let repo = repositories.filter( r => r.dbName == db)[0]
+
+            if (!repo) continue
+
+            if (!repo.db) {
+                await repo.load()
+            }
+            
         }
-
-        if (!this.channelRepository.db) {
-            await this.channelRepository.load()
-        }
-
-        if (!this.authorRepository.db) {
-            await this.authorRepository.load()
-        }
-
-        if (!this.imageRepository.db) {
-            await this.imageRepository.load()
-        }
-
-        // if (!this.animationRepository.db) {
-        //     await this.animationRepository.load()
-        // }
 
     }
 

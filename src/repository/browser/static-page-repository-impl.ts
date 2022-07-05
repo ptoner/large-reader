@@ -28,6 +28,7 @@ class StaticPageRepositoryImpl implements StaticPageRepository {
     }
 
     db:any
+    dbName:string = "static-pages"
     
     @inject('DatabaseService')
     private databaseService: DatabaseService
@@ -36,7 +37,7 @@ class StaticPageRepositoryImpl implements StaticPageRepository {
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: "static-pages",
+            name: this.dbName,
             buildIndexes: this.CREATE_INDEXES
         })
     }

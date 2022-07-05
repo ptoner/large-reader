@@ -3,8 +3,6 @@ import { Item } from "../../dto/item"
 import { ItemRepository, CHUNK_SIZE } from "./../item-repository"
 import { DatabaseService } from "../../service/core/database-service"
 
-import he from 'he'
-
 
 @injectable()
 class ItemRepositoryImpl implements ItemRepository {
@@ -61,6 +59,7 @@ class ItemRepositoryImpl implements ItemRepository {
     }
 
     db:any
+    dbName:string = "items"
     
     @inject('DatabaseService')
     private databaseService: DatabaseService
@@ -69,7 +68,7 @@ class ItemRepositoryImpl implements ItemRepository {
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: "items",
+            name: this.dbName,
             buildIndexes: this.CREATE_INDEXES
         })
     }
@@ -171,6 +170,20 @@ class ItemRepositoryImpl implements ItemRepository {
         return rows
 
     }
+
+    async all(): Promise<Item[]> {
+        let response = await this.db.find({
+            selector: {
+                dateCreated: { $exists: true }
+            },
+            sort: [{ 'dateCreated': 'asc' }],
+            limit: 100000,
+            skip: 0
+        })
+
+        return response.docs
+    }
+
 
 }
 

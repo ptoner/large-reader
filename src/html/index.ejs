@@ -7,6 +7,9 @@
     let baseURL = htmlWebpackPlugin.options.baseURL
     let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
     let routablePages = htmlWebpackPlugin.options.routablePages
+    let attributeReport = htmlWebpackPlugin.options.attributeReport
+
+    console.log(attributeReport)
 
     const link = (href) => {
         return `${baseURL + href}`
@@ -123,7 +126,7 @@
 
 
                     <div class="start-buttons">
-                      <a href="<%= link('list-1.html') %>" class="button button-fill text-color-white explore-button">Explore</a>
+                      <a href="<%= link('explore.html') %>" class="button button-fill text-color-white explore-button">Explore</a>
 
                       <a href="#" class="button button-outline color-blue start-slideshow ready-button">Ready to read?</a>
                     </div>
@@ -133,7 +136,59 @@
 
                 </div>
 
-                
+                <% 
+                  if (attributeReport?.totals?.size > 0) {
+                %>
+
+                    <div class="card scarcity-report-card data-table">
+                      <div class="card-header">
+                        <!-- Table title -->
+                        <div class="data-table-title">Attribute Report</div>
+                      </div>
+
+                      <div class="card-content">
+                            <% for (let traitType of attributeReport.totals.keys()) { 
+                              let attributeTotals = attributeReport.totals.get(traitType)
+                            %>      
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th class="label-cell"><%= traitType %></th>
+                                  <th class="numeric-cell">Count</th>
+                                  <th class="numeric-cell">Percent</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+
+                              <%
+                              for (let at of attributeTotals) {    
+                              %>      
+                                <tr>
+                                  <td class="label-cell"><%= at.value %></td> 
+                                  <td class="numeric-cell"><%= at.count %></td>
+                                  <td class="numeric-cell"><%= at.categoryPercent %></td>
+
+                                </tr>
+                              <% 
+                              }
+                              %>
+
+                              </tbody>
+                            </table>
+
+                            <%
+                              } 
+                            %>
+
+
+                      </div>
+                    </div>
+
+                <%
+                  }
+                %>
+
                 <% 
                   if (channelViewModel.staticPagesViewModel.index?.length > 0) {
 
@@ -223,7 +278,6 @@
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
             let itemWebService = globalThis.container.get("ItemWebService")
-            let schemaService = globalThis.container.get("SchemaService")
 
             let photoBrowser 
 
@@ -252,8 +306,7 @@
               $f7.preloader.show()
 
               if (!photoBrowser) {
-                await schemaService.load()
-
+              
                 let list = await itemWebService.slideshow()
 
                 photoBrowser = $f7.photoBrowser.create({

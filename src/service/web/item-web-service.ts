@@ -18,6 +18,9 @@ import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
 
 import he from "he"
+import { ItemPage, RowItemViewModel } from "../../dto/item-page";
+import { ItemPageService } from "../item-page-service";
+import { Slideshow } from "../../dto/slideshow";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
@@ -46,6 +49,9 @@ class ItemWebService {
 
     @inject("AnimationService")
     private animationService: AnimationService
+
+    @inject("ItemPageService")
+    private itemPageService: ItemPageService
 
 
     @inject("baseURI")
@@ -193,9 +199,9 @@ class ItemWebService {
         let animation:Animation
 
         //Get image
-        if (item.coverImageId) {
-            coverImage = await this.imageService.get(item.coverImageId)
-        }
+        // if (item.coverImageId) {
+        //     coverImage = await this.imageService.get(item.coverImageId)
+        // }
 
         return {
             item: item,
@@ -203,12 +209,10 @@ class ItemWebService {
             channel: channel,
             author: author,
             attributeSelections: attributeSelections,
-            coverImage: coverImage
+            // coverImage: coverImage
         }
 
     }
-
-
 
     async list(skip: number, limit?:number): Promise<ItemViewModel[]> {
 
@@ -227,7 +231,6 @@ class ItemWebService {
 
     }
 
-
     async mintList(skip: number, limit?:number): Promise<ItemViewModel[]> {
 
         let result: ItemViewModel[] = []
@@ -245,10 +248,49 @@ class ItemWebService {
 
     }
 
+    async buildItemPages(skip:number, limit?:number, perPage?:number) : Promise<ItemPage[]> {
+
+        await this.schemaService.load(["items", "channels", "images"])
+
+        let result: ItemPage[] = []
+
+        let items: Item[] = await this.itemService.list(skip, limit)
+
+        let viewModels:RowItemViewModel[] = [] 
+
+        //Create view models
+        for (let item of items) {
+
+            let coverImage = await this.imageService.get(item.coverImageId)
+
+            viewModels.push({
+                _id: item._id,
+                coverImageGenerated: coverImage.generated ? true : false,
+                coverImageId: coverImage._id,
+                title: `${item.title ? item.title + ' ' : ''} #${item.tokenId}`
+            })
+
+        }
+
+        //Break into rows
+        for (let i = 0; i < viewModels.length; i += perPage) {
+            result.push({
+                items: viewModels.slice(i, i + perPage)
+            })
+        }
+
+
+        return result
+
+    }
+
+    async itemPage(pageNumber:number) : Promise<ItemPage> {
+        return this.itemPageService.get(pageNumber)
+    }
 
     async query(query:string) : Promise<Item[]> {
 
-        await this.schemaService.load()
+        await this.schemaService.load(["items", "channels"])
 
         let results = await this.itemService.query(query)
 
@@ -266,8 +308,9 @@ class ItemWebService {
         return viewModels
     }
 
+    async buildSlideshow() : Promise<SlideShowElement[]> {
 
-    async slideshow() : Promise<SlideShowElement[]> {
+        await this.schemaService.load(["items", "channels", "images"])
 
         let items: Item[] = await this.itemService.list(0, 100000)
 
@@ -279,7 +322,10 @@ class ItemWebService {
 
         })
 
+    }
 
+    async slideshow() : Promise<Slideshow> {
+        return this.itemService.getSlideshow()
     }
 
 

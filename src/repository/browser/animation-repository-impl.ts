@@ -7,13 +7,14 @@ import { AnimationRepository } from "../animation-repository"
 class AnimationRepositoryImpl implements AnimationRepository {
 
     db:any
+    dbName:string = "animations"
 
     @inject('DatabaseService')
     private databaseService: DatabaseService
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: "animations"
+            name: this.dbName
         })
     }
 
