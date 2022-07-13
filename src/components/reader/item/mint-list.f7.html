@@ -1,14 +1,43 @@
 <template>
 
   <div>
-
     
-      <div class="block block-strong inset block-mint">
-        Note: This screen requires local search indexes and will take longer to load the first time you visit.
-      </div>
-
-
     ${mintingViewModel ? $h`
+
+      ${mintingViewModel.lastMinted?.length > 0 ? $h`
+        <div class="block-title block-title-small">Latest Mint(s)</div>
+        <div class="swiper inset" id="latest-mints-swiper">
+
+          <div class="swiper-wrapper">
+
+            ${mintingViewModel.lastMinted?.map(m => $h`
+              <div class="swiper-slide">
+
+                <a href="${link(`item-show-${m.item._id}.html`)}">
+                  <div class="card" >
+                      <div class="card-content">
+                          <div class="square">
+                              <img src="${link(`backup/images/${m.item.coverImageId}`)}.${m.item.coverImageGenerated ? 'svg' : 'jpg'}"/>
+                          </div>
+                      </div>
+
+                      <div class="card-footer">
+                          #${m.item.tokenId} by ${m.owner}
+                      </div>
+                  </div>
+              </a>
+
+              </div>
+            `)}
+
+          </div>
+
+          <div class="swiper-pagination"></div>
+          <div class="swiper-scrollbar"></div>
+        </div>
+ 
+      ` : $h`<span />`}
+
       <div class="block-title block-title-medium">Mint NFTs</div>
       
       <div class="block block-strong inset">
@@ -17,8 +46,10 @@
         </p>
       </div>
 
-      <form class="list no-hairlines inset" @submit="${mintSubmit}">
+
+      <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
         <ul>
+
           <li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">Select number of NFTs to mint.</div>
@@ -29,6 +60,7 @@
               </div>
             </div>
           </li>
+
           <li>
             <div class="item-content">
                 <div class="item-inner">
@@ -50,7 +82,7 @@
           <li>
             <label class="item-checkbox item-content">
 
-                <input type="checkbox" checked="${exactTokensOnly}"  @change="${forceStartOnChange}" />
+                <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
                 
                 <i class="icon icon-checkbox"></i>
                 <div class="item-inner">
@@ -65,17 +97,28 @@
             </label>
           </li>
 
-
           <li>
             <div class="item-content">
                 <div class="item-inner">
-                  <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button" @click="${mintButtonClick}">Mint</button>
+                  <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
                 </div>
             </div>
           </li>
+          
         </ul>
 
       </form>
+
+
+
+
+      <div class="block-title block-title-medium">Next Up</div>
+
+      <div class="list cards-list virtual-list" id="mint-list">
+        <ul class="item-flex"></ul>
+      </div>
+
+      <div class="preloader infinite-scroll-preloader"></div>
 
     ` : $h`
       <li class="card skeleton-text skeleton-effect-wave">
@@ -87,45 +130,6 @@
       </li>
     `}
     
-    
-    ${mintingViewModel ? $h`
-      <div class="block-title block-title-medium">Next Up</div>
-
-      <div class="row">
-
-        ${mintingViewModel.items?.map( (itemViewModel) => $h`
-          
-          <div class="col-100 large-25">
-            <div class="card mint-card">
-              <div class="card-content">
-                <div class="card-content card-content-padding">
-  
-                  <div class="square">
-  
-                    ${itemViewModel.item.coverImageId ? $h`
-                      <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">
-                        <img src="${link(`backup/images/${itemViewModel.coverImage._id}`)}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
-                      </a>
-                    ` : $h`
-                      No preview
-                    `}
-  
-                  </div>
-  
-                  <div class="preview-info">
-                    <a href="${link(`item-show-${itemViewModel.item._id}.html`)}">${itemViewModel.item.title ? itemViewModel.item.title + ' ' : ''} #${itemViewModel.item.tokenId}</a>
-                    
-                  </div>
-  
-                </div>
-              </div>
-            </div>
-          </div>
-        
-        `)}
-      </div>
-    ` : $h`<span/>`}
-
   </div>
 
 
@@ -135,23 +139,7 @@
 
 <style>
 
-  #mint-button {
-    width: 100px;
-    display: inline-block;
-  }
 
-  .mint-detail strong {
-    width: 100px;
-    display: inline-block;
-  }
-
-  .block-mint {
-    font-size: 14px;
-  }
-
-  .exact-tokens-only {
-    font-size: 15px;
-  }
 
 </style>
 
@@ -159,69 +147,29 @@
 
   export default (props, { $, $on, $f7, $update }) => {
 
-    let mintingWebService = globalThis.container.get("MintWebService")
+    let mintWebService = globalThis.container.get("MintWebService")
+    let walletService = globalThis.container.get("WalletService")
+    let queueService = globalThis.container.get("QueueService")
+    let tokenService = globalThis.container.get("TokenService")
 
-    let mintingViewModel = undefined
+
+    let mintingViewModel
+
+    let total = 0 
     let quantity = 1
-    let total = 0
     let mintPriceWei
 
     let exactTokensOnly = false
 
     let baseURL = props.baseurl 
 
+
     const link = (href) => {
         return `${baseURL + href}`
     } 
   
-    const mintSubmit = (e) => {
-      e.preventDefault()
-    }
-
     const updateTotal = async () => {
       total = globalThis.ethers.utils.formatUnits(mintPriceWei.mul(quantity))
-      await $update()
-    }
-
-    const selectPreviews = (amount) => {
-
-      let selected = 0
-      $('.mint-card').each( (ele) => {
-        
-        //Remove selected from all
-        $(ele).removeClass('selected')
-
-        if (selected < amount ) {
-          $(ele).addClass('selected')
-          selected++
-          console.log(ele)
-        }
-      
-
-      })
-
-    }
-
-    const mintButtonClick = async (e) => {
-
-      if (exactTokensOnly) {
-
-        let start = parseInt(mintingViewModel.totalMinted + 1)
-
-        console.log(start)
-
-        await mintingWebService.mintFromStartOrFail(quantity, start)
-      } else {
-        await mintingWebService.mint(quantity)
-
-      }
-
-      
-    }
-
-    const forceStartOnChange = async (e) => {
-      exactTokensOnly = e.currentTarget.checked
-     
       await $update()
     }
 
@@ -231,25 +179,93 @@
       selectPreviews(quantity)
     })
 
+    const selectPreviews = (amount) => {
+
+      let selected = 0
+      $('.flex-card').each( (ele) => {
+        
+        //Remove selected from all
+        $(ele).removeClass('selected')
+
+        if (selected < amount ) {
+          $(ele).addClass('selected')
+          selected++
+          // console.log(ele)
+        }
+
+      })
+
+    }
+
+    const mintOnSubmit = async (e) => {
+
+      e.preventDefault()
+
+      //Make sure we are connected
+      await walletService.connect()
+
+      
+      let mintFunction
+
+      if (exactTokensOnly) {
+        let start = parseInt(mintingViewModel.totalMinted + 1)
+        mintFunction = mintWebService.mintFromStartOrFail(quantity, start)
+      } else {
+        mintFunction = mintWebService.mint(quantity)
+      }
+
+
+      let promiseView = {
+        title: `Minting token(s). Approve transaction and wait for it to be mined.`,
+        promise: mintFunction
+      }
+
+      //Wait for it to be mined
+      await queueService.queuePromiseView(promiseView)
+
+    }
+
+    const exactTokensOnChange = async (e) => {
+      exactTokensOnly = e.currentTarget.checked
+    
+      await $update()
+    }
+
 
     $f7.preloader.show()
 
-    mintingWebService.getMintingViewModel().then (m => {
+    mintWebService.getMintingViewModel().then (m => {
       
       mintingViewModel = m 
-
       mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
 
       return updateTotal()
 
     } ).then( () => {
 
-      selectPreviews(quantity)
+      let e = new CustomEvent('mint-view-model-loaded')
+      e.mintingViewModel = mintingViewModel
+      document.dispatchEvent(e)
 
       $f7.preloader.hide()
 
     })
 
+
+    document.addEventListener('mint-event', async (e) => {
+
+      if (e.tokenId > mintingViewModel?.totalMinted) {
+        mintingViewModel = await mintWebService.getMintingViewModel()
+        await $update()
+
+
+        let e = new CustomEvent('mint-view-model-refreshed')
+        e.mintingViewModel = mintingViewModel
+        e.quantity = quantity
+        document.dispatchEvent(e)
+      }
+
+    })
 
 
     return $render

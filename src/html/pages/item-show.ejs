@@ -119,8 +119,6 @@
 
                             </div>
 
-
-
                             <div class="card">
                                 
                                 <div class="card-header">
@@ -154,11 +152,6 @@
                                 </div>
 
                             </div>
-
-
-
-
-
 
                             <div class="block row center margin-bottom">
                 
@@ -202,25 +195,9 @@
             let tokenService = globalThis.container.get("TokenService")
 
             let owner
-            
-            const testLoad = (e) => {
-                console.log('got here')
-            }
+
 
             $on('pageInit', async () => {
-                
-                try {
-                    owner = await tokenService.ownerOf(parseInt('<%= itemViewModel.item.tokenId %>'))
-                } catch(ex) {
-                    
-                }
-
-                // $('.iframe-container iframe').on('load', (e) => {
-                //     $('.iframe-container iframe').css('display', 'block')
-                // })
-
-                // $('.iframe-container iframe').attr("src","backup/animations/<%=itemViewModel.item.animationId %>.html")
-
             })          
 
             $on('pageBeforeOut', async () => {

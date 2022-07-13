@@ -1,10 +1,12 @@
-import { ItemViewModel } from "./item-view-model"
+import { Item } from "../item"
 
 interface MintingViewModel {
     totalMinted?:number 
     totalSupply?:number
     mintPrice?:string
-    items?:ItemViewModel[]
+
+    lastMinted?:any[]
+
 }
 
 export {

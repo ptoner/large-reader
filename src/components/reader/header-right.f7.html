@@ -63,11 +63,12 @@
         }
 
         const connectWallet = async (e) => {
-
+            console.log(1)
             await walletService.initWallet()
-
+            console.log(2)
             //Connect to metamask
             await walletService.connect()
+            console.log(3)
             displayAddress()
         }
 

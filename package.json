@@ -1,6 +1,6 @@
 {
   "name": "large-reader",
-  "version": "0.0.5",
+  "version": "0.0.4",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
@@ -41,10 +41,7 @@
     "@types/pouchdb": "6.4.0",
 
     "core-js": "3.21.0",
-    
-    "framework7": "6.3.16",
-    "framework7-loader": "3.0.2",
-
+  
     "html-inline-script-webpack-plugin": "2.0.3",
     "html-webpack-plugin": "5.5.0",
     "html-inline-css-webpack-plugin": "1.11.1",
@@ -61,6 +58,8 @@
     "url-loader": "4.1.1",
     "html-loader": "3.1.0",
     "ejs-compiled-loader": "3.1.0",
+    "framework7-loader": "3.0.2",
+
 
     "ts-mocha": "9.0.2",
     "ts-mockito": "2.6.1",

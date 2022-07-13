@@ -34,7 +34,11 @@ class ItemRepositoryImpl implements ItemRepository {
         return this.items.slice(skip, limit)
     }
 
-    async listByTokenId(startTokenId:number, limit:number=CHUNK_SIZE) : Promise<Item[]> {
+    async getByTokenId(tokenId:string) : Promise<Item> {
+        return new Item()
+    }
+
+    async listByTokenId(startTokenId:number, limit:number) : Promise<Item[]> {
         return []
     }
 

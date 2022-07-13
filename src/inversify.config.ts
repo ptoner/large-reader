@@ -31,31 +31,49 @@ import { ethers, providers } from "ethers"
 import Framework7, { Dom7 } from 'framework7';
 
 // Import additional components
+//@ts-ignore
 import Dialog from 'framework7/components/dialog';
+//@ts-ignore
 import Toast from 'framework7/components/toast';
+//@ts-ignore
 import Preloader from 'framework7/components/preloader';
+//@ts-ignore
 import VirtualList from 'framework7/components/virtual-list'
+//@ts-ignore
 import ListIndex from 'framework7/components/list-index'
+//@ts-ignore
 import Range from 'framework7/components/range'
+//@ts-ignore
 import Accordion from 'framework7/components/accordion'
+//@ts-ignore
 import Autocomplete from 'framework7/components/autocomplete'
+//@ts-ignore
 import PhotoBrowser from 'framework7/components/photo-browser'
+//@ts-ignore
 import Swiper from 'framework7/components/swiper'
+//@ts-ignore
 import InfiniteScroll from 'framework7/components/infinite-scroll'
-
+//@ts-ignore
 import Card from 'framework7/components/card'
+//@ts-ignore
 import Chip from 'framework7/components/chip'
-
+//@ts-ignore
 import Form from 'framework7/components/form'
+//@ts-ignore
 import Grid from 'framework7/components/grid'
+//@ts-ignore
 import Searchbar from 'framework7/components/searchbar'
+//@ts-ignore
 import Popup from 'framework7/components/popup'
+
 
 import { UiService } from "./service/core/ui-service";
 
 import Navbar from './components/reader/navbar.f7.html'
 import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
+import MintInfo from './components/reader/channel/mint-info.f7.html'
+
 import SearchList from './components/reader/item/search-list.f7.html'
 import InfiniteScrollContent from './components/reader/item/infinite-scroll-content.f7.html'
 
@@ -82,6 +100,7 @@ import { ItemPageRepository } from "./repository/item-page-repository";
 import { ItemPageRepositoryImpl } from "./repository/browser/item-page-repository-impl";
 import { SlideshowRepository } from "./repository/slideshow-repository";
 import { SlideshowRepositoryImpl } from "./repository/browser/slideshow-repository-impl";
+import { QueueService } from "./service/core/queue-service";
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
@@ -103,6 +122,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
     Framework7.registerComponent("nav-bar", Navbar)
     Framework7.registerComponent("nft-info", NftInfo)
     Framework7.registerComponent("mint-list", MintList)
+    Framework7.registerComponent("mint-info", MintInfo)
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
 
@@ -274,6 +294,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
   container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()
+  container.bind<QueueService>("QueueService").to(QueueService).inSingletonScope()
 
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()

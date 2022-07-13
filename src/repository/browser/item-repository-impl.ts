@@ -19,6 +19,12 @@ class ItemRepositoryImpl implements ItemRepository {
 
         await db.createIndex({
             index: {
+                fields: ['tokenId']
+            }
+        })
+
+        await db.createIndex({
+            index: {
                 fields: ['dateCreated']
             }
         })
@@ -41,10 +47,11 @@ class ItemRepositoryImpl implements ItemRepository {
             }
         })
 
+
         await db.put({
             _id: '_design/item_token_id',
             views: {
-              token_id_stats: {
+              token_id: {
                 map: function (doc) { 
                     //@ts-ignore
                     emit(doc.channelId, doc.tokenId)
@@ -97,19 +104,40 @@ class ItemRepositoryImpl implements ItemRepository {
 
     }
 
-    async listByTokenId(startTokenId:number, limit:number=CHUNK_SIZE) : Promise<Item[]> {
+    async getByTokenId(tokenId:string) : Promise<Item> {
+
         let response = await this.db.find({
             selector: {
-                tokenId: { $gt: startTokenId },
+                tokenId: { $eq: tokenId },
                 dateCreated: { $exists: true }
             },
-            sort: [{ 'tokenId': 'asc' }],
+            limit: 1
+        })
+
+        if (response.docs?.length > 0) {
+            return response.docs[0]
+        }
+
+        
+    }
+    
+    async listByTokenId(startTokenId:number, limit:number) : Promise<Item[]> {
+
+        let response = await this.db.find({
+            selector: {
+                tokenId: { $lte: startTokenId },
+                dateCreated: { $exists: true }
+            },
+            sort: [{ 'tokenId': 'desc' }],
             limit: limit
         })
 
         return response.docs
+
     }
-    
+
+
+
     async getNext(item:Item) : Promise<Item> {
 
         let response = await this.db.find({

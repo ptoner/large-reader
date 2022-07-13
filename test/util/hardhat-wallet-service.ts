@@ -28,6 +28,10 @@ class HardhatWalletServiceImpl implements WalletService {
     return this.provider.getSigner()
   }
 
+  async connect() {
+    
+  }
+
   getContract(name:string)  {
 
     //If it's cached and the same wallet just return it.

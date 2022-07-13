@@ -5,12 +5,23 @@
 
       <div class="card-content card-content-padding">
   
-        ${owner ? $h`
-          Owned by <a href="https://etherscan.io/address/${owner}">${owner}</a>
-        ` : $h
-        `
-          NFT has not been <a href="${link(`mint.html`)}">minted</a> yet. 
+        ${hasProvider ? $h`
+          
+          ${owner ? $h`
+            Owned by <a href="https://etherscan.io/address/${owner}">${owner}</a>
+          ` : $h
+          `
+            NFT has not been <a href="${link(`mint.html`)}">minted</a> yet. 
+          `}
+
+        ` : $h`
+            Ownership information unavailable. 
+            
+            <p style="color: darkgray">Note: Use a web browser with wallet support to see NFT information.</p>
+
         `}
+
+
   
       </div>
     </div>
@@ -61,10 +72,13 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let walletService = globalThis.container.get("WalletService")
+    let tokenService = globalThis.container.get("TokenService")
 
     let id = props.id
     let owner = props.owner 
     let contractAddress = walletService.truncateEthAddress(props.contract)
+
+    let hasProvider = false
 
     let baseURL = props.baseurl 
 
@@ -72,6 +86,31 @@
     const link = (href) => {
         return `${baseURL + href}`
     } 
+
+
+    const load = async () => {
+      
+      try  {
+
+        if (!walletService.provider) {
+          await walletService.initProvider()
+        }
+
+        //Might still not have a provider. 
+        if (walletService.provider) {
+          hasProvider = true
+          owner = walletService.truncateEthAddress(await tokenService.ownerOf(id))
+        } 
+
+      } catch(ex) {
+        console.log(ex)
+      }
+      
+      $update()
+
+    }
+
+    load()
 
 
 

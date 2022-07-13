@@ -31,6 +31,15 @@ class ItemService {
         return this.itemRepository.all()
     }
     
+    async getByTokenId(tokenId:string) : Promise<Item> {
+        return this.itemRepository.getByTokenId(tokenId)
+    }
+
+    async listByTokenId(startTokenId:number, limit:number=10) {
+        return this.itemRepository.listByTokenId(startTokenId, limit)
+    }
+
+
     async getSlideshow() {
         return this.slideshowRepository.get()
     }

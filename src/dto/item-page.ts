@@ -8,6 +8,7 @@ interface RowItemViewModel {
     title:string
     coverImageId:string
     coverImageGenerated:boolean 
+    tokenId:number
 
 }
 

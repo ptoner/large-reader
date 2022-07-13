@@ -176,11 +176,6 @@
             })
 
             $on('pageReinit', async (e, page) => {
-                // console.log(`reinit: ${virtualList}`)
-                // if (!virtualList) {
-                //     createVirtualList() 
-                //     await $update()
-                // }
             })
 
             $on('pageAfterOut', (e, page) => {
@@ -193,6 +188,8 @@
 
                 if (virtualList.items?.length <= totalItemCount) {
                     document.getElementById("item-list-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
+                } else {
+                    $('.infinite-scroll-preloader').hide()
                 }
 
             }

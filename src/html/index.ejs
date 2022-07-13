@@ -136,15 +136,16 @@
 
                 </div>
 
+                <mint-info
+                  baseurl="<%= baseURL %>"
+                ></mint-info>
+
                 <% 
                   if (attributeReport?.totals?.size > 0) {
                 %>
 
+                    <div class="block-title block-title-medium">Attribute Report</div>
                     <div class="card scarcity-report-card data-table">
-                      <div class="card-header">
-                        <!-- Table title -->
-                        <div class="data-table-title">Attribute Report</div>
-                      </div>
 
                       <div class="card-content">
                             <% for (let traitType of attributeReport.totals.keys()) { 

@@ -5,7 +5,7 @@ class Item {
     _id?:string
     _rev?:string
     channelId?:string
-    tokenId?:string //Generated when we publish 
+    tokenId?:number
     title?:string 
     link?:string 
     description?:string

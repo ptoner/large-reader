@@ -14,6 +14,7 @@ import { ImageRepository } from "./src/repository/image-repository";
 import { ImageRepositoryImpl } from "./src/repository/node/image-repository-impl";
 
 import { StaticPageService } from "./src/service/static-page-service";
+import { QueueService } from "./src/service/core/queue-service";
 
 import { StaticPageRepository } from "./src/repository/static-page-repository";
 import { StaticPageRepositoryImpl } from "./src/repository/node/static-page-repository-impl";
@@ -94,6 +95,9 @@ function getMainContainer() {
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
   container.bind<UiService>("UiService").to(UiService).inSingletonScope()
+  container.bind<QueueService>("QueueService").to(QueueService).inSingletonScope()
+
+
 
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
 

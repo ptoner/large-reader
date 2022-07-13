@@ -271,7 +271,7 @@ export default async (hostname, baseURL) => {
       extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
       alias: {
         buffer: 'buffer',
-        process: 'process/browser'
+        process: 'process/browser.js'
       },
       fallback: { 
         "path": require.resolve("path-browserify"),
@@ -307,7 +307,7 @@ export default async (hostname, baseURL) => {
       }),
   
       new webpack.ProvidePlugin({
-        process: 'process/browser',
+        process: 'process/browser.js',
       }),
   
       new webpack.ProvidePlugin({

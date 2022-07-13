@@ -267,7 +267,8 @@ class ItemWebService {
                 _id: item._id,
                 coverImageGenerated: coverImage.generated ? true : false,
                 coverImageId: coverImage._id,
-                title: `${item.title ? item.title + ' ' : ''} #${item.tokenId}`
+                title: `${item.title ? item.title + ' ' : ''} #${item.tokenId}`,
+                tokenId: item.tokenId
             })
 
         }
