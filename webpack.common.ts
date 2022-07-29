@@ -174,8 +174,8 @@ export default async (hostname, baseURL) => {
 
 
   // //Build individual item pages
-  // let itemViewModels:ItemViewModel[] = await itemWebService.list(0, 100000)
-  let itemViewModels:ItemViewModel[] = await itemWebService.list(0, 35)
+  let itemViewModels:ItemViewModel[] = await itemWebService.list(0, 100000)
+  // let itemViewModels:ItemViewModel[] = await itemWebService.list(0, 35)
 
 
 

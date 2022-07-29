@@ -85,11 +85,15 @@
                           <% } %>
                             >
     
-                            <% if (channelViewModel?.channel.coverImageId) { %>
-                              <img src="backup/images/<%=channelViewModel.channel.coverImageId%>.jpg" class="avatar" />
-                            <% } else { %>
-                              <i class="f7-icons avatar">photo</i>
-                            <% } %>
+                            <a href="<%= link('index.html') %>">
+
+                              <% if (channelViewModel?.channel.coverImageId) { %>
+                                <img src="backup/images/<%=channelViewModel.channel.coverImageId%>.jpg" class="avatar" />
+                              <% } else { %>
+                                <i class="f7-icons avatar">photo</i>
+                              <% } %>
+
+                            </a>
     
                       </div> 
     
