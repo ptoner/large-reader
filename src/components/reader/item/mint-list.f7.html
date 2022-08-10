@@ -111,14 +111,30 @@
 
 
 
+      <div class="card mint-list-card">
+        <div class="card-header">Next Up</div>
+        <div class="card-content">
 
-      <div class="block-title block-title-medium">Next Up</div>
+          <div class="block">
+            <p>
+              Please note that minting happens live on Ethereum and other users may mint the tokens you have selected. You <strong>MAY NOT</strong> get the tokens that are highlighted. 
+            </p>
 
-      <div class="list cards-list virtual-list" id="mint-list">
-        <ul class="item-flex"></ul>
+            <p>
+              This minting application is still pre-release. User beware. There may be bugs. 
+            </p>
+          </div>
+
+          <div class="list cards-list virtual-list" id="mint-list">
+            <ul class="item-flex"></ul>
+          </div>
+    
+          <div class="preloader infinite-scroll-preloader"></div>
+
+        </div>
       </div>
 
-      <div class="preloader infinite-scroll-preloader"></div>
+
 
     ` : $h`
       <li class="card skeleton-text skeleton-effect-wave">
@@ -139,7 +155,15 @@
 
 <style>
 
+.mint-list-card .card-header {
+  font-size: 27px;
+  font-weight: bold;
+}
 
+.mint-list-card .block {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
 </style>
 

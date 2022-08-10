@@ -32,7 +32,7 @@ let configs = []
 
 
 
-export default async (hostname, baseURL) => {
+export default async (hostname, baseURL, largeURL, ipfsCid) => {
 
   let plugins = []
 
@@ -81,7 +81,9 @@ export default async (hostname, baseURL) => {
       attributeReport: attributeReport,
       routablePages: routablePages,
       baseURL: baseURL,
-      hostname: hostname
+      hostname: hostname,
+      largeURL: largeURL,
+      ipfsCid: ipfsCid
     })
   )
 

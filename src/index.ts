@@ -7,12 +7,12 @@ import { getMainContainer } from "./inversify.config"
 //Import CSS
 import './html/css/framework7-bundle.css'
 import './html/css/framework7-icons.css'
+import 'material-icons/iconfont/material-icons.css'
 
 import './html/css/app.css'
 import Framework7 from "framework7"
 
 import {Workbox} from 'workbox-window'
-import { StaticPageService } from "./service/static-page-service"
 import { StaticPage } from "./dto/static-page"
 
 

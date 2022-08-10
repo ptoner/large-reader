@@ -1,5 +1,5 @@
 {
-  "name": "large-reader",
+  "name": "alice-large-reader",
   "version": "0.0.4",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
@@ -120,7 +120,9 @@
     "workbox-window": "6.5.3",
     "he": "1.2.0",
 
-    "mini-svg-data-uri": "1.4.4"
+    "mini-svg-data-uri": "1.4.4",
+
+    "material-icons": "1.10.7"
 
     
   }

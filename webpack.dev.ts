@@ -4,10 +4,15 @@ import common from './webpack.common'
 
 let mainConfigs = []
 
+let hostname = "http://localhost:8081"
+let baseURL = "/"
+let largeURL = "http://localhost:9081"
+let ipfsCid = "QmTQy7nCSMAksjTNcRryPcWaygZvj3FevQkrJAUoCYYS7z"
+
 
 export default async () => {
 
-    let configs = await common("http://localhost:8081", "/")
+    let configs = await common(hostname, baseURL, largeURL, ipfsCid)
 
     for (let config of configs) {
         //@ts-ignore

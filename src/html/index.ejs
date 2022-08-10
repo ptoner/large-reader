@@ -5,6 +5,8 @@
 
     let hostname = htmlWebpackPlugin.options.hostname
     let baseURL = htmlWebpackPlugin.options.baseURL
+    let largeURL = htmlWebpackPlugin.options.largeURL
+    let ipfsCid = htmlWebpackPlugin.options.ipfsCid
     let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
     let routablePages = htmlWebpackPlugin.options.routablePages
     let attributeReport = htmlWebpackPlugin.options.attributeReport
@@ -109,7 +111,7 @@
 
                     <% if(channelViewModel?.authorDisplayName) { %>
                       <div class="name">
-                        By <a href="author-<%=channelViewModel?.author._id%>.html">
+                        By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
                           <%= channelViewModel?.authorDisplayName %>
                         </a>
                       </div>
@@ -192,6 +194,16 @@
                   }
                 %>
 
+                <div class="block-title block-title-medium">Fork Collection</div>
+                <div class="block">   
+                    <a href="<%= largeURL %>#!/admin/channel/fork?cid=<%= ipfsCid %>" class="button button-fill external" style="width: 250px;">
+                      <span class="material-icons">fork_left</span>
+                      Fork
+                    </a>
+                </div>
+
+
+
                 <% 
                   if (channelViewModel.staticPagesViewModel.index?.length > 0) {
 
@@ -208,6 +220,7 @@
                     }
                   }                  
                 %>
+
 
 
 
@@ -314,6 +327,7 @@
 
                 photoBrowser = $f7.photoBrowser.create({
                   photos:list,
+                  type: "popup",
                   renderPage: () => `
                   <div class="page">
 
