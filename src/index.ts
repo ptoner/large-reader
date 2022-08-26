@@ -15,6 +15,9 @@ import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
 import { StaticPage } from "./dto/static-page"
 
+import './html/images/opensea.svg'
+
+
 
 let init = (baseURL:string, version:string, routablePages:StaticPage[]) => {
 

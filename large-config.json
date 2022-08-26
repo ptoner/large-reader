@@ -1,0 +1,18 @@
+{
+    "hostname": "https://localhost:8081",
+    "baseURL": "/",
+    "largeURL": "https://american-space-software.gitlab.io/large",
+    "ipfsCid": "",
+
+    "marketplaces": [
+        {
+            "name": "OpenSea",
+            "link": "https://opensea.io/collection/alices-adventures-in-wonderland",
+            "logo": "images/opensea.svg" 
+        },
+        {
+            "name": "LooksRare",
+            "link": "https://looksrare.org/collections/0x7B94d6436407A850e6200C2C677E94dc8941BB6f"
+        }
+    ]
+}

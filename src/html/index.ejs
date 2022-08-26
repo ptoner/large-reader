@@ -7,11 +7,12 @@
     let baseURL = htmlWebpackPlugin.options.baseURL
     let largeURL = htmlWebpackPlugin.options.largeURL
     let ipfsCid = htmlWebpackPlugin.options.ipfsCid
+    let marketplaces = htmlWebpackPlugin.options.marketplaces
+
     let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
     let routablePages = htmlWebpackPlugin.options.routablePages
     let attributeReport = htmlWebpackPlugin.options.attributeReport
 
-    console.log(attributeReport)
 
     const link = (href) => {
         return `${baseURL + href}`
@@ -84,7 +85,7 @@
 
             <div class="row">
 
-              <div class="col-100 large-66 center">
+              <div class="col-100 large-75 center">
                 
                 <div class="card channel-card-show">
 
@@ -139,6 +140,28 @@
                   </div>
 
                 </div>
+
+                <% 
+                  if (marketplaces?.length > 0) {
+                %>
+                <div class="block-title block-title-medium">Marketplaces</div>
+
+                <div class="list simple-list inset">
+                  <ul>
+                  
+                    <% 
+                      for (let marketplace of marketplaces) { 
+                    %>  
+                      <li><a href="<%= marketplace.link %>" class="external"><%= marketplace.name %></a></li>     
+                    <%
+                      }
+                    %>
+
+                  </ul>
+                </div>
+                <%
+                  }
+                %>
 
                 <mint-info
                   baseurl="<%= baseURL %>"
@@ -327,7 +350,7 @@
 
                 photoBrowser = $f7.photoBrowser.create({
                   photos:list,
-                  type: "popup",
+                  type: "standalone",
                   renderPage: () => `
                   <div class="page">
 
@@ -367,7 +390,6 @@
             $f7.preloader.hide()
 
             return $render;
-
 
       }
 

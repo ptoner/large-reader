@@ -477,7 +477,6 @@ ul.breadcrumb li a:hover {
 .animation-content {
   max-width: 100%; 
   overflow-y: scroll;
-  height: 500px; 
 }
 
 
@@ -545,7 +544,10 @@ ul.breadcrumb li a:hover {
 
 .data-table .label-cell {
   font-weight: bold;
+  width: 200px;
 }
+
+
 
 
 .scarcity-report-card.data-table table {

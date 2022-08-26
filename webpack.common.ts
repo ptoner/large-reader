@@ -1,3 +1,4 @@
+//@ts-nocheck
 import "core-js/stable"
 import "regenerator-runtime/runtime"
 import "reflect-metadata"
@@ -30,9 +31,7 @@ const VERSION = JSON.stringify(require("./package.json").version)
 let configs = []
 
 
-
-
-export default async (hostname, baseURL, largeURL, ipfsCid) => {
+export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
 
   let plugins = []
 
@@ -69,6 +68,8 @@ export default async (hostname, baseURL, largeURL, ipfsCid) => {
   await fs.promises.writeFile(`public/slideshow.json`, JSON.stringify(await itemWebService.buildSlideshow()))
 
 
+  console.log(marketplaces)
+
   //Build home page
   plugins.push(
     new HtmlWebpackPlugin({
@@ -83,6 +84,7 @@ export default async (hostname, baseURL, largeURL, ipfsCid) => {
       baseURL: baseURL,
       hostname: hostname,
       largeURL: largeURL,
+      marketplaces: marketplaces,
       ipfsCid: ipfsCid
     })
   )
