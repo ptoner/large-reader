@@ -38,7 +38,7 @@
     
                       <div class="left">
                         
-                          <a class="title" href="${link(`item-show-${itemViewModel.item._id}.html`)}">
+                          <a class="title" href="${link(`token-${itemViewModel.item.tokenId}.html`)}">
                               ${itemViewModel.item.title}
                               <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
                           </a>
@@ -51,7 +51,7 @@
     
                       ${itemViewModel.coverImage ? $h`
                         <div class="right">
-                          <a class="title" href="${link(`item-show-${itemViewModel.item._id}.html`)}">
+                          <a class="title" href="${link(`token-${itemViewModel.item.tokenId}.html`)}">
                             <img src="backup/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
                           </a>
                         </div>
@@ -65,7 +65,7 @@
                     <div class="item-preview">
                       <div class="left">
     
-                          <a class="title" href="${link(`item-show-${itemViewModel.item._id}.html`)}">
+                          <a class="title" href="${link(`t/${itemViewModel.item.tokenId}`)}">
                             ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
                           </a>
     

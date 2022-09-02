@@ -1,4 +1,5 @@
 import { AttributeOptions, AttributeSelection } from "../../dto/attribute";
+import { AttributeTotal } from "./attribute-report";
 
 
 interface AttributeSelectionViewModel {
@@ -8,6 +9,8 @@ interface AttributeSelectionViewModel {
 
     values:string[]
     value:string
+
+    attributeTotal:AttributeTotal
 }
 
 export {

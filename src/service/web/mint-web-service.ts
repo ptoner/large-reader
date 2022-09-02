@@ -46,34 +46,35 @@ class MintWebService {
 
             let lastMinted = []
 
-            if (totalMinted.gt(0)) {
+            // if (totalMinted.gt(0)) {
 
-                let items = await this.itemService.listByTokenId(totalMinted.toNumber())
+            //     let items = await this.itemService.listByTokenId(totalMinted.toNumber())
 
-                for (let item of items) {
+            //     for (let item of items) {
 
-                    try {
+            //         try {
 
-                        //@ts-ignore
-                        let owner = await this.tokenService.ownerOf(item.tokenId)
+            //             //@ts-ignore
+            //             let owner = await this.tokenService.ownerOf(item.tokenId)
 
-                        lastMinted.push({
-                            owner: await this.walletService.truncateEthAddress(owner),
-                            item: item
-                        })
+            //             lastMinted.push({
+            //                 owner: await this.walletService.truncateEthAddress(owner),
+            //                 item: item
+            //             })
 
-                    } catch(ex) {}
+            //         } catch(ex) {}
 
                     
-                }
+            //     }
 
-            }            
+            // }            
 
             return {
                 totalMinted: totalMinted.toNumber(),
                 totalSupply: channel.itemCount,
                 mintPrice: channel.mintPrice,
-                lastMinted: lastMinted
+                lastMinted: lastMinted,
+                minting: totalMinted.toNumber() < channel.itemCount
             }
             
         }

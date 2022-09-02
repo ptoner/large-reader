@@ -17,6 +17,10 @@ class ImageService {
     return this.imageRepository.get(_id)
   }
 
+  async list() : Promise<Image[]> {
+    return this.imageRepository.list()
+  }
+
   async getUrl(image: Image) {
 
     if (!image.buffer && !image.svg) return ""
@@ -51,6 +55,9 @@ class ImageService {
   public bufferToDataURL (mimeType, buffer) {
     return `data:${mimeType};base64,${buffer.toString("base64")}`
   }
+
+
+
 
 
 }

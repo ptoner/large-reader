@@ -37,6 +37,15 @@ class ImageRepositoryImpl implements ImageRepository {
         return image
     }
 
+    async list() : Promise<Image[]> {
+
+        if(this.images?.length == 0) {
+            this.images = JSON.parse(fs.readFileSync('backup/images.json', 'utf8'))
+        }
+
+        return this.images
+    }
+
 
 }
 

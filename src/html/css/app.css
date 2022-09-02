@@ -326,10 +326,7 @@ ul.breadcrumb li a:hover {
 
 
 .cover-image-preview {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  height: 200px; 
-  width: 200px;
+  max-width: 100%;
   border: 1px solid #cccccc;
 }
 
@@ -689,4 +686,37 @@ ul.breadcrumb li a:hover {
 html {
   visibility: visible;
   opacity: 1;
+}
+
+
+.photo-browser-caption {
+  height: 75px;
+  pointer-events: all;
+}
+
+.attribute-value {
+  width: 125px;
+  border: 1px solid rgb(21, 178, 229);
+  border-radius: 5px;
+  background: rgba(21, 178, 229, 0.06);
+  display: inline-block;
+  margin: 5px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.attribute-value .trait-type {
+  font-size: 12px;
+  color: rgb(21, 178, 229);
+}
+
+.attribute-value .value {
+  font-size: 14px;
+  font-weight: bold;
+  color:rgb(53, 56, 64);
+}
+
+.attribute-value .category-percent {
+  font-size: 12px;
+  color: rgb(112, 122, 131);
 }

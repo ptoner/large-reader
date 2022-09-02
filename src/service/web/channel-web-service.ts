@@ -57,7 +57,7 @@ class ChannelWebService {
 
         let pagingViewModel = this.pagingService.buildPagingViewModel(offset, CHUNK_SIZE, itemCount, 5)
 
-        let items = await this.itemWebService.list(offset)
+        // let items = await this.itemWebService.list(offset)
 
         
         let locations = ["navbar", "links", "index"]
@@ -75,18 +75,17 @@ class ChannelWebService {
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
             itemCount: itemCount,
-            pagingViewModel: pagingViewModel,
-            items: items
+            pagingViewModel: pagingViewModel
         }
 
     }
 
 
-    async getAttributeReport() : Promise<AttributeReport> {
+    async buildAttributeReport() : Promise<AttributeReport> {
 
         let items:Item[] = await this.itemService.all()
 
-        return this.channelService.getAttributeReport(items)
+        return this.itemService.buildAttributeReport(await this.channelService.get(), items)
     }
 
 

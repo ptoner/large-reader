@@ -17,9 +17,7 @@ class ChannelService {
     return this.channelRepository.get()
   }
 
-  async getAttributeReport(items:Item[]) : Promise<AttributeReport> {
-    return this.channelRepository.getAttributeReport(items)
-  }
+
 
 }
 

@@ -4,138 +4,158 @@
     
     ${mintingViewModel ? $h`
 
-      ${mintingViewModel.lastMinted?.length > 0 ? $h`
-        <div class="block-title block-title-small">Latest Mint(s)</div>
-        <div class="swiper inset" id="latest-mints-swiper">
+      ${mintingViewModel.minting ? $h`
 
-          <div class="swiper-wrapper">
+          ${mintingViewModel.lastMinted?.length > 0 ? $h`
+            <div class="block-title block-title-small">Latest Mint(s)</div>
+            <div class="swiper inset" id="latest-mints-swiper">
 
-            ${mintingViewModel.lastMinted?.map(m => $h`
-              <div class="swiper-slide">
+              <div class="swiper-wrapper">
 
-                <a href="${link(`item-show-${m.item._id}.html`)}">
-                  <div class="card" >
-                      <div class="card-content">
-                          <div class="square">
-                              <img src="${link(`backup/images/${m.item.coverImageId}`)}.${m.item.coverImageGenerated ? 'svg' : 'jpg'}"/>
+                ${mintingViewModel.lastMinted?.map(m => $h`
+                  <div class="swiper-slide">
+
+                    <a href="${link(`t/${m.item.tokenId}`)}">
+                      <div class="card" >
+                          <div class="card-content">
+                              <div class="square">
+                                  <img src="${link(`backup/images/${m.item.coverImageId}`)}.${m.item.coverImageGenerated ? 'svg' : 'jpg'}"/>
+                              </div>
+                          </div>
+
+                          <div class="card-footer">
+                              #${m.item.tokenId} by ${m.owner}
                           </div>
                       </div>
+                  </a>
 
-                      <div class="card-footer">
-                          #${m.item.tokenId} by ${m.owner}
-                      </div>
                   </div>
-              </a>
+                `)}
 
               </div>
-            `)}
 
-          </div>
-
-          <div class="swiper-pagination"></div>
-          <div class="swiper-scrollbar"></div>
-        </div>
- 
-      ` : $h`<span />`}
-
-      <div class="block-title block-title-medium">Mint NFTs</div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-scrollbar"></div>
+            </div>
       
-      <div class="block block-strong inset">
-        <p>
-          <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
-        </p>
-      </div>
+          ` : $h`<span />`}
+
+          <div class="block-title block-title-medium">Create a digital collectible!</div>
+
+          <div class="list simple-list inset">
+            <ul>
+              <li>NFTs are minted in sequential order.</li>
+              <li>From the beginning of the story to the end.</li>
+              <li>View which NFTs will be minted next in the list below.</li>
+              <li>Limited supply!</li>
+            </ul>
+          </div>
+
+          <div class="block block-strong inset">
+              <p>
+                <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+              </p>              
+          </div>
 
 
-      <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
-        <ul>
+          <div class="block-title block-title-medium">
+            Select between 1-10 NFTs and click the mint button. 
+          </div>
+          <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
+            <ul>
 
-          <li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">Select number of NFTs to mint.</div>
-              <div class="item-input-wrap">
-                <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
-                  <input type="range" value="1" min="0" max="10" step="1" />
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Select number of NFTs to mint.</div>
+                  <div class="item-input-wrap">
+                    <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
+                      <input type="range" value="1" min="0" max="10" step="1" />
+                    </div>
+                  </div>
                 </div>
+              </li>
+
+              <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title mint-detail">
+                          <p>
+                            <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
+                          </p>
+                          <p>
+                            <strong>Quantity:</strong> ${quantity} 
+                          </p>
+                          <p>
+                            <strong>Total:</strong> ${total} ETH
+                          </p>
+                        </div>
+                    </div>
+                </div>
+              </li>
+
+              <li>
+                <label class="item-checkbox item-content">
+
+                    <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
+                    
+                    <i class="icon icon-checkbox"></i>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">Exact Tokens Only</div>
+                        </div>
+                        <div class="item-text exact-tokens-only">
+                            <p>If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</p>
+
+                        </div>
+                    </div>
+                </label>
+              </li>
+
+              <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                      <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
+                    </div>
+                </div>
+              </li>
+              
+            </ul>
+
+          </form>
+
+          <div class="card mint-list-card">
+            <div class="card-header">Next Up</div>
+            <div class="card-content">
+
+              <div class="block">
+                <p>
+                  Please note that minting happens live on Ethereum and other users may mint the tokens you have selected. You <strong>MAY NOT</strong> get the tokens that are highlighted. 
+                </p>
+
+                <p>
+                  This minting application is still pre-release. User beware. There may be bugs. 
+                </p>
               </div>
+
+              <div class="list cards-list virtual-list" id="mint-list">
+                <ul class="item-flex"></ul>
+              </div>
+        
+              <div class="preloader infinite-scroll-preloader"></div>
+
             </div>
-          </li>
-
-          <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title mint-detail">
-                      <p>
-                        <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
-                      </p>
-                      <p>
-                        <strong>Quantity:</strong> ${quantity} 
-                      </p>
-                      <p>
-                        <strong>Total:</strong> ${total} ETH
-                      </p>
-                    </div>
-                </div>
-            </div>
-          </li>
-
-          <li>
-            <label class="item-checkbox item-content">
-
-                <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
-                
-                <i class="icon icon-checkbox"></i>
-                <div class="item-inner">
-                    <div class="item-title-row">
-                        <div class="item-title">Exact Tokens Only</div>
-                    </div>
-                    <div class="item-text exact-tokens-only">
-                        <p>If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</p>
-
-                    </div>
-                </div>
-            </label>
-          </li>
-
-          <li>
-            <div class="item-content">
-                <div class="item-inner">
-                  <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
-                </div>
-            </div>
-          </li>
+          </div>
           
-        </ul>
-
-      </form>
-
-
-
-      <div class="card mint-list-card">
-        <div class="card-header">Next Up</div>
-        <div class="card-content">
-
-          <div class="block">
-            <p>
-              Please note that minting happens live on Ethereum and other users may mint the tokens you have selected. You <strong>MAY NOT</strong> get the tokens that are highlighted. 
-            </p>
-
-            <p>
-              This minting application is still pre-release. User beware. There may be bugs. 
-            </p>
+      ` : $h`
+        <li class="card">
+          <div class="card-header">Minting Complete</div>
+          <div class="card-content card-content-padding">
+            Minting is complete. Thank you!
           </div>
-
-          <div class="list cards-list virtual-list" id="mint-list">
-            <ul class="item-flex"></ul>
-          </div>
+        </li>
+      
+      `}
     
-          <div class="preloader infinite-scroll-preloader"></div>
-
-        </div>
-      </div>
-
-
-
     ` : $h`
       <li class="card skeleton-text skeleton-effect-wave">
         <div class="card-header">Loading Loading Loading</div>

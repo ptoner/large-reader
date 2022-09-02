@@ -1,14 +1,14 @@
 {
-    "hostname": "https://localhost:8081",
+    "hostname": "https://readalice.com",
     "baseURL": "/",
     "largeURL": "https://american-space-software.gitlab.io/large",
-    "ipfsCid": "",
+    "ipfsCid": "QmTQy7nCSMAksjTNcRryPcWaygZvj3FevQkrJAUoCYYS7z",
 
     "marketplaces": [
         {
             "name": "OpenSea",
             "link": "https://opensea.io/collection/alices-adventures-in-wonderland",
-            "logo": "images/opensea.svg" 
+            "assetLink": "https://opensea.io/assets/ethereum/0x7b94d6436407a850e6200c2c677e94dc8941bb6f/{tokenId}" 
         },
         {
             "name": "LooksRare",

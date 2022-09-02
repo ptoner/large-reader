@@ -14,25 +14,28 @@ import Framework7 from "framework7"
 
 import {Workbox} from 'workbox-window'
 import { StaticPage } from "./dto/static-page"
+import internal from "stream"
 
-import './html/images/opensea.svg'
+// import './html/images/opensea.svg'
 
 
 
-let init = (baseURL:string, version:string, routablePages:StaticPage[]) => {
+let init = (baseURL:string, hostname:string, version:string, routablePages:StaticPage[]) => {
 
 
     if ('serviceWorker' in navigator) {
 
-        const wb = new Workbox(`./sw-${version}.js`, {
-            scope: baseURL
+        // console.log(`${hostname}${baseURL}`)
+
+        const wb = new Workbox(`${hostname}${baseURL}sw-${version}.js`, {
+            scope: `${hostname}${baseURL}`
         })
 
         if (navigator.serviceWorker.controller) {
-            startApp(baseURL, version, window.location.pathname, routablePages)
+            startApp(baseURL, version, hostname, routablePages)
         } else {
             wb.addEventListener('controlling', e => {
-                startApp(baseURL, version, window.location.pathname, routablePages)
+                startApp(baseURL, version, hostname, routablePages)
             })
         }
 
@@ -43,25 +46,27 @@ let init = (baseURL:string, version:string, routablePages:StaticPage[]) => {
 
 } 
 
-let startApp = async (baseURI:string, version:string, pathName:string, routablePages:StaticPage[]) => {
+let startApp = async (baseURI:string, version:string, hostname:string, routablePages:StaticPage[]) => {
 
-    console.log(baseURI, version, pathName)
+    // console.log(baseURI, version, hostname)
 
     let container = getMainContainer(baseURI, version, routablePages)            
     let app:Framework7 = container.get("framework7")
     
-
     //Create the main view
-    const url = `${baseURI}${pathName.split('/').pop()}`
+
+    //Get URL
+    let internalUrl = window.location.toString().replace(`${hostname}`, '')
+
     const mainView = app.views.create('.view-main', {
-        url: url
+        url: internalUrl
     })
 
 
     mainView.on("init", (view) => {
-        console.log(`Navigating to ${url}`)
+        console.log(`Navigating to ${internalUrl}`)
         //When the view loads lets reload the initial page so that we fire the component logic. 
-        view.router.navigate(url, { reloadCurrent: true })
+        view.router.navigate(internalUrl, { reloadCurrent: true })
     })
     
     app.init()

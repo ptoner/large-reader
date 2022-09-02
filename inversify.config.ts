@@ -26,6 +26,9 @@ import { ItemPageRepositoryImpl } from "./src/repository/node/item-page-reposito
 import { SlideshowRepository } from "./src/repository/slideshow-repository";
 import { SlideshowRepositoryImpl } from "./src/repository/node/slideshow-repository-impl";
 
+import { AttributeReportRepository } from "./src/repository/attribute-report-repository";
+import { AttributeReportRepositoryImpl } from "./src/repository/node/attribute-report-repository-impl";
+
 import { AuthorService } from "./src/service/author-service";
 import { ChannelService } from "./src/service/channel-service";
 import { SearchbarService } from "./src/service/web/searchbar-service";
@@ -55,7 +58,7 @@ import { AnimationRepository } from "./src/repository/animation-repository";
 
 let container:Container
 
-function getMainContainer() {
+function getMainContainer(baseURI:string) {
 
   if (container) return container
 
@@ -64,7 +67,7 @@ function getMainContainer() {
   container.bind("framework7").toConstantValue({})
   container.bind("contracts").toConstantValue({})
   container.bind("provider").toConstantValue({})
-  container.bind("baseURI").toConstantValue("")
+  container.bind("baseURI").toConstantValue(baseURI)
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
@@ -76,6 +79,7 @@ function getMainContainer() {
   container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryImpl).inSingletonScope()
   container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryImpl).inSingletonScope()
   container.bind<SlideshowRepository>("SlideshowRepository").to(SlideshowRepositoryImpl).inSingletonScope()
+  container.bind<AttributeReportRepository>("AttributeReportRepository").to(AttributeReportRepositoryImpl).inSingletonScope()
 
 
 

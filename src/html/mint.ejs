@@ -81,14 +81,14 @@
                     <div class="card channel-card-show">
 
                       <div class="card-header banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                        style="background-image: url('backup/images/<%=channelViewModel?.channel.coverBannerId%>.jpg')"
+                        style="background-image: url('<%= link(`backup/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
                           <% } %>
                             >
     
                             <a href="<%= link('index.html') %>">
 
                               <% if (channelViewModel?.channel.coverImageId) { %>
-                                <img src="backup/images/<%=channelViewModel.channel.coverImageId%>.jpg" class="avatar" />
+                                <img src="<%= link(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
                               <% } else { %>
                                 <i class="f7-icons avatar">photo</i>
                               <% } %>
@@ -100,14 +100,12 @@
                       <div class="card-content card-content-padding">
     
                         <div class="title">
-                          <%= channelViewModel.channel.title %>
+                          <a href="<%= link('index.html') %>"><%= channelViewModel.channel.title %></a>
                         </div>
     
                         <% if(channelViewModel?.authorDisplayName) { %>
                           <div class="name">
-                            By <a href="author-<%=channelViewModel?.author._id%>.html">
-                              <%= channelViewModel?.authorDisplayName %>
-                            </a>
+                            By <%= channelViewModel?.authorDisplayName %>
                           </div>
                         <% } %>
     
@@ -283,7 +281,7 @@
         function getTemplate(rowItemViewModel) {
 
         return `<li class="flex-card">
-                    <a href="${link(`item-show-${rowItemViewModel._id}.html`)}" class="item-link">
+                    <a href="${link(`t/${rowItemViewModel.tokenId}`)}" class="item-link">
                         <div class="card" >
                             <div class="card-content">
                                 <div class="square">
@@ -473,7 +471,7 @@
     <script type="module" id="page-scripts">
 
       let routablePages = JSON.parse(`<%= JSON.stringify(routablePages) %>`)
-      let app = reader.init('<%= baseURL %>', '<%= VERSION %>', routablePages )
+      let app = reader.init('<%= baseURL %>', '<%= hostname %>', '<%= VERSION %>', routablePages )
 
     </script>
 

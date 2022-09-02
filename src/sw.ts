@@ -4,27 +4,27 @@ const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
 import he from 'he'
 
-
-
 // console.log(VERSION)
+// console.log(HOSTNAME)
+// console.log(BASEURL)
 
 const DEBUG = false
 const RUNTIME = 'runtime'
 
 let parser = new DOMParser()
 
-const getBaseURL = () => {
+// const getBaseURL = () => {
 
-    let pathSplit = self.location.pathname.split("/")
+//     let pathSplit = self.location.pathname.split("/")
 
-    pathSplit.pop() //remove last
+//     pathSplit.pop() //remove last
 
-    let basepath = pathSplit.join("/") 
+//     let basepath = pathSplit.join("/") 
 
-    return basepath 
-}
+//     return basepath 
+// }
 
-let baseURL = getBaseURL()
+let baseURL = BASEURL
 
 console.log(`[SW] Base Path: ${baseURL}`)
 
@@ -78,12 +78,14 @@ self.addEventListener('fetch', event => {
 
     let process = false
     
+    // console.log(url.pathname)
 
     //Skip backup folder
     if (url.pathname.endsWith(`.html`)) process = true
-    
-    if (url.pathname.startsWith(`${baseURL}/backup`)) process = false
-    
+    if (url.pathname.startsWith(`${baseURL}t`)) process = true
+
+    if (url.pathname.startsWith(`${baseURL}backup`)) process = false
+
     // if (url.pathname.startsWith(`${baseURL}/index`)) process = true
     // if (url.pathname.startsWith(`${baseURL}/mint`)) process = true
 

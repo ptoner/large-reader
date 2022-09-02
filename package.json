@@ -1,6 +1,6 @@
 {
-  "name": "alice-large-reader",
-  "version": "0.0.4",
+  "name": "large-reader",
+  "version": "0.0.5",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
@@ -82,7 +82,10 @@
     "@babel/preset-env": "7.16.11",
 
     "quill-delta-to-html": "0.11.0",
-    "quill-delta-to-markdown": "0.6.0"
+    "quill-delta-to-markdown": "0.6.0",
+
+    "convert-svg-to-png": "0.6.4",
+    "path": "0.12.7"
   },
 
   "dependencies": {

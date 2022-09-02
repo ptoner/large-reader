@@ -16,7 +16,7 @@ interface ChannelViewModel {
 
     pagingViewModel:PagingViewModel
 
-    items:ItemViewModel[]
+    // items:ItemViewModel[]
 
     //Get static pages
     staticPagesViewModel: any

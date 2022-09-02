@@ -13,7 +13,7 @@ let config:any = require("./large-config.json")
 
 export default async () => {
 
-    let configs = await common(hostname, baseURL, largeURL, ipfsCid, config.marketplaces)
+    let configs = await common(hostname, baseURL, largeURL, ipfsCid, config.marketplaces, 35)
 
     for (let config of configs) {
         //@ts-ignore

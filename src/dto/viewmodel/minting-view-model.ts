@@ -7,6 +7,8 @@ interface MintingViewModel {
 
     lastMinted?:any[]
 
+    minting?:boolean
+
 }
 
 export {

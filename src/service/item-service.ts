@@ -2,6 +2,9 @@ import { inject, injectable } from "inversify";
 import { Item } from "../dto/item";
 import { ItemRepository } from "../repository/item-repository";
 import { SlideshowRepository } from "../repository/slideshow-repository";
+import { AttributeReportRepository } from "../repository/attribute-report-repository";
+import { AttributeReport } from "../dto/viewmodel/attribute-report";
+import { Channel } from "../dto/channel";
 
 @injectable()
 class ItemService {
@@ -11,6 +14,10 @@ class ItemService {
   
     @inject("SlideshowRepository")
     private slideshowRepository:SlideshowRepository
+
+      
+    @inject("AttributeReportRepository")
+    private attributeReportRepository:AttributeReportRepository
 
     constructor(
     ) { }
@@ -43,6 +50,15 @@ class ItemService {
     async getSlideshow() {
         return this.slideshowRepository.get()
     }
+    
+    async getAttributeReport() {
+        return this.attributeReportRepository.get()
+    }
+
+    async buildAttributeReport(channel:Channel, items:Item[]) : Promise<AttributeReport> {
+        return this.attributeReportRepository.buildAttributeReport(channel, items)
+      }
+
 
 
 }

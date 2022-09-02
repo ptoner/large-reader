@@ -135,7 +135,7 @@
     <script type="module" id="page-scripts">
 
       let routablePages = JSON.parse(`<%= JSON.stringify(routablePages) %>`)
-      let app = reader.init('<%= baseURL %>', '<%= VERSION %>', routablePages )
+      let app = reader.init('<%= baseURL %>', '<%= hostname %>', '<%= VERSION %>', routablePages )
 
     </script>
 

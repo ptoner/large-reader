@@ -52,11 +52,6 @@ class ChannelRepositoryImpl implements ChannelRepository {
         return channel
     }
 
-    async getAttributeReport(items:Item[]) : Promise<AttributeReport> {
-        return 
-    }
-
-
 }
 
 export {

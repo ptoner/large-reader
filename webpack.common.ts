@@ -7,6 +7,9 @@ import "reflect-metadata"
 import path from 'path'
 import webpack from 'webpack'
 
+import { convertFile } from 'convert-svg-to-png'
+
+
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 
@@ -17,31 +20,31 @@ const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").def
 import { getMainContainer } from "./inversify.config"
 import { ChannelWebService } from './src/service/web/channel-web-service'
 import { ChannelService } from "./src/service/channel-service"
-import { CHUNK_SIZE } from "./src/repository/item-repository"
 import { ItemWebService } from "./src/service/web/item-web-service"
 import { ItemViewModel } from "./src/dto/viewmodel/item-view-model"
 import { ItemRepositoryImpl } from "./src/repository/node/item-repository-impl"
-import { QuillService } from "./src/service/core/quill-service"
 import { StaticPageService } from "./src/service/static-page-service"
 import { StaticPageRepositoryImpl } from "./src/repository/node/static-page-repository-impl"
 import fs from "fs"
+import { ImageService } from "./src/service/image-service"
 
 const VERSION = JSON.stringify(require("./package.json").version)
 
 let configs = []
 
 
-export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
+export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces, maxItems) => {
 
   let plugins = []
 
-  let container = getMainContainer()
+  let container = getMainContainer(baseURL)
 
   let channelWebService:ChannelWebService = container.get("ChannelWebService")
 
   let channelService:ChannelService = container.get("ChannelService")
   let itemWebService:ItemWebService = container.get("ItemWebService")
   let staticPageService:StaticPageService = container.get("StaticPageService")
+  let imageService:ImageService = container.get("ImageService")
 
   //Not great to get the impl here. Maybe load should be part of interface. 
   let itemRepository:ItemRepositoryImpl = container.get("ItemRepository")
@@ -50,25 +53,82 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
   let staticPageRepository:StaticPageRepositoryImpl = container.get("StaticPageRepository")
   await staticPageRepository.load()
 
+  //Attribute report
+  let attributeReport = await channelWebService.buildAttributeReport()
+
+  // console.log(JSON.stringify(attributeReport))
+  await fs.promises.writeFile(`public/attributeReport.json`, JSON.stringify(attributeReport))
+
 
   //Get channel
   let channel = await channelService.get()
   let channelViewModel = await channelWebService.get(0)
   
 
-
+  //Get items
+  let itemViewModels:ItemViewModel[] = await itemWebService.list(0, maxItems)
 
   //The list of routable pages to generate.
   let routablePages = await staticPageService.listRoutablePages()
 
-  //Attribute report
-  let attributeReport = await channelWebService.getAttributeReport()
+
+
+
 
   //Write slideshow to file
-  await fs.promises.writeFile(`public/slideshow.json`, JSON.stringify(await itemWebService.buildSlideshow()))
+  // await fs.promises.writeFile(`public/slideshow.json`, JSON.stringify(await itemWebService.buildSlideshow()))
 
 
-  console.log(marketplaces)
+  //Create plugin to process SVGs to PNG
+  class ProcessImagesPlugin {
+    // Define `apply` as its prototype method which is supplied with compiler as its argument
+    apply(compiler) {
+      // Specify the event hook to attach to
+      compiler.hooks.emit.tapAsync(
+        'ProcessImagesPlugin',
+        async (compilation, callback) => {
+  
+          //Generate PNG previews for any SVG coverImage so that we always can show a Twitter preview
+          let images:Image[] = await imageService.list()
+
+          for (let image of images.filter( image => !image.generated)) {
+            
+            // if (!image.generated) continue 
+
+            let pngPath = `public/images/generatedPNG/${image._id}.png`
+            let svgPath = path.resolve(`./backup/images/${image._id}.svg`)
+
+            //Check if there's already a PNG
+            if (fs.existsSync(pngPath)) continue
+
+            //Make sure the SVG does exist
+            if (!fs.existsSync(svgPath)) continue
+
+            if (!fs.existsSync(`public/images/generatedPNG/`)) {
+              await fs.promises.mkdir(`public/images/generatedPNG/`)
+            }
+            
+            let svg = fs.promises.readFile(svgPath)
+            // console.log(svgPath)
+
+            console.log(`Creating PNG ${pngPath}`)
+
+            await convertFile(svgPath, {
+              outputFilePath: pngPath,
+              height: 1200,
+              width: 1200
+            })
+
+            
+          }
+
+          callback();
+        }
+      );
+    }
+  }
+
+
 
   //Build home page
   plugins.push(
@@ -85,7 +145,8 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
       hostname: hostname,
       largeURL: largeURL,
       marketplaces: marketplaces,
-      ipfsCid: ipfsCid
+      ipfsCid: ipfsCid,
+      firstPost: itemViewModels[0]
     })
   )
 
@@ -118,6 +179,24 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
       hostname: hostname
     })
   )
+
+
+    //Attribute Report
+    plugins.push(
+      new HtmlWebpackPlugin({
+        inject: false,
+        title: channelViewModel.channel.title,
+        // favicon: 'src/html/favicon.ico',
+        template: 'src/html/pages/attributes.ejs',
+        filename: 'attributes.html',
+        channelViewModel: channelViewModel,
+        attributeReport: attributeReport,
+        routablePages: routablePages,
+        baseURL: baseURL,
+        hostname: hostname,
+        largeURL: largeURL
+      })
+    )
 
 
   //explore page
@@ -177,9 +256,7 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
   }
 
 
-  // //Build individual item pages
-  let itemViewModels:ItemViewModel[] = await itemWebService.list(0, 100000)
-  // let itemViewModels:ItemViewModel[] = await itemWebService.list(0, 35)
+
 
 
 
@@ -191,8 +268,8 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
         inject: false,
         title: itemViewModel.item.title,
         // favicon: 'src/html/favicon.ico',
-        template: 'src/html/pages/item-show.ejs',
-        filename: `item-show-${itemViewModel.item._id}.html`,
+        template: 'src/html/pages/token.ejs',
+        filename: `t/${itemViewModel.item.tokenId}/index.html`,
         itemViewModel: itemViewModel,
         routablePages: routablePages,
         baseURL: baseURL,
@@ -282,7 +359,8 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
         "util": require.resolve("util/"),
         "assert": require.resolve("assert/"),
         "stream": require.resolve("stream-browserify"),
-        "crypto": require.resolve("crypto-browserify")
+        "crypto": require.resolve("crypto-browserify"),
+        "fs": false
       }
     },
     output: {
@@ -340,7 +418,9 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
         patterns: [
             { from: './backup', to: 'backup' }
         ]
-      })
+      }),
+
+      // new ProcessImagesPlugin() //too slow right now
     ]
   }
 
@@ -364,7 +444,9 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        VERSION: VERSION
+        VERSION: VERSION,
+        BASEURL: JSON.stringify(baseURL),
+        HOSTNAME: JSON.stringify(hostname)
       })
     ]
   }

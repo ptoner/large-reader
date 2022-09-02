@@ -21,6 +21,7 @@ import he from "he"
 import { ItemPage, RowItemViewModel } from "../../dto/item-page";
 import { ItemPageService } from "../item-page-service";
 import { Slideshow } from "../../dto/slideshow";
+import { AttributeReport, AttributeTotal } from "../../dto/viewmodel/attribute-report";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
@@ -66,10 +67,13 @@ class ItemWebService {
         //Get channel
         const channel = await this.channelService.get()
 
-        return this.getViewModel(item, channel)
+        //Get attribute report
+        const attributeReport:AttributeReport = await this.itemService.getAttributeReport()
+
+        return this.getViewModel(item, channel, attributeReport)
     }
 
-    async getViewModel(item: Item, channel:Channel): Promise<ItemViewModel> {
+    async getViewModel(item: Item, channel:Channel, attributeReport:AttributeReport): Promise<ItemViewModel> {
 
         let attributeSelections:AttributeSelectionViewModel[] = []
 
@@ -92,11 +96,20 @@ class ItemWebService {
                 //find the one selected by this item
                 let selections = item?.attributeSelections?.filter( as => ao?.traitType == as?.traitType)
 
+                let selection = selections?.length > 0 ? selections[0].value : undefined
+
+
+                let attributeTotals:AttributeTotal[] = attributeReport.totals[ao.traitType]
+
+                let matches = attributeTotals?.filter( at => at.value == selection)
+
+
                 attributeSelections.push({
                     id: ao.id,
                     traitType: ao.traitType,
                     values: ao.values,
-                    value: selections?.length > 0 ? selections[0].value : '' 
+                    value: selection,
+                    attributeTotal: matches?.length > 0 ? matches[0] : undefined
                 })
 
             }
@@ -220,11 +233,14 @@ class ItemWebService {
 
         //Get channel
         const channel = await this.channelService.get()
+
+        //Get attribute report
+        const attributeReport:AttributeReport = await this.itemService.getAttributeReport()
         
         let items: Item[] = await this.itemService.list(skip, limit)
 
         for (let item of items) {
-            result.push(await this.getViewModel(item, channel))
+            result.push(await this.getViewModel(item, channel, attributeReport))
         }
 
         return result

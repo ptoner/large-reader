@@ -101,6 +101,8 @@ import { ItemPageRepositoryImpl } from "./repository/browser/item-page-repositor
 import { SlideshowRepository } from "./repository/slideshow-repository";
 import { SlideshowRepositoryImpl } from "./repository/browser/slideshow-repository-impl";
 import { QueueService } from "./service/core/queue-service";
+import { AttributeReportRepositoryImpl } from "./repository/node/attribute-report-repository-impl";
+import { AttributeReportRepository } from "./repository/attribute-report-repository";
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
@@ -128,14 +130,16 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
 
     const resolveWithSpinner = (resolve, url) => {
       
-      let currentUrl = window.location.pathname.split('/').pop()
+      // let currentUrl = window.location.pathname.split('/').pop()
 
       //Navigating to same page freezes it. So don't.
-      if (url != currentUrl)  {
-        app.preloader.show()
-      } 
+      // if (url != currentUrl)  {
+      //   app.preloader.show()
+      // } 
 
-      resolve({ componentUrl: url })
+      // console.log(url)
+
+      resolve({ componentUrl: `${baseURI}${url}` })
 
     }
 
@@ -149,6 +153,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
       {
         path: `${baseURI}index.html`,
         async async({ resolve, reject }) {
+          console.log('eee')
           await resolveWithSpinner(resolve, 'index.html')
         }
       },
@@ -169,6 +174,13 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
       },
 
       {
+        path: `${baseURI}attributes.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attributes.html')
+        }
+      },
+
+      {
         path: `${baseURI}explore.html`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'explore.html')
@@ -183,9 +195,9 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
         }
       },
       {
-        path: `${baseURI}item-show-:id.html`,
+        path: `${baseURI}t/:tokenId`,
         async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'item-show-{{id}}.html')
+          await resolveWithSpinner(resolve, `t/{{tokenId}}`)
         }
       }
     ]
@@ -284,6 +296,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryImpl).inSingletonScope()
   container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryImpl).inSingletonScope()
   container.bind<SlideshowRepository>("SlideshowRepository").to(SlideshowRepositoryImpl).inSingletonScope()
+  container.bind<AttributeReportRepository>("AttributeReportRepository").to(AttributeReportRepositoryImpl).inSingletonScope()
 
 
 
