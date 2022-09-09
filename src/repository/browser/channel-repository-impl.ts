@@ -1,22 +1,22 @@
 import axios from "axios"
 import {  inject, injectable } from "inversify"
 import { Channel } from "../../dto/channel"
-import { Item } from "../../dto/item"
-import { AttributeReport } from "../../dto/viewmodel/attribute-report"
-import { DatabaseService } from "../../service/core/database-service"
+import { Changeset, DatabaseService } from "../../service/core/database-service"
 import { ChannelRepository } from "../channel-repository"
 
 @injectable()
 class ChannelRepositoryImpl implements ChannelRepository {
     
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
+            //Create indexes
+            await db.createIndex({ index: { fields: ['dateCreated'] } })
+            await db.createIndex({ index: { fields: ['lastUpdated'] } })
+            
+        }
+    }]
 
-    CREATE_INDEXES = async (db) => {
-
-        //Create indexes
-        await db.createIndex({ index: { fields: ['dateCreated'] } })
-        await db.createIndex({ index: { fields: ['lastUpdated'] } })
-        
-    }
 
     db:any
     dbName:string = "channels"
@@ -30,7 +30,8 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: this.dbName
+            name: this.dbName,
+            changesets: this.changesets
         })
     }
 

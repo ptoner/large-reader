@@ -1,0 +1,96 @@
+<template>
+
+  <div class="accordion-item">
+    <div class="accordion-item-toggle">
+      <button class="button button-fill color-green" style="width: 150px;">Filters</span>
+    </div>
+    <div class="accordion-item-content">
+
+      <div class="list">
+
+        <ul>
+          ${exploreViewModel?.attributeOptions?.map( ao => $h`
+            <li class="item-content item-input attribute-select">
+              <div class="item-inner">
+                <div class="item-title item-label">${ao.traitType}</div>
+                <div class="item-input-wrap input-dropdown-wrap">
+                  <select name="${ao.traitType}" @change="${attributeChange}">
+                    <option selected ></option>
+                    ${ao.values?.map( v => $h`
+                      <option value="${v}">${v}</option>
+                    `)}
+                  </select>
+                </div>
+              </div>
+            </li>
+          `)}
+        </ul>
+    
+    
+    
+      </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+</template>
+
+
+<style>
+
+.item-content.attribute-select {
+  width: 175px;
+  display: inline-block;
+}
+
+
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+
+    let exploreViewModel 
+
+
+    let filters = []
+    let params = {}
+
+    
+    document.addEventListener('explore-view-model-loaded', async (e) => {
+      exploreViewModel = e.exploreViewModel
+      await $update()
+    })
+
+
+    const attributeChange = (e) => {
+
+      params[e.currentTarget.name] = e.currentTarget.value
+
+      if (e.currentTarget.value) {
+        params[e.currentTarget.name] = e.currentTarget.value
+      } else {
+        delete params[e.currentTarget.name]
+      }
+
+      //Dispatch event so we can refresh list
+      let ev = new CustomEvent('explore-attribute-filter-changed')
+      ev.params = params
+      document.dispatchEvent(ev)
+
+    }
+
+
+    return $render
+  }
+
+</script>

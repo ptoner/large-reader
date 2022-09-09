@@ -72,6 +72,7 @@ import { UiService } from "./service/core/ui-service";
 import Navbar from './components/reader/navbar.f7.html'
 import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
+import AttributeFilter from './components/reader/channel/attribute-filter.f7.html'
 import MintInfo from './components/reader/channel/mint-info.f7.html'
 
 import SearchList from './components/reader/item/search-list.f7.html'
@@ -101,7 +102,7 @@ import { ItemPageRepositoryImpl } from "./repository/browser/item-page-repositor
 import { SlideshowRepository } from "./repository/slideshow-repository";
 import { SlideshowRepositoryImpl } from "./repository/browser/slideshow-repository-impl";
 import { QueueService } from "./service/core/queue-service";
-import { AttributeReportRepositoryImpl } from "./repository/node/attribute-report-repository-impl";
+import { AttributeReportRepositoryImpl } from "./repository/browser/attribute-report-repository-impl";
 import { AttributeReportRepository } from "./repository/attribute-report-repository";
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -124,6 +125,8 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
     Framework7.registerComponent("nav-bar", Navbar)
     Framework7.registerComponent("nft-info", NftInfo)
     Framework7.registerComponent("mint-list", MintList)
+    Framework7.registerComponent("attribute-filter", AttributeFilter)
+
     Framework7.registerComponent("mint-info", MintInfo)
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
@@ -153,7 +156,6 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
       {
         path: `${baseURI}index.html`,
         async async({ resolve, reject }) {
-          console.log('eee')
           await resolveWithSpinner(resolve, 'index.html')
         }
       },

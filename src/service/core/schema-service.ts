@@ -4,6 +4,7 @@ import { AuthorRepositoryImpl } from "../../repository/browser/author-repository
 import { ChannelRepositoryImpl } from "../../repository/browser/channel-repository-impl"
 import { ImageRepositoryImpl } from "../../repository/browser/image-repository-impl"
 import { ItemRepositoryImpl } from "../../repository/browser/item-repository-impl"
+import { StaticPageRepositoryImpl } from "../../repository/browser/static-page-repository-impl"
 
 
 @injectable()
@@ -24,6 +25,8 @@ class SchemaService {
     @inject("AnimationRepository")
     private animationRepository:AnimationRepositoryImpl
 
+    @inject("StaticPageRepository")
+    private staticPageRepository:StaticPageRepositoryImpl
 
 
     constructor() {
@@ -39,6 +42,7 @@ class SchemaService {
         repositories.push(this.authorRepository)
         repositories.push(this.imageRepository)
         repositories.push(this.animationRepository)
+        repositories.push(this.staticPageRepository)
 
 
         for (let db of dbs) {

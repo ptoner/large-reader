@@ -22,6 +22,7 @@ import { ItemPage, RowItemViewModel } from "../../dto/item-page";
 import { ItemPageService } from "../item-page-service";
 import { Slideshow } from "../../dto/slideshow";
 import { AttributeReport, AttributeTotal } from "../../dto/viewmodel/attribute-report";
+import { ExploreViewModel } from "../../dto/viewmodel/explore-view-model";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
@@ -227,6 +228,25 @@ class ItemWebService {
 
     }
 
+    async getExploreViewModel(PER_PAGE:number) : Promise<ExploreViewModel> {
+
+        await this.schemaService.load(["channels"])
+
+        //Get channel
+        const channel = await this.channelService.get()
+
+        let items:RowItemViewModel[] = await this.exploreList(0, PER_PAGE)
+
+        return {
+            items: items,
+            attributeOptions: channel.attributeOptions
+        }
+
+        
+
+    }
+
+
     async list(skip: number, limit?:number): Promise<ItemViewModel[]> {
 
         let result: ItemViewModel[] = []
@@ -246,6 +266,32 @@ class ItemWebService {
         return result
 
     }
+
+    async exploreList(skip: number, limit?:number): Promise<RowItemViewModel[]> {
+
+        await this.schemaService.load(["items", "channels", "authors", "images"])
+        
+        let items: Item[] = await this.itemService.list(skip, limit)
+
+        return this._createRowItemViewModels(items)
+
+    }
+
+    async exploreQuery(params:any): Promise<RowItemViewModel[]> {
+
+        await this.schemaService.load(["items", "channels", "authors", "images"])
+        
+        let items: Item[] = await this.itemService.exploreQuery(params)
+
+        let viewModels:RowItemViewModel[] = await this._createRowItemViewModels(items)
+
+        return viewModels
+
+    }
+
+
+
+
 
     async mintList(skip: number, limit?:number): Promise<ItemViewModel[]> {
 
@@ -344,6 +390,30 @@ class ItemWebService {
     async slideshow() : Promise<Slideshow> {
         return this.itemService.getSlideshow()
     }
+
+    private async _createRowItemViewModels(items:Item[]) : Promise<RowItemViewModel[]> {
+
+        let viewModels:RowItemViewModel[] = [] 
+
+        // //Create view models
+        for (let item of items) {
+
+            let coverImage = await this.imageService.get(item.coverImageId)
+
+            viewModels.push({
+                _id: item._id,
+                coverImageGenerated: coverImage.generated ? true : false,
+                coverImageId: coverImage._id,
+                title: `${item.title ? item.title + ' ' : ''} #${item.tokenId}`,
+                tokenId: item.tokenId
+            })
+
+        }
+
+        return viewModels
+
+    }
+
 
 
 }

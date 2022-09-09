@@ -71,7 +71,7 @@
 
                 <nav-bar></nav-bar>
 
-                <div class="page-content infinite-scroll-content" id="item-list-infinite-scroll">
+                <div class="page-content infinite-scroll-content" id="explore-infinite-scroll">
 
                     <div class="row">
             
@@ -81,15 +81,21 @@
                                 Explore <a href="${baseURL}"><%= channelViewModel.channel.title %></a>
                             </div>
 
-                            
+                            <div class="block">
+                                <attribute-filter 
+                                    baseurl="<%= baseURL %>"
+                                >
+                                </attribute-filter>
+                            </div>
+
+
+
                             <div class="list cards-list virtual-list" id="explore-list">
                                 <ul class="item-flex"></ul>
                             </div>
-
+                          
                             <div class="preloader infinite-scroll-preloader"></div>
-
-
-                              
+  
                         </div>
                     </div>
             
@@ -116,17 +122,17 @@
             let totalItemCount = parseInt('<%= channelViewModel.itemCount %>')
 
 
-            let firstItemPage = JSON.parse(`<%= JSON.stringify(firstItemPage).replace(/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, "\\n") %>`)
-      
-            let itemsShown = 35
+            const PER_PAGE = 35
+
+            let itemsShown = 0
             let hasMoreItems = true
             let loadingInProgress = false
-            let pageCounter=1
+            let totalToShow = totalItemCount
 
             let virtualList
+            let swiper
             let items = []
-
-            items.push(...firstItemPage.items)
+            let exploreViewModel 
 
             const resizeListener = (e) => {
                 const viewPortWidth = getWidth()
@@ -142,7 +148,6 @@
                 return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
             }
 
-
             const virtualListParams = {
 
                     el: '#explore-list',
@@ -156,23 +161,60 @@
                     emptyTemplate: `
                         <li class="item-content">
                             <div class="item-inner">
-                                Loading...
+                                No results found.
                             </div>
                         </li>
                         `
             }
 
-
-    
             $on('pageInit', async () => {
+
                 window.addEventListener('resize', resizeListener)
-                createVirtualList()
+
+                exploreViewModel = await itemWebService.getExploreViewModel(PER_PAGE)
+
+                //Dispatch event so we can update attributes
+                let e = new CustomEvent('explore-view-model-loaded')
+                e.exploreViewModel = exploreViewModel
+                document.dispatchEvent(e)
+
+                initMain(exploreViewModel)
+
             })
 
+
+            const initMain = (exploreViewModel) => {
+
+                if (exploreViewModel.items) {
+                    items.push(...exploreViewModel.items)
+                }
+
+                $('.infinite-scroll-preloader').show()
+
+                createVirtualList(true)
+
+                if (items?.length > 0) {
+                    
+                    //Count actual items                    
+                    itemsShown += items.length
+
+                    if (itemsShown >= totalItemCount) {
+                        hasMoreItems = false
+                    }
+
+                    if (!hasMoreItems) {
+                        unloadInfiniteScroll()
+                    }
+                }
+
+                totalToShow = totalItemCount
+
+                $update()
+            }
+
+
             $on('pageBeforeOut', async () => {
-                // unloadInfiniteScroll()
                 window.removeEventListener('resize', resizeListener)
-                // document.getElementById("item-list-infinite-scroll").removeEventListener( 'infinite', infiniteScroll )
             })
 
             $on('pageReinit', async (e, page) => {
@@ -182,12 +224,12 @@
             })
             
 
-            const createVirtualList = () => {
+            const createVirtualList = (addScrollListener) => {
 
                 virtualList = $f7.virtualList.create(virtualListParams)
 
-                if (virtualList.items?.length <= totalItemCount) {
-                    document.getElementById("item-list-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
+                if (virtualList.items?.length <= totalToShow && addScrollListener) {
+                    document.getElementById("explore-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
                 } else {
                     $('.infinite-scroll-preloader').hide()
                 }
@@ -200,9 +242,9 @@
                 console.log("Unload infinite scroll")
 
                 // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-                $f7.infiniteScroll.destroy('#item-list-infinite-scroll')
+                $f7.infiniteScroll.destroy('#explore-infinite-scroll')
                 // $f7.virtualList.destroy('#explore-list')
-                virtualList = undefined
+                // virtualList = undefined
 
                 $('.infinite-scroll-preloader').hide()
             }
@@ -219,17 +261,17 @@
 
                 try {
                     
-                    let itemPage = await itemWebService.itemPage(pageCounter)
+                    let itemList = await itemWebService.exploreList(itemsShown, PER_PAGE)
 
                     //Count actual items                    
-                    itemsShown += itemPage.items.length
+                    itemsShown += itemList.length
 
                     if (itemsShown >= totalItemCount) {
                         hasMoreItems = false
                     }
 
-                    virtualList.appendItems(itemPage.items)
-                    pageCounter++
+                    virtualList.appendItems(itemList)
+                    // pageCounter++
 
                 } catch (ex) {
                     console.log(ex)
@@ -271,16 +313,45 @@
                 return `${baseURL + href}`
             } 
 
-            const countItems = (itemRows) => {
-                //Count actual items
-                let itemCount = 0
-                
-                for (let itemRow of itemRows) {
-                    itemCount += itemRow.items?.length
+ 
+            document.addEventListener('explore-attribute-filter-changed', async (e) => {
+
+                //Reset
+                itemsShown = 0
+                hasMoreItems = true
+                loadingInProgress = false
+                items.length = 0
+
+                virtualList.destroy()
+
+                if (Object.keys(e.params).length > 0) {
+
+                    let itemRows = await itemWebService.exploreQuery(e.params)
+
+                    items.push(...itemRows)
+
+                    hasMoreItems = false
+                    itemsShown = items.length
+                    totalToShow = items.length
+
+                    createVirtualList(false)
+
+                } else {
+
+                    //Reshow main list with scrolling
+                    exploreViewModel = await itemWebService.getExploreViewModel(PER_PAGE)
+                    initMain(exploreViewModel)
+                    
                 }
 
-                return itemCount
-            }
+
+
+
+
+            })
+
+
+
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "Explore <%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`explore.html`) %>")

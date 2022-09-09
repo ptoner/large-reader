@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 import { Item } from "../../dto/item"
 import { ItemRepository, CHUNK_SIZE } from "./../item-repository"
-import { DatabaseService } from "../../service/core/database-service"
+import { Changeset, DatabaseService } from "../../service/core/database-service"
 
 
 @injectable()
@@ -9,61 +9,92 @@ class ItemRepositoryImpl implements ItemRepository {
 
     static CHUNK_SIZE = CHUNK_SIZE
 
-    CREATE_INDEXES = async (db) => {
+    changesets:Changeset[] = [
+        {
+            id: '0',
+            changeset: async (db) => {
 
-        await db.createIndex({
-            index: {
-                fields: ['channelId']
+                await db.createIndex({
+                    index: {
+                        fields: ['channelId']
+                    }
+                })
+        
+                await db.createIndex({
+                    index: {
+                        fields: ['tokenId']
+                    }
+                })
+        
+                await db.createIndex({
+                    index: {
+                        fields: ['dateCreated']
+                    }
+                })
+        
+                await db.search({
+                    build: true,
+                    fields: ['contentHTML', 'title', 'tokenId']
+                })
+        
+                await db.put({
+                    _id: '_design/item_index',
+                    views: {
+                    by_channel_id: {
+                        map: function (doc) { 
+                            //@ts-ignore
+                            emit(doc.channelId)
+                        }.toString(),
+                        reduce: '_count'
+                    }
+                    }
+                })
+        
+                await db.put({
+                    _id: '_design/item_token_id',
+                    views: {
+                    token_id: {
+                        map: function (doc) { 
+                            //@ts-ignore
+                            emit(doc.channelId, doc.tokenId)
+                        }.toString(),
+                        reduce: '_count'
+                    }
+                    }
+                })
+                
             }
-        })
+        },
+        {
+            id: '18',
+            changeset: async (db) => {
 
-        await db.createIndex({
-            index: {
-                fields: ['tokenId']
+                await db.createIndex({
+                    index: {
+                        fields: ['attributeSelections.traitType', 'attributeSelections.value']
+                    }
+                })
+
+
+                // await db.put({
+                //     _id: '_design/attribute_selection_index',
+                //     views: {
+                //         by_attribute_selection: {
+                //             map: function (doc) { 
+
+                //                 for (let attributeSelection of doc.attributeSelections) {
+                //                     //@ts-ignore
+                //                     emit([attributeSelection.id, attributeSelection.value], doc.tokenId);
+                //                 }
+            
+                //             }.toString()
+                //         }
+                //     }
+                // })
+
             }
-        })
-
-        await db.createIndex({
-            index: {
-                fields: ['dateCreated']
-            }
-        })
-
-        await db.search({
-            build: true,
-            fields: ['contentHTML', 'title', 'tokenId']
-        })
-
-        await db.put({
-            _id: '_design/item_index',
-            views: {
-              by_channel_id: {
-                map: function (doc) { 
-                    //@ts-ignore
-                    emit(doc.channelId)
-                }.toString(),
-                reduce: '_count'
-              }
-            }
-        })
-
-
-        await db.put({
-            _id: '_design/item_token_id',
-            views: {
-              token_id: {
-                map: function (doc) { 
-                    //@ts-ignore
-                    emit(doc.channelId, doc.tokenId)
-                }.toString(),
-                reduce: '_count'
-              }
-            }
-        })
-
-
-
-    }
+        }
+    ]
 
     db:any
     dbName:string = "items"
@@ -76,7 +107,7 @@ class ItemRepositoryImpl implements ItemRepository {
     async load() {
         this.db = await this.databaseService.getDatabase({
             name: this.dbName,
-            buildIndexes: this.CREATE_INDEXES
+            changesets: this.changesets
         })
     }
 
@@ -198,6 +229,48 @@ class ItemRepositoryImpl implements ItemRepository {
         return rows
 
     }
+
+
+    async exploreQuery(params:any)  : Promise<Item[]> {
+
+        let results:number[] = []
+        let response
+
+        for (let key of Object.keys(params).sort()) {
+            
+            let selector = {
+
+                "selector": {   
+                    
+                    "attributeSelections": {
+                        "$elemMatch": {
+                            "traitType": `${key}`,
+                            "value": `${params[key]}`
+                        }
+                    },
+
+                    "dateCreated": {
+                      "$exists": true
+                    }                   
+                }
+            }
+
+            if (results?.length > 0) {
+                selector.selector["tokenId"] = {
+                    "$in": results
+                }
+            }
+
+            response = await this.db.find(selector)
+            results = response.docs?.map(d => d.tokenId).sort(function (a, b) {  return a - b;  })
+
+        }
+
+        return response?.docs ? response.docs : []
+
+    }
+
+
 
     async all(): Promise<Item[]> {
         let response = await this.db.find({

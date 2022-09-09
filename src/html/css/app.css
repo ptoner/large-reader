@@ -442,15 +442,6 @@ ul.breadcrumb li a:hover {
   flex: 1;
 }
 
-.nft-header-row .right h1 {
-  font-size: 25px;
-}
-
-.nft-header-row .right h4 {
-  margin-bottom: 0px;
-}
-
-
 
 
 
@@ -579,9 +570,9 @@ ul.breadcrumb li a:hover {
 
 
 
-.item-card {
+/* .item-card {
   cursor: pointer;
-} 
+}  */
 
 
 .fixed-width-content {

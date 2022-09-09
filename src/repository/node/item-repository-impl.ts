@@ -50,7 +50,9 @@ class ItemRepositoryImpl implements ItemRepository {
         return this.items
     }
 
-
+    async exploreQuery(params:any) : Promise<Item[]> {
+        return  
+    }
 
 }
 

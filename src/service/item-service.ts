@@ -57,7 +57,11 @@ class ItemService {
 
     async buildAttributeReport(channel:Channel, items:Item[]) : Promise<AttributeReport> {
         return this.attributeReportRepository.buildAttributeReport(channel, items)
-      }
+    }
+
+    async exploreQuery(params:any) : Promise<Item[]> {
+        return this.itemRepository.exploreQuery(params)
+    }
 
 
 

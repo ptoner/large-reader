@@ -215,6 +215,8 @@
         })        
 
         const createVirtualList = () => {
+          
+          if (virtualList) return
 
           virtualList = $f7.virtualList.create(virtualListParams)
 
@@ -334,7 +336,7 @@
         } 
 
         document.addEventListener('mint-view-model-loaded', async (e) => {
-
+          console.log("Loaded...")
           mintingViewModel = e?.mintingViewModel
 
           if (mintingViewModel) {

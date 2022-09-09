@@ -9,6 +9,7 @@ interface ItemRepository {
     query(query:string) : Promise<Item[]>
     all() : Promise<Item[]>
     listByTokenId(startTokenId:number, limit:number) : Promise<Item[]> 
+    exploreQuery(params:any) : Promise<Item[]>
 }
 
 export {
