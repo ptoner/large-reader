@@ -1,6 +1,6 @@
 {
   "name": "large-reader",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
@@ -85,7 +85,9 @@
     "quill-delta-to-markdown": "0.6.0",
 
     "convert-svg-to-png": "0.6.4",
-    "path": "0.12.7"
+    "path": "0.12.7",
+
+    "large-nft": "file:../../large"
   },
 
   "dependencies": {

@@ -85,6 +85,7 @@ self.addEventListener('fetch', event => {
     if (url.pathname.startsWith(`${baseURL}t`)) process = true
 
     if (url.pathname.startsWith(`${baseURL}backup`)) process = false
+    if (url.pathname.startsWith(`${baseURL}admin`)) process = false
 
     // if (url.pathname.startsWith(`${baseURL}/index`)) process = true
     // if (url.pathname.startsWith(`${baseURL}/mint`)) process = true

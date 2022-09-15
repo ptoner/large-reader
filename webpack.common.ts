@@ -416,7 +416,9 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces, maxIte
   
       new CopyWebpackPlugin({
         patterns: [
-            { from: './backup', to: 'backup' }
+            { from: './backup', to: 'backup' },
+            { from: './node_modules/large-nft/public', to: 'admin' }
+
         ]
       }),
 

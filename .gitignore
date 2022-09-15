@@ -75,3 +75,4 @@ test/test-repo/*
 
 .env
 test/.env
+node_modules
