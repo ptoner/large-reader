@@ -228,17 +228,26 @@
                 ></mint-info>
               
                 <div class="block-title block-title-medium">Fork Collection</div>
-                <div class="block">   
-                    <a href="<%= link(`admin/app.html#!/admin/channel/fork-reader`) %>" class="button button-fill external" style="width: 250px;">
-                      <span class="material-icons">fork_left</span>
-                      Fork
-                    </a>
+                <div class="list links-list inset">   
+                  <ul>
+                      <li>
+                        <a href="<%= link(`admin/app.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                          Fork
+                        </a>
+                      </li>
+                      <li>
+                        <a href="<%= link(`admin/app.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                          Your projects
+                        </a>
+                      </li>
+                      <!-- <li>
+                        <a href="<%= link(`admin/app.html`) %>" class="external">
+                          View forks
+                        </a>
+                      </li> -->
+
+                  </ul>
                 </div>
-
-
-
-
-
 
 
               </div>

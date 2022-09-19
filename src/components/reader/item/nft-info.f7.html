@@ -55,6 +55,14 @@
               <td class="label-cell">Blockchain</td>
               <td>Ethereum</td>
             </tr>
+
+            <tr>
+              <td class="label-cell">Metadata</td>
+              <td><a href="${metadataURL}" class="external">View</a></td>
+            </tr>
+
+
+
           </tbody>
           
   
@@ -95,6 +103,7 @@
 
     let baseURL = props.baseurl 
 
+    let metadataURL = `${baseURL}backup/metadata/${id}.json`
 
     const link = (href) => {
         return `${baseURL + href}`

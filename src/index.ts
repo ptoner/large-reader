@@ -14,18 +14,12 @@ import Framework7 from "framework7"
 
 import {Workbox} from 'workbox-window'
 import { StaticPage } from "./dto/static-page"
-import internal from "stream"
-
-// import './html/images/opensea.svg'
-
 
 
 let init = (baseURL:string, hostname:string, version:string, routablePages:StaticPage[]) => {
 
 
     if ('serviceWorker' in navigator) {
-
-        // console.log(`${hostname}${baseURL}`)
 
         const wb = new Workbox(`${hostname}${baseURL}sw-${version}.js`, {
             scope: `${hostname}${baseURL}`
@@ -47,8 +41,6 @@ let init = (baseURL:string, hostname:string, version:string, routablePages:Stati
 } 
 
 let startApp = async (baseURI:string, version:string, hostname:string, routablePages:StaticPage[]) => {
-
-    // console.log(baseURI, version, hostname)
 
     let container = getMainContainer(baseURI, version, routablePages)            
     let app:Framework7 = container.get("framework7")
