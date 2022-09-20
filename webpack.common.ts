@@ -33,7 +33,7 @@ const VERSION = JSON.stringify(require("./package.json").version)
 let configs = []
 
 
-export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces, maxItems) => {
+export default async (hostname, baseURL, ipfsCid, marketplaces, maxItems) => {
 
   let plugins = []
 
@@ -70,9 +70,6 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces, maxIte
 
   //The list of routable pages to generate.
   let routablePages = await staticPageService.listRoutablePages()
-
-
-
 
 
   //Write slideshow to file
@@ -143,7 +140,6 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces, maxIte
       routablePages: routablePages,
       baseURL: baseURL,
       hostname: hostname,
-      largeURL: largeURL,
       marketplaces: marketplaces,
       ipfsCid: ipfsCid,
       firstPost: itemViewModels[0]
@@ -193,8 +189,7 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces, maxIte
         attributeReport: attributeReport,
         routablePages: routablePages,
         baseURL: baseURL,
-        hostname: hostname,
-        largeURL: largeURL
+        hostname: hostname
       })
     )
 
@@ -269,9 +264,11 @@ export default async (hostname, baseURL, largeURL, ipfsCid, marketplaces, maxIte
         title: itemViewModel.item.title,
         // favicon: 'src/html/favicon.ico',
         template: 'src/html/pages/token.ejs',
+        channelViewModel: channelViewModel,
         filename: `t/${itemViewModel.item.tokenId}/index.html`,
         itemViewModel: itemViewModel,
         routablePages: routablePages,
+        marketplaces: marketplaces,
         baseURL: baseURL,
         hostname: hostname
       })

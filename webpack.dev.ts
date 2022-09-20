@@ -6,14 +6,38 @@ let mainConfigs = []
 
 let hostname = "http://localhost:8081"
 let baseURL = "/"
-let largeURL = "http://localhost:9081"
-let ipfsCid = "QmTQy7nCSMAksjTNcRryPcWaygZvj3FevQkrJAUoCYYS7z"
 
+
+let baseConfig:any = require("./base-config.json")
 let config:any = require("./large-config.json")
+
+
+//Create marketplace config from base config + anything set in large-config
+if (config.marketplaces?.length > 0) {
+    for (let marketplace of config.marketplaces) {
+
+        //Look it up in base config
+        let matches = baseConfig.marketplaces.filter(m => m.name == marketplace.name)
+    
+        if (matches?.length > 0) {
+        
+            //Set asset link
+            if (!marketplace.assetLink) {
+                marketplace.assetLink = matches[0].assetLink
+            }
+    
+            if (!marketplace.link) {
+                marketplace.link = matches[0].link
+            }
+    
+        }
+    
+    }
+}
 
 export default async () => {
 
-    let configs = await common(hostname, baseURL, largeURL, ipfsCid, config.marketplaces, 35)
+    let configs = await common(hostname, baseURL, config.ipfsCid, config.marketplaces, 35)
 
     for (let config of configs) {
         //@ts-ignore

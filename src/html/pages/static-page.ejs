@@ -13,6 +13,9 @@
         return `${baseURL + href}`
     }    
 
+    let logo = link(`backup/images/${channelViewModel.channel.coverImageId}.jpg`)
+
+
     const absoluteLink = (href) => {
         return `${hostname + baseURL + href}`
     }   
@@ -70,7 +73,10 @@
 
             <div class="page" data-name="static-page-<%=staticPage._id %>">
 
-                <nav-bar></nav-bar>
+                <nav-bar
+                    logo="<%=logo%>"
+                >
+                </nav-bar>
 
                 <div class="page-content">
 

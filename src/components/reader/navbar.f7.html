@@ -7,7 +7,13 @@
         
           <div class="left">
             <a href="${baseURI}index.html" class="logo">
-              <i class="f7-icons">house</i>
+              ${logo ? $h`
+                <img src="${logo}" />
+              ` : $h`
+                <i class="f7-icons">house</i>
+              `}
+              
+              
             </a>
           </div>
         
@@ -28,6 +34,12 @@
    margin: 10px;
  }
 
+ .logo img {
+  margin-top: 10px;
+  height: 50px;
+  border-radius: 25%;
+ }
+
 </style>
 
 
@@ -39,6 +51,7 @@
     
         let baseURI = globalThis.container.get("baseURI")
 
+        let logo = props.logo
 
         return $render
     }

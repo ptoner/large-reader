@@ -14,22 +14,32 @@
     let routablePages = htmlWebpackPlugin.options.routablePages
     let attributeReport = htmlWebpackPlugin.options.attributeReport
 
-
     const link = (href) => {
         return `${baseURL + href}`
     }   
 
+    let logo = link(`backup/images/${channelViewModel.channel.coverImageId}.jpg`)
+
     const absoluteLink = (href) => {
       return `${hostname + baseURL + href}`
     }   
-
     
     const escapeExcerpt = (excerpt) => {
       excerpt = excerptHtml(excerpt, { pruneLength: 500 })
       return he.encode(excerpt.toString())
     }
 
+    const marketplaceLink = (marketplace) => {
 
+      let link = marketplace.link 
+
+      //Replace contract if we find it 
+      if (channelViewModel.channel.contractAddress) {
+        link = link.replace("{contractId}", channelViewModel.channel.contractAddress)
+      }
+
+      return link
+    }
 
 %>
 
@@ -79,7 +89,10 @@
 
         <div class="page" data-name="home">
 
-          <nav-bar></nav-bar>
+          <nav-bar
+            logo="<%=logo%>"
+          >
+          </nav-bar>
 
 
           <div class="page-content">
@@ -212,7 +225,7 @@
                     <% 
                       for (let marketplace of marketplaces) { 
                     %>  
-                      <li><a href="<%= marketplace.link %>" class="external"><%= marketplace.name %></a></li>     
+                      <li><a href="<%= marketplaceLink(marketplace) %>" class="external"><%= marketplace.name %></a></li>     
                     <%
                       }
                     %>

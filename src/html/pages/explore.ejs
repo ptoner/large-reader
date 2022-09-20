@@ -13,6 +13,10 @@
         return `${baseURL + href}`
     }    
 
+    let logo = link(`backup/images/${channelViewModel.channel.coverImageId}.jpg`)
+
+
+
     const absoluteLink = (href) => {
         return `${hostname + baseURL + href}`
     }   
@@ -69,7 +73,10 @@
 
             <div class="page" data-name="explore">
 
-                <nav-bar></nav-bar>
+                <nav-bar
+                    logo="<%=logo%>"
+                >
+                </nav-bar>
 
                 <div class="page-content infinite-scroll-content" id="explore-infinite-scroll">
 
