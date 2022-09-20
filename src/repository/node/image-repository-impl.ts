@@ -13,7 +13,7 @@ class ImageRepositoryImpl implements ImageRepository {
     async get(_id:string): Promise<Image> {        
         
         if(this.images?.length == 0) {
-            this.images = JSON.parse(fs.readFileSync('backup/images.json', 'utf8'))
+            this.images = JSON.parse(fs.readFileSync('backup/export/backup/images.json', 'utf8'))
         }
 
         let matches = this.images.filter( image => image._id == _id)
@@ -27,9 +27,9 @@ class ImageRepositoryImpl implements ImageRepository {
         if (image) {
             //Load content
             if (image.generated) {
-                image.svg = fs.readFileSync(`backup/images/${image.cid}.svg`, 'utf8')
+                image.svg = fs.readFileSync(`backup/export/images/${image.cid}.svg`, 'utf8')
             } else {
-                image.buffer = fs.readFileSync(`backup/images/${image.cid}.jpg`)
+                image.buffer = fs.readFileSync(`backup/export/images/${image.cid}.jpg`)
             }
         }
 
@@ -40,7 +40,7 @@ class ImageRepositoryImpl implements ImageRepository {
     async list() : Promise<Image[]> {
 
         if(this.images?.length == 0) {
-            this.images = JSON.parse(fs.readFileSync('backup/images.json', 'utf8'))
+            this.images = JSON.parse(fs.readFileSync('backup/export/backup/images.json', 'utf8'))
         }
 
         return this.images

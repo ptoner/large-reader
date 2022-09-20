@@ -133,7 +133,7 @@ class DatabaseService {
 
     private async loadInitialRecords(config: DatabaseConfig, fullName: string) {
 
-        const response = await axios.get(`${this.baseURI}backup/${config.name}.json`)
+        const response = await axios.get(`${this.baseURI}backup/export/backup/${config.name}.json`)
 
         let initialRecords = response.data;
 

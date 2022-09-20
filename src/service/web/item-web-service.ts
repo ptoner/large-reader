@@ -380,7 +380,7 @@ class ItemWebService {
         return items.map( (item) => {
 
             return {
-                html: `<iframe src="${this.baseURI}backup/animations/${item.animationId}.html"></iframe>`
+                html: `<iframe src="${this.baseURI}backup/export/animations/${item.animationId}.html"></iframe>`
             }
 
         })

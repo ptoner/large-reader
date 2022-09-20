@@ -257,11 +257,11 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
 
   function contracts() {
         
-    const contract = require('../backup/contract.json')
+    const contract = require('../backup/contract/contract.json')
 
     if (!contract.contractAddress) return []
 
-    const c = require('../backup/contract-abi.json')
+    const c = require('../backup/contract/contract-abi.json')
 
     //Override address
     c['Channel'].address = contract.contractAddress

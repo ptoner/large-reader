@@ -44,7 +44,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
         let channel:Channel = channels.rows[0].doc
 
-        const contractResponse = await axios.get(`${this.baseURI}backup/contract.json`)
+        const contractResponse = await axios.get(`${this.baseURI}backup/contract/contract.json`)
 
         if (contractResponse?.data) {
             channel.contractAddress = contractResponse.data.contractAddress

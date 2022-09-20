@@ -16,10 +16,10 @@
 
               ${channelViewModel?.channel.coverBannerId ? $h`
                 
-                <div class="card-header banner" id="banner" style="background-image: url('backup/images/${channelViewModel?.channel.coverBannerId}')">
+                <div class="card-header banner" id="banner" style="background-image: url('backup/export/images/${channelViewModel?.channel.coverBannerId}')">
 
                   ${channelViewModel?.channel.coverImageId ? $h`
-                  <img src="backup/images/${channelViewModel.channel.coverImageId}" class="avatar" />
+                  <img src="backup/export/images/${channelViewModel.channel.coverImageId}" class="avatar" />
                   ` : $h`
                   <i class="f7-icons avatar">photo</i>
                   `}
@@ -31,7 +31,7 @@
                 <div class="card-header banner" id="banner">
   
                   ${channelViewModel?.channel.coverImageId ? $h`
-                  <img src="backup/images/${channelViewModel.channel.coverImageId}" class="avatar" />
+                  <img src="backup/export/images/${channelViewModel.channel.coverImageId}" class="avatar" />
                   ` : $h`
                   <i class="f7-icons avatar">photo</i>
                   `}

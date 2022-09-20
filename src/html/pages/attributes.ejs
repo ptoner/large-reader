@@ -16,7 +16,7 @@
         return `${baseURL + href}`
     }   
 
-    let logo = link(`backup/images/${channelViewModel.channel.coverImageId}.jpg`)
+    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
 
 
@@ -58,14 +58,14 @@
     <meta property="og:title" content="<%=channelViewModel.channel.title%> Attribute Report" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= link(`attributes.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
     <meta property="og:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<%= link(`attributes.html`) %>" />
     <meta property="twitter:title" content="<%=channelViewModel.channel.title%> Attribute Report" />
     <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
     
@@ -171,12 +171,12 @@
           
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%> Attribute Report")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`attributes.html`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>")
 
             document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`attributes.html`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=channelViewModel.channel.title%> Attribute Report")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%> Attribute Report"

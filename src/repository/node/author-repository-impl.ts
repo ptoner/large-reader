@@ -11,7 +11,7 @@ class AuthorRepositoryImpl implements AuthorRepository {
 
     async get(_id:string): Promise<Author> {        
         
-        const authors = JSON.parse(fs.readFileSync('backup/authors.json', 'utf8'))
+        const authors = JSON.parse(fs.readFileSync('backup/export/backup/authors.json', 'utf8'))
         
         let author:Author = authors.filter( author => author._id == _id)[0]
 

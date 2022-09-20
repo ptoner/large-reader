@@ -13,7 +13,7 @@ class ItemRepositoryImpl implements ItemRepository {
     constructor() {}
 
     async load() {
-        this.items = JSON.parse(fs.readFileSync('backup/items.json', 'utf8'))
+        this.items = JSON.parse(fs.readFileSync('backup/export/backup/items.json', 'utf8'))
     }
 
     async get(_id: string): Promise<Item> {        

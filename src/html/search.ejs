@@ -12,7 +12,7 @@
         return `${baseURL + href}`
     }   
 
-    let logo = link(`backup/images/${channelViewModel.channel.coverImageId}.jpg`)
+    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
     const absoluteLink = (href) => {
       return `${hostname + baseURL + href}`
@@ -45,14 +45,14 @@
     <meta property="og:title" content="Search '<%=channelViewModel.channel.title%>'" />
     <meta property="og:type" content="" />
     <meta property="og:url" content="<%= link(`search.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
     <meta property="og:description" content="Search '<%=channelViewModel.channel.title%>' NFTs" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<%= link(`search.html`) %>" />
     <meta property="twitter:title" content="Search '<%=channelViewModel.channel.title%>'" />
     <meta property="twitter:description" content="Search '<%=channelViewModel.channel.title%>' NFTs" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%= htmlWebpackPlugin.tags.headTags %>
     
@@ -137,12 +137,12 @@
 
         document.querySelector('meta[property="og:title"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>'")
         document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`search.html`) %>")
-        document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+        document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
         document.querySelector('meta[property="og:description"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>' NFTs")
 
         document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`search.html`) %>")
         document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>'")
-        document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+        document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
         document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>' NFTs" )
 
         document.querySelector('title').innerHTML = "Search '<%=channelViewModel.channel.title%>' NFTs."

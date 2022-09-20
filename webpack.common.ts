@@ -93,7 +93,7 @@ export default async (hostname, baseURL, ipfsCid, marketplaces, maxItems) => {
             // if (!image.generated) continue 
 
             let pngPath = `public/images/generatedPNG/${image._id}.png`
-            let svgPath = path.resolve(`./backup/images/${image._id}.svg`)
+            let svgPath = path.resolve(`./backup/export/images/${image._id}.svg`)
 
             //Check if there's already a PNG
             if (fs.existsSync(pngPath)) continue
