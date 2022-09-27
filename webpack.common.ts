@@ -33,7 +33,7 @@ const VERSION = JSON.stringify(require("./package.json").version)
 let configs = []
 
 
-export default async (hostname, baseURL, ipfsCid, marketplaces, maxItems) => {
+export default async (hostname, baseURL, marketplaces, maxItems) => {
 
   let plugins = []
 
@@ -141,7 +141,6 @@ export default async (hostname, baseURL, ipfsCid, marketplaces, maxItems) => {
       baseURL: baseURL,
       hostname: hostname,
       marketplaces: marketplaces,
-      ipfsCid: ipfsCid,
       firstPost: itemViewModels[0]
     })
   )

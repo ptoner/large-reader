@@ -37,7 +37,7 @@ if (config.marketplaces?.length > 0) {
 
 export default async () => {
 
-    let configs = await common(hostname, baseURL, config.ipfsCid, config.marketplaces, 35)
+    let configs = await common(hostname, baseURL, config.marketplaces, 35)
 
     for (let config of configs) {
         //@ts-ignore

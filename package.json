@@ -1,6 +1,6 @@
 {
-  "name": "alice-large-reader",
-  "version": "0.0.7",
+  "name": "large-reader",
+  "version": "0.0.8",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
