@@ -10,6 +10,7 @@
     let firstPost = htmlWebpackPlugin.options.firstPost
 
     let channelViewModel=htmlWebpackPlugin.options.channelViewModel 
+    let exploreViewModel = htmlWebpackPlugin.options.exploreViewModel
     let routablePages = htmlWebpackPlugin.options.routablePages
     let attributeReport = htmlWebpackPlugin.options.attributeReport
 
@@ -90,8 +91,21 @@
 
           <nav-bar
             logo="<%=logo%>"
+            title="<%=channelViewModel.channel.title%>"
           >
           </nav-bar>
+
+          <token-toolbar
+            token_id="0"
+            item_count="<%= channelViewModel.channel.itemCount %>" 
+          >
+          </token-toolbar>
+
+          <div class="fab fab-right-center color-white">
+            <a href="<%= link(`t/1`) %>" data-transition="f7-cover">
+                <i class="icon f7-icons color-blue">arrow_right</i>
+            </a>
+          </div>
 
 
           <div class="page-content">
@@ -145,9 +159,7 @@
 
 
                     <div class="start-buttons">
-                      <a href="<%= link('explore.html') %>" class="button button-fill text-color-white explore-button">Explore</a>
-
-                      <a href="<%= link(`t/${firstPost.item.tokenId}`) %>" class="button button-outline color-blue start-slideshow ready-button">Ready to read?</a>
+                      <a href="<%= link(`t/${firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Ready to read?</a>
                     </div>
 
 
@@ -155,6 +167,48 @@
 
                 </div>
 
+
+                <div class="card">
+                  <div class="card-header">Explore</div>
+                  <div class="card-content">
+                    
+                    <div class="list cards-list virtual-list" id="explore-list-index">
+                      <ul class="item-flex">
+
+                        <% 
+                        if (exploreViewModel.items?.length > 0) {
+                          for (let item of exploreViewModel.items) {
+                        %>
+      
+                          <li class="flex-card">
+                            <a href="<%= link(`t/${item.tokenId}`) %>" class="item-link">
+                                <div class="card" >
+                                    <div class="card-content">
+                                        <div class="square">
+                                            <img src="<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>"/>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-footer">
+                                        <%=item.title %>
+                                    </div>
+                                </div>
+                            </a>
+                          </li>
+      
+                        <%
+                            }
+                          }                  
+                        %>
+
+
+                      </ul>
+                    </div>
+
+                  </div>
+                  <div class="card-footer"><a href="<%= link('explore.html') %>" class="link">Explore more</a></div>
+                </div>
 
 
                 <% 
@@ -191,11 +245,9 @@
 
               </div>
 
-              <div class="col-100 large-25">
-                
+              <div class="col-100 large-25">                
 
                 <div class="list links-list inset">   
-                    
                   <ul>
                 
                 <%
@@ -207,10 +259,10 @@
                   
                 %>
                     <li><a href="<%= link(`attributes.html`) %>">Attribute Report</a></li>
+                    <li><a href="<%= link(`explore.html`) %>">Explore</a></li>
+
                   </ul>
-
                 </div>
-
 
 
                 <% 
@@ -283,13 +335,12 @@
               
             let itemWebService = globalThis.container.get("ItemWebService")
 
-            let photoBrowser 
+            const PER_PAGE = 35
+
+            let exploreViewModel 
+
 
             $on('pageInit', async () => {
-
-              // $('.start-slideshow').click( async (e) => {
-              //   await startSlideshow()
-              // })
 
 
               //Make links external
@@ -299,10 +350,13 @@
                 link.classList.add('external')
               }
 
+              await $update()
+
 
             })
 
             $on('pageBeforeOut', async () => {
+
             })
 
             // const startSlideshow = async (e) => {

@@ -65,11 +65,16 @@ import Grid from 'framework7/components/grid'
 import Searchbar from 'framework7/components/searchbar'
 //@ts-ignore
 import Popup from 'framework7/components/popup'
-
+//@ts-ignore
+import Panel from 'framework7/components/panel'
+//@ts-ignore
+import Popover from 'framework7/components/popover'
 
 import { UiService } from "./service/core/ui-service";
 
 import Navbar from './components/reader/navbar.f7.html'
+import TokenToolbar from './components/reader/token-toolbar.f7.html'
+
 import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
 import AttributeFilter from './components/reader/channel/attribute-filter.f7.html'
@@ -107,7 +112,7 @@ import { AttributeReportRepository } from "./repository/attribute-report-reposit
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
-  Range, Accordion, Searchbar, Autocomplete, Popup, PhotoBrowser, Swiper, InfiniteScroll])
+  Range, Accordion, Searchbar, Autocomplete, Popup, PhotoBrowser, Swiper, InfiniteScroll, Panel,Popover])
 
 
 
@@ -123,6 +128,8 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   function framework7() {
 
     Framework7.registerComponent("nav-bar", Navbar)
+    Framework7.registerComponent("token-toolbar", TokenToolbar)
+
     Framework7.registerComponent("nft-info", NftInfo)
     Framework7.registerComponent("mint-list", MintList)
     Framework7.registerComponent("attribute-filter", AttributeFilter)
@@ -245,6 +252,10 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
       },
       
       navbar: {
+        hideOnPageScroll: true
+      },
+
+      toolbar: {
         hideOnPageScroll: true
       },
 

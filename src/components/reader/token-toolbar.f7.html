@@ -1,0 +1,116 @@
+<template>
+
+  <div class="toolbar toolbar-bottom">
+    <div class="toolbar-inner">
+
+        <div class="row" style="width: 100%; margin-bottom: -20px;">
+
+            <div class="range-slider range-slider-init col-100" 
+                @range:change=${rangeChange}
+                data-label="true"
+                >
+            
+                <!-- range input -->
+                <input type="range" 
+                    min="0" 
+                    max="${itemCount}"
+                    step="1" 
+                    value="${tokenId}" 
+                    @change="${rangeSliderChange}"
+            />
+            </div>
+
+            <div class="page-number col-100">
+                Page <strong>${tokenId}</strong> of ${itemCount}
+            </div>
+
+
+        </div>
+
+
+
+
+
+    </div>
+  </div>
+
+</template>
+ 
+<style>
+.page-number {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+}
+
+.range-slider {
+    width: 100%;
+    margin-left: 20px; 
+    margin-right: 20px;
+}
+</style>
+
+
+<script>
+
+
+    export default (props, { $on, $, $f7, $update }) => {
+    
+        let baseURI = globalThis.container.get("baseURI")
+
+        let tokenId = props.token_id
+        let itemCount = props.item_count
+
+        const link = (href) => {
+            return `${baseURI + href}`
+        } 
+
+        const rangeSliderChange = (e) => {
+
+            e.preventDefault()
+
+            let tokenId = $(e.currentTarget).val()
+
+            $f7.preloader.show()
+
+            if (tokenId > 0) {
+                $f7.views.main.router.navigate(link(`t/${ tokenId }`))
+            } else {
+                $f7.views.main.router.navigate(link(`index.html`))
+            }
+            
+
+            $f7.preloader.hide()
+
+
+        }
+
+        const rangeChange = (e) => {
+
+            e.preventDefault()
+
+            const range = $f7.range.get(e.target)
+
+            tokenId = range.value
+
+            $update()
+
+        }
+
+        // <!-- <% if (itemViewModel.item.previous) { %>
+        //         <a style="margin-left: 10px;" class="button button-outline" href="<%= link(`t/${itemViewModel.item.previous.tokenId}`) %>" data-transition="f7-cover">
+        //             <i class="f7-icons">arrow_left</i> <%=itemViewModel.item.previous.title ? itemViewModel.item.previous.title : `#${itemViewModel.item.previous.tokenId}` %>
+        //         </a>
+        // <% } %>
+
+
+        // <% if (itemViewModel.item.next) { %>
+        //         <a style="margin-right: 10px;" class="button button-outline" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="f7-cover">
+        //             <%=itemViewModel.item.next.title ? itemViewModel.item.next.title : `#${itemViewModel.item.next.tokenId}` %> <i class="f7-icons">arrow_right</i> 
+        //         </a>
+        // <% } %> -->
+
+
+        return $render
+    }
+</script>

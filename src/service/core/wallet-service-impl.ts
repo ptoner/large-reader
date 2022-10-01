@@ -29,10 +29,16 @@ class WalletServiceImpl implements WalletService {
           
       if (accounts?.length > 0) {
         await this.initWallet()
-        this.$f7.views.main.router.refreshPage()
       }
 
+      this.$f7.views.main.router.refreshPage()
+
+
     })
+
+
+
+
 
   }
 

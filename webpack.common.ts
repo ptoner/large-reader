@@ -125,6 +125,10 @@ export default async (hostname, baseURL, marketplaces, maxItems) => {
     }
   }
 
+  const exploreViewModel = await itemWebService.getExploreViewModel(15)
+
+
+  
 
 
   //Build home page
@@ -136,6 +140,7 @@ export default async (hostname, baseURL, marketplaces, maxItems) => {
       template: 'src/html/index.ejs',
       filename: 'index.html',
       channelViewModel: channelViewModel,
+      exploreViewModel: exploreViewModel,
       attributeReport: attributeReport,
       routablePages: routablePages,
       baseURL: baseURL,

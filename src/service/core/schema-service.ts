@@ -59,6 +59,26 @@ class SchemaService {
 
     }
 
+    async loadWallet(walletAddress:string) {
+
+        console.log(`Loading wallet: ${walletAddress}`)
+
+        //Open and cache databases
+        // await this.authorRepository.load(walletAddress)
+        // await this.channelRepository.load(walletAddress)
+        // await this.imageRepository.load(walletAddress)
+        // await this.itemRepository.load(walletAddress)
+        // await this.pinningApiRepository.load(walletAddress)
+        // await this.gitlabRepository.load(walletAddress)
+        // await this.animationRepository.load(walletAddress)
+        // await this.themeRepository.load(walletAddress)
+        // await this.staticPageRepository.load(walletAddress)
+        // await this.ipfsHostRepository.load(walletAddress)
+
+    }
+
+
+
 }
 
 export {

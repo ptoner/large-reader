@@ -91,48 +91,68 @@
 
                 <nav-bar
                     logo="<%=logo%>"
+                    title="<%=channelViewModel.channel.title%>"
                 >
                 </nav-bar>
 
+                <token-toolbar
+                    token_id="<%= itemViewModel.item.tokenId %>"
+                    item_count="<%= channelViewModel.channel.itemCount %>" 
+                >
+                </token-toolbar>
+
+                
+                <div class="fab fab-left-center color-white">
+                    <a href="<%= itemViewModel.item.tokenId == 1 ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>">
+                        <i class="icon f7-icons color-blue">arrow_left</i>
+                    </a>
+                </div>
+    
+                <% if (itemViewModel.item.tokenId < channelViewModel.channel.itemCount) { %>
+                    <div class="fab fab-right-center color-white">
+                        <a href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="f7-cover">
+                            <i class="icon f7-icons color-blue">arrow_right</i>
+                        </a>
+                    </div>
+                <% } %>
+
+                
                 <div class="page-content">
 
                     <div class="row">
 
                         <div class="col-100 large-75">
                             
-                            <ul class="breadcrumb">
-                                <li><a href="<%= link('explore.html') %>"><%= itemViewModel.channel.title %></a></li>
-                                <li><%=itemViewModel.item.title %> #<%= itemViewModel.item.tokenId %></li>
-                            </ul>
-                    
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="animation-content">
-                                        <%=itemViewModel.animationContentHTML %>
+                            <div class="row">
+                                <div class="card animation-card col-100">
+                                    <div class="card-content">
+                                        <div class="animation-content">
+                                            <%=itemViewModel.animationContentHTML %>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> 
-
-                            <div class="block row center">
-                
-                                <% if (itemViewModel.item.previous) { %>
-                                    <div class="col-50 previous">
-                                        <a class="button button-outline" href="<%= link(`t/${itemViewModel.item.previous.tokenId}`) %>">
-                                            <i class="f7-icons">arrow_left</i> <%=itemViewModel.item.previous.title ? itemViewModel.item.previous.title : `#${itemViewModel.item.previous.tokenId}` %>
-                                        </a>
-                                    </div>
-                                <% } %>
-
-                    
-                                <% if (itemViewModel.item.next) { %>
-                                    <div class="col-50 next">
-                                        <a class="button button-outline" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>">
-                                            <%=itemViewModel.item.next.title ? itemViewModel.item.next.title : `#${itemViewModel.item.next.tokenId}` %> <i class="f7-icons">arrow_right</i> 
-                                        </a>
-                                    </div>
-                                <% } %>
-                
+                                </div> 
                             </div>
+
+
+                            <% if (itemViewModel.item.next) { %>
+                                <a class="button button-fill center continue-button margin-bottom" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="f7-cover">
+                                    Continue <i class="f7-icons">arrow_right</i>
+                                </a>
+                            <% } %>
+
+
+
+                        </div>
+
+                        <div class="col-100 large-25 token-sidebar">
+                            
+                            <% if (itemViewModel.channel.contractAddress) { %>
+                                <nft-info id="<%= itemViewModel.item.tokenId %>" 
+                                          owner="${owner}" 
+                                          baseurl="<%= baseURL %>" 
+                                          contract="<%= itemViewModel.channel.contractAddress %>">
+                                </nft-info>
+                            <% } %>
 
 
                             <% 
@@ -162,27 +182,10 @@
                                 }
                             %>
 
-
-
-                        </div>
-
-
-                        <div class="col-100 large-25">
-
-
-                            <% if (itemViewModel.channel.contractAddress) { %>
-                                <nft-info id="<%= itemViewModel.item.tokenId %>" 
-                                          owner="${owner}" 
-                                          baseurl="<%= baseURL %>" 
-                                          contract="<%= itemViewModel.channel.contractAddress %>">
-                                </nft-info>
-                            <% } %>
-
-
                             <div class="card">
                                 
                                 <div class="card-header">
-                                    <label>Attributes</label>
+                                    Attributes
                                 </div>
 
                                 <div class="card-content data-table">
@@ -198,11 +201,6 @@
                                 </div>
 
                             </div>
-
-                            
-
-
-
 
                             <div class="card">
                                 <div class="card-header">Cover Image</div>
@@ -229,18 +227,16 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
             let tokenService = globalThis.container.get("TokenService")
+            let baseURI = globalThis.container.get("baseURI")
 
             let owner
 
-
             $on('pageInit', async () => {
 
-                
             })          
 
             $on('pageBeforeOut', async () => {
             })
-
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`token-${itemViewModel.item._id}`) %>")

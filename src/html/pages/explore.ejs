@@ -71,12 +71,16 @@
 
         <div class="view view-main">
 
+
+
             <div class="page" data-name="explore">
 
                 <nav-bar
                     logo="<%=logo%>"
+                    title="Explore"
                 >
                 </nav-bar>
+
 
                 <div class="page-content infinite-scroll-content" id="explore-infinite-scroll">
 
@@ -84,10 +88,6 @@
             
                         <div class="fixed-width-content center">
             
-                            <div class="block-title block-title-medium">            
-                                Explore <a href="${baseURL}"><%= channelViewModel.channel.title %></a>
-                            </div>
-
                             <div class="block">
                                 <attribute-filter 
                                     baseurl="<%= baseURL %>"

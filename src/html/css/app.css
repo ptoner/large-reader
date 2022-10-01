@@ -1,6 +1,14 @@
 :root {
   --f7-font-size: 19px;
-  --f7-list-font-size: 19px
+  --f7-list-font-size: 19px;
+  --f7-toolbar-height: 75px;
+  --f7-range-knob-size: 20px;
+  --f7-fab-margin: 2px;
+  --f7-fab-size: 45px;
+
+  --scrollbar-width: calc(100vw - 100%);
+
+
 }
 
 html {
@@ -464,7 +472,12 @@ ul.breadcrumb li a:hover {
 
 .animation-content {
   max-width: 100%; 
-  overflow-y: scroll;
+  width: 100%;
+  display: flex;
+}
+
+.animation-content:first-child {
+  display: block;
 }
 
 
@@ -531,7 +544,6 @@ ul.breadcrumb li a:hover {
 }
 
 .data-table .label-cell {
-  font-weight: bold;
   width: 200px;
 }
 
@@ -595,7 +607,6 @@ ul.breadcrumb li a:hover {
 .flex-card {
   flex: 0 0 20%;
   margin: 0px;
-  height: 300px;
 }
 
 .flex-card .card {
@@ -710,4 +721,71 @@ html {
 .attribute-value .category-percent {
   font-size: 12px;
   color: rgb(112, 122, 131);
+}
+
+
+@media only screen and (max-width: 1024px) {
+ 
+  .token-sidebar {
+    margin-top: 75px;
+  }
+
+}
+
+
+.small-only {
+  display: none;
+}
+
+.large-only {
+  display: block;
+}
+
+@media only screen and (max-width: 1024px) {
+  .small-only {
+    display: block;
+  }
+
+  .large-only {
+    display: none;
+  }
+}
+
+
+
+.fab-left-center {
+
+}
+
+.fab-right-center {
+  right: calc(25% + 19px) ;
+}
+
+@media only screen and (max-width: 1024px) {
+  .fab-right-center {
+    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));
+  }
+}
+
+
+
+
+.animation-card {
+  margin-left: 42px;
+  margin-right: 42px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .animation-card {
+    margin-left: 42px;
+    margin-right: calc(42px - var(--scrollbar-width));
+
+  }
+}
+
+
+
+.continue-button {
+  width: 300px;
+  margin-top: 30px;
 }
