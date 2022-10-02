@@ -5,7 +5,14 @@
 
         <div class="row" style="width: 100%; margin-bottom: -20px;">
 
-            <div class="range-slider range-slider-init col-100" 
+            ${currentPage && tokenId == 0 ? $h`
+                <a href="${link(`t/${currentPage}`)}" class="button button-outline back-to-page">
+                    Back to page ${currentPage}
+                </a>
+            ` : $h`<span />`}
+
+
+            <div class="range-slider range-slider-init" 
                 @range:change=${rangeChange}
                 data-label="true"
                 >
@@ -41,12 +48,25 @@
     width: 100%;
     text-align: center;
     font-size: 13px;
+    margin-bottom: 15px;
 }
 
 .range-slider {
     width: 100%;
     margin-left: 20px; 
     margin-right: 20px;
+    flex: 1;
+}
+
+.toolbar a.back-to-page {
+    height: 45px;
+    width: 70px;
+    margin-left: 10px;
+    flex: 0 0 70px;
+    font-size: 10px;
+    text-transform: none;
+    white-space: normal;
+    line-height: 13px;
 }
 </style>
 
@@ -57,15 +77,17 @@
     export default (props, { $on, $, $f7, $update }) => {
     
         let baseURI = globalThis.container.get("baseURI")
+        let readerSettingsService = globalThis.container.get("ReaderSettingsService")
 
         let tokenId = props.token_id
         let itemCount = props.item_count
+        let currentPage
 
         const link = (href) => {
             return `${baseURI + href}`
         } 
 
-        const rangeSliderChange = (e) => {
+        const rangeSliderChange = async (e) => {
 
             e.preventDefault()
 
@@ -74,6 +96,7 @@
             $f7.preloader.show()
 
             if (tokenId > 0) {
+                await readerSettingsService.updateCurrentPage(parseInt(tokenId))
                 $f7.views.main.router.navigate(link(`t/${ tokenId }`))
             } else {
                 $f7.views.main.router.navigate(link(`index.html`))
@@ -97,18 +120,15 @@
 
         }
 
-        // <!-- <% if (itemViewModel.item.previous) { %>
-        //         <a style="margin-left: 10px;" class="button button-outline" href="<%= link(`t/${itemViewModel.item.previous.tokenId}`) %>" data-transition="f7-cover">
-        //             <i class="f7-icons">arrow_left</i> <%=itemViewModel.item.previous.title ? itemViewModel.item.previous.title : `#${itemViewModel.item.previous.tokenId}` %>
-        //         </a>
-        // <% } %>
+        const init = async () => {
+            let readerSettings = await readerSettingsService.get()
+            currentPage = readerSettings.currentPage
+            await $update()
+        }
 
 
-        // <% if (itemViewModel.item.next) { %>
-        //         <a style="margin-right: 10px;" class="button button-outline" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="f7-cover">
-        //             <%=itemViewModel.item.next.title ? itemViewModel.item.next.title : `#${itemViewModel.item.next.tokenId}` %> <i class="f7-icons">arrow_right</i> 
-        //         </a>
-        // <% } %> -->
+        init()
+
 
 
         return $render

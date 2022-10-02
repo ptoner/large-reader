@@ -65,7 +65,10 @@ class DatabaseService {
             }
 
             //Load initial records
-            await this.loadInitialRecords(config, fullName)
+            if (config.initialRecords) {
+                await this.loadInitialRecords(config, fullName)
+
+            }
 
         } else {
 
@@ -148,7 +151,7 @@ class DatabaseService {
 interface DatabaseConfig {
     name:string
     changesets?:Changeset[]
-    initialRecords?:any[]
+    initialRecords?:boolean
 }
 
 interface Changeset {

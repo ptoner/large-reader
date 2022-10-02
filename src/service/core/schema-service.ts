@@ -4,6 +4,7 @@ import { AuthorRepositoryImpl } from "../../repository/browser/author-repository
 import { ChannelRepositoryImpl } from "../../repository/browser/channel-repository-impl"
 import { ImageRepositoryImpl } from "../../repository/browser/image-repository-impl"
 import { ItemRepositoryImpl } from "../../repository/browser/item-repository-impl"
+import { ReaderSettingsRepositoryImpl } from "../../repository/browser/reader-settings-repository-impl"
 import { StaticPageRepositoryImpl } from "../../repository/browser/static-page-repository-impl"
 
 
@@ -28,6 +29,9 @@ class SchemaService {
     @inject("StaticPageRepository")
     private staticPageRepository:StaticPageRepositoryImpl
 
+    @inject("ReaderSettingsRepository")
+    private readerSettingsRepository:ReaderSettingsRepositoryImpl
+
 
     constructor() {
 
@@ -43,6 +47,7 @@ class SchemaService {
         repositories.push(this.imageRepository)
         repositories.push(this.animationRepository)
         repositories.push(this.staticPageRepository)
+        repositories.push(this.readerSettingsRepository)
 
 
         for (let db of dbs) {

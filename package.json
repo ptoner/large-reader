@@ -1,10 +1,10 @@
 {
   "name": "large-reader",
-  "version": "0.0.8",
+  "version": "0.0.81",
   "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/ptoner/alice-s-adventures-in-wonderland-reader"
+    "url": "git+https://gitlab.com/american-space-software/large-reader"
   },
   "scripts": {
     "start:dev": "webpack serve --config=webpack.dev.ts",
@@ -26,9 +26,9 @@
   "author": "Patrick Toner",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/ptoner/alice-s-adventures-in-wonderland-reader/issues"
+    "url": "https://gitlab.com/american-space-software/large-reader/issues"
   },
-  "homepage": "https://readalice.com",
+  "homepage": "https://gitlab.com/american-space-software/large-reader",
   "sideEffects": ["**/*.css"],
   "devDependencies": {
 
@@ -127,7 +127,9 @@
 
     "mini-svg-data-uri": "1.4.4",
 
-    "material-icons": "1.10.7"
+    "material-icons": "1.10.7",
+
+    "class-validator": "0.13.2"
 
     
   }

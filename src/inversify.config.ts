@@ -85,6 +85,8 @@ import InfiniteScrollContent from './components/reader/item/infinite-scroll-cont
 
 
 import { TokenService } from "./service/token-service";
+import { ReaderSettingsService } from "./service/reader-settings-service";
+
 import { MetadataRepository } from "./repository/metadata-repository";
 import { MetadataRepositoryImpl } from "./repository/browser/metadata-repository-impl";
 import { MintWebService } from "./service/web/mint-web-service";
@@ -109,6 +111,11 @@ import { SlideshowRepositoryImpl } from "./repository/browser/slideshow-reposito
 import { QueueService } from "./service/core/queue-service";
 import { AttributeReportRepositoryImpl } from "./repository/browser/attribute-report-repository-impl";
 import { AttributeReportRepository } from "./repository/attribute-report-repository";
+
+import { ReaderSettingsRepository } from "./repository/reader-settings-repository";
+import { ReaderSettingsRepositoryImpl } from "./repository/browser/reader-settings-repository-impl";
+
+
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
@@ -311,6 +318,7 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   container.bind<SlideshowRepository>("SlideshowRepository").to(SlideshowRepositoryImpl).inSingletonScope()
   container.bind<AttributeReportRepository>("AttributeReportRepository").to(AttributeReportRepositoryImpl).inSingletonScope()
 
+  container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").to(ReaderSettingsRepositoryImpl).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -335,6 +343,10 @@ function getMainContainer(baseURI:string, version:string, routablePages:StaticPa
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
+
+  container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
+
+
 
   //Attach container to window so we can easily access it from the browser console
   globalThis.container = container

@@ -227,11 +227,15 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
             let tokenService = globalThis.container.get("TokenService")
+            let readerSettingsService = globalThis.container.get("ReaderSettingsService")
+
             let baseURI = globalThis.container.get("baseURI")
 
             let owner
 
             $on('pageInit', async () => {
+
+                await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
 
             })          
 

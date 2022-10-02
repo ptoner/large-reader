@@ -333,15 +333,19 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
+            let baseURI = globalThis.container.get("baseURI")
             let itemWebService = globalThis.container.get("ItemWebService")
 
             const PER_PAGE = 35
 
             let exploreViewModel 
 
+            const link = (href) => {
+                return `${baseURI + href}`
+            }   
+
 
             $on('pageInit', async () => {
-
 
               //Make links external
               let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')
@@ -349,9 +353,6 @@
               for (let link of links) {
                 link.classList.add('external')
               }
-
-              await $update()
-
 
             })
 

@@ -13,8 +13,11 @@ import {  AnimationRepositoryImpl } from "./src/repository/node/animation-reposi
 import { ImageRepository } from "./src/repository/image-repository";
 import { ImageRepositoryImpl } from "./src/repository/node/image-repository-impl";
 
+import { ReaderSettingsRepository } from "./src/repository/reader-settings-repository";
+
 import { StaticPageService } from "./src/service/static-page-service";
 import { QueueService } from "./src/service/core/queue-service";
+import { ReaderSettingsService } from "./src/service/reader-settings-service";
 
 import { StaticPageRepository } from "./src/repository/static-page-repository";
 import { StaticPageRepositoryImpl } from "./src/repository/node/static-page-repository-impl";
@@ -52,6 +55,7 @@ import { SchemaService } from "./src/service/core/schema-service";
 import { UiService } from "./src/service/core/ui-service";
 import { AnimationService } from "./src/service/animation-service";
 import { AnimationRepository } from "./src/repository/animation-repository";
+import { ReaderSettings } from "./src/dto/reader-settings";
 
 
 
@@ -70,6 +74,8 @@ function getMainContainer(baseURI:string) {
   container.bind("baseURI").toConstantValue(baseURI)
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
+  container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
+
 
   container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryImpl).inSingletonScope()
   container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryImpl).inSingletonScope()
@@ -80,6 +86,8 @@ function getMainContainer(baseURI:string) {
   container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryImpl).inSingletonScope()
   container.bind<SlideshowRepository>("SlideshowRepository").to(SlideshowRepositoryImpl).inSingletonScope()
   container.bind<AttributeReportRepository>("AttributeReportRepository").to(AttributeReportRepositoryImpl).inSingletonScope()
+  //@ts-ignore
+  container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").toConstantValue({})
 
 
 
