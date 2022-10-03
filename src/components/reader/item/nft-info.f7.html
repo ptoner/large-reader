@@ -38,7 +38,7 @@
           <tbody>
             <tr>
               <td class="label-cell">Contract Address</td>
-              <td>${contractAddress}</td>
+              <td><a href="https://etherscan.io/token/${fullContractAddress}" class="external">${contractAddress}</a></td>
             </tr>
     
             <tr>
@@ -93,7 +93,7 @@
 
     let ownerAddress 
 
-
+    let fullContractAddress = props.contract
     let contractAddress = walletService.truncateEthAddress(props.contract)
 
     let hasProvider = false

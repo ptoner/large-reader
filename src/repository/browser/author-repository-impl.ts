@@ -14,7 +14,8 @@ class AuthorRepositoryImpl implements AuthorRepository {
 
     async load() {
         this.db = await this.databaseService.getDatabase({
-            name: this.dbName
+            name: this.dbName,
+            initialRecords: true
         })
     }
 

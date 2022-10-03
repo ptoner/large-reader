@@ -41,7 +41,8 @@ class StaticPageRepositoryImpl implements StaticPageRepository {
     async load() {
         this.db = await this.databaseService.getDatabase({
             name: this.dbName,
-            changesets: this.changesets
+            changesets: this.changesets,
+            initialRecords: true
         })
     }
 

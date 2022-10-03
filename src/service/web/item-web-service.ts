@@ -230,7 +230,7 @@ class ItemWebService {
 
     async getExploreViewModel(PER_PAGE:number) : Promise<ExploreViewModel> {
 
-        await this.schemaService.load(["channels"])
+        await this.schemaService.load(["items", "channels", "authors", "images"])
 
         //Get channel
         const channel = await this.channelService.get()

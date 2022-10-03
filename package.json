@@ -1,7 +1,7 @@
 {
   "name": "large-reader",
-  "version": "0.0.81",
-  "description": "A readers that allows a user to browse an NFT collection built with Large.",
+  "version": "0.0.82-alpha",
+  "description": "An app that lets a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/american-space-software/large-reader"
