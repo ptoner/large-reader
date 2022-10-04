@@ -5,15 +5,15 @@ import "reflect-metadata"
 import { getMainContainer } from "./inversify.config"
 
 //Import CSS
-import './html/css/framework7-bundle.css'
-import './html/css/framework7-icons.css'
+import 'large-reader-services/src/html/css/framework7-bundle.css'
+import 'large-reader-services/src/html/css/framework7-icons.css'
 import 'material-icons/iconfont/material-icons.css'
 
-import './html/css/app.css'
+import 'large-reader-services/src/html/css/app.css'
 import Framework7 from "framework7"
 
 import {Workbox} from 'workbox-window'
-import { StaticPage } from "./dto/static-page"
+import { StaticPage } from "large-reader-services/dist/browser"
 
 
 let init = (baseURL:string, hostname:string, version:string, routablePages:StaticPage[]) => {

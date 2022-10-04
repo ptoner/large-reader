@@ -1,64 +1,29 @@
 import { Container } from "inversify";
 
-import { AuthorRepository } from "./src/repository/author-repository";
-import { AuthorRepositoryImpl } from "./src/repository/node/author-repository-impl";
-
-import { ChannelRepository } from "./src/repository/channel-repository";
-import { ChannelRepositoryImpl } from "./src/repository/node/channel-repository-impl";
-
-import { ItemRepository } from "./src/repository/item-repository";
-import {  ItemRepositoryImpl } from "./src/repository/node/item-repository-impl";
-import {  AnimationRepositoryImpl } from "./src/repository/node/animation-repository-impl";
-
-import { ImageRepository } from "./src/repository/image-repository";
-import { ImageRepositoryImpl } from "./src/repository/node/image-repository-impl";
-
-import { ReaderSettingsRepository } from "./src/repository/reader-settings-repository";
-
-import { StaticPageService } from "./src/service/static-page-service";
-import { QueueService } from "./src/service/core/queue-service";
-import { ReaderSettingsService } from "./src/service/reader-settings-service";
-
-import { StaticPageRepository } from "./src/repository/static-page-repository";
-import { StaticPageRepositoryImpl } from "./src/repository/node/static-page-repository-impl";
-
-import { ItemPageRepository } from "./src/repository/item-page-repository";
-import { ItemPageRepositoryImpl } from "./src/repository/node/item-page-repository-impl";
+import PouchDB from 'pouchdb-node';
 
 
-import { SlideshowRepository } from "./src/repository/slideshow-repository";
-import { SlideshowRepositoryImpl } from "./src/repository/node/slideshow-repository-impl";
+import {
+  AuthorRepositoryNodeImpl, 
+  ChannelRepositoryNodeImpl,
+  ItemRepositoryNodeImpl,
+  ImageRepositoryNodeImpl,
+  AnimationRepositoryNodeImpl,
+  StaticPageRepositoryNodeImpl,
+  ItemPageRepositoryNodeImpl,
+  AttributeReportRepositoryNodeImpl,
 
-import { AttributeReportRepository } from "./src/repository/attribute-report-repository";
-import { AttributeReportRepositoryImpl } from "./src/repository/node/attribute-report-repository-impl";
-
-import { AuthorService } from "./src/service/author-service";
-import { ChannelService } from "./src/service/channel-service";
-import { SearchbarService } from "./src/service/web/searchbar-service";
-import { ItemPageService } from "./src/service/item-page-service";
-
-import { DatabaseService } from "./src/service/core/database-service";
-import { PagingService } from "./src/service/core/paging-service";
-import { WalletService } from "./src/service/core/wallet-service";
-import { WalletServiceImpl } from "./src/service/core/wallet-service-impl";
-import { QuillService } from "./src/service/core/quill-service";
-
-
-import { ItemService } from "./src/service/item-service";
-import { AuthorWebService } from "./src/service/web/author-web-service";
-import { ChannelWebService } from "./src/service/web/channel-web-service";
-import { ItemWebService } from "./src/service/web/item-web-service";
-import TYPES from "./src/service/core/types";
-
-import { ImageService } from "./src/service/image-service";
-import { SchemaService } from "./src/service/core/schema-service";
-import { UiService } from "./src/service/core/ui-service";
-import { AnimationService } from "./src/service/animation-service";
-import { AnimationRepository } from "./src/repository/animation-repository";
-import { ReaderSettings } from "./src/dto/reader-settings";
-
-
-
+  AuthorRepository, ChannelRepository, 
+  ItemRepository, WalletService,WalletServiceImpl, AuthorService,
+  ImageService, ChannelService, DatabaseService, PagingService, ItemService, AuthorWebService,
+  ChannelWebService, ItemWebService, UiService, TokenService, ReaderSettingsService,
+  MetadataRepository, MintWebService, SchemaService, 
+  ImageRepository, SearchbarService, QuillService, AnimationService, 
+  AnimationRepository, StaticPageService, StaticPageRepository, 
+  StaticPage, ItemPageService, ItemPageRepository,  QueueService,
+  AttributeReportRepository, ReaderSettingsRepository,
+  TYPES
+} from "large-reader-services/dist/node"
 
 let container:Container
 
@@ -73,19 +38,20 @@ function getMainContainer(baseURI:string) {
   container.bind("provider").toConstantValue({})
   container.bind("baseURI").toConstantValue(baseURI)
 
+  container.bind("PouchDB").toConstantValue(PouchDB)
+
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
   container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
 
 
-  container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryImpl).inSingletonScope()
-  container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryImpl).inSingletonScope()
-  container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryImpl).inSingletonScope()
-  container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryImpl).inSingletonScope()
-  container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryImpl).inSingletonScope()
-  container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryImpl).inSingletonScope()
-  container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryImpl).inSingletonScope()
-  container.bind<SlideshowRepository>("SlideshowRepository").to(SlideshowRepositoryImpl).inSingletonScope()
-  container.bind<AttributeReportRepository>("AttributeReportRepository").to(AttributeReportRepositoryImpl).inSingletonScope()
+  container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryNodeImpl).inSingletonScope()
+  container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryNodeImpl).inSingletonScope()
+  container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryNodeImpl).inSingletonScope()
+  container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryNodeImpl).inSingletonScope()
+  container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryNodeImpl).inSingletonScope()
+  container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryNodeImpl).inSingletonScope()
+  container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryNodeImpl).inSingletonScope()
+  container.bind<AttributeReportRepository>("AttributeReportRepository").to(AttributeReportRepositoryNodeImpl).inSingletonScope()
   //@ts-ignore
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").toConstantValue({})
 
@@ -108,6 +74,7 @@ function getMainContainer(baseURI:string) {
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
   container.bind<UiService>("UiService").to(UiService).inSingletonScope()
   container.bind<QueueService>("QueueService").to(QueueService).inSingletonScope()
+  container.bind<DatabaseService>("DatabaseService").to(DatabaseService).inSingletonScope()
 
 
 

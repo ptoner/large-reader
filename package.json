@@ -1,7 +1,7 @@
 {
   "name": "large-reader",
-  "version": "0.0.82-alpha",
-  "description": "An app that lets a user to browse an NFT collection built with Large.",
+  "version": "0.0.10-alpha",
+  "description": "A readers that allows a user to browse an NFT collection built with Large.",
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/american-space-software/large-reader"
@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://gitlab.com/american-space-software/large-reader/issues"
   },
-  "homepage": "https://gitlab.com/american-space-software/large-reader",
+  "homepage": "https://readalice.com",
   "sideEffects": ["**/*.css"],
   "devDependencies": {
 
@@ -87,6 +87,8 @@
     "convert-svg-to-png": "0.6.4",
     "path": "0.12.7",
 
+    "pouchdb-node": "7.3.0",
+
     "large-nft": "file:../../large"
   },
 
@@ -100,7 +102,9 @@
     "inversify": "6.0.1",
 
     "ethers": "5.5.4",
-    "pouchdb": "7.3.0",
+
+    "pouchdb-browser": "7.3.0",
+
     "pouchdb-find": "7.3.0",
     "pouchdb-quick-search": "1.3.0",
 
@@ -129,7 +133,9 @@
 
     "material-icons": "1.10.7",
 
-    "class-validator": "0.13.2"
+    "class-validator": "0.13.2",
+
+    "large-reader-services": "0.0.1-alpha"
 
     
   }
