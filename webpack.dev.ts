@@ -8,7 +8,7 @@ let hostname = "http://localhost:8081"
 let baseURL = "/"
 
 
-let baseConfig:any = require("./base-config.json")
+let baseConfig:any = require("./node_modules/large-reader-services/base-config.json")
 let config:any = require("./large-config.json")
 
 

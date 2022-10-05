@@ -3,7 +3,7 @@ import common from './webpack.common'
 
 let mainConfigs = []
 
-let baseConfig:any = require("./base-config.json")
+let baseConfig:any = require("./node_modules/large-reader-services/base-config.json")
 
 let config:any = require("./large-config.json")
 
