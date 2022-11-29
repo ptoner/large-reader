@@ -1,17 +1,16 @@
 {
   "name": "large-reader",
-  "version": "0.0.13-alpha",
-  "description": "A reader app for users to browse an NFT collection built with Large.",
+  "version": "0.0.15-alpha",
+  "description": "Generate a website for an NFT collection built with Large.",
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/american-space-software/large-reader"
   },
   "scripts": {
-    "start:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js serve --config=node_modules/large-reader-services/src/webpack.dev.ts",
-    "build": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=node_modules/large-reader-services/src/webpack.prod.ts",
-    "build:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",
-    "build:analyze": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.analyze.ts",
-    "test": "cd test && mocha --require ts-node/register --timeout 999999 **/*.spec.ts --exit"
+    "serve": "node ./node_modules/http-server/bin/http-server",
+    "generate": "node node_modules/large-reader-services/dist/generate.js",
+    "generate:dev": "node node_modules/large-reader-services/dist/generate.js --env dev"
+
   },
   "keywords": [],
   "author": "Patrick Toner",
@@ -19,65 +18,12 @@
   "bugs": {
     "url": "https://gitlab.com/american-space-software/large-reader/issues"
   },
-  "sideEffects": ["**/*.css"],
-  "dependencies": {
+  "type": "module",
+  "devDependencies": {
 
-    "reflect-metadata": "0.1.13",
-    "regenerator-runtime": "0.13.7",
+    "http-server": "14.1.1",
 
-    "@types/mocha": "9.1.0",
-    "@types/node": "^17.0.21",
-    "@types/reflect-metadata": "0.1.0",
-    "@types/pouchdb": "6.4.0",
-
-    "core-js": "3.21.0",
-  
-    "mocha": "9.2.0",
-
-    "ts-loader": "9.4.1",
-    "css-loader": "6.7.1",
-    "file-loader": "6.2.0",
-    "style-loader": "3.3.1",
-    "terser-webpack-plugin": "5.3.6",
-    "url-loader": "4.1.1",
-    "html-loader": "4.2.0",
-    "ejs-compiled-loader": "3.1.0",
-    "framework7-loader": "3.0.2",
-
-    "ts-mocha": "9.0.2",
-    "ts-mockito": "2.6.1",
-    "ts-node": "10.9.1",
-    "typescript": "4.8.4",
-    
-    "webpack": "5.75.0",
-    "webpack-cli": "4.10.0",
-    "webpack-dev-server": "4.11.1",
-    "webpack-merge": "5.8.0",
-    "webpack-node-externals": "3.0.0",
-    "webpack-bundle-analyzer": "4.7.0",
-    
-    "dotenv": "16.0.0",
-
-    "node-fetch": "2.6.7",
-
-    "babel-loader": "8.2.3",
-    "@babel/core": "7.17.2",
-    "@babel/preset-env": "7.16.11",
-
-    "quill-delta-to-html": "0.11.0",
-    "quill-delta-to-markdown": "0.6.0",
-
-    "assert": "2.0.0",
-    "buffer": "6.0.3",
-    "path-browserify": "1.0.1",
-    "process": "0.11.10",
-    "stream-browserify": "3.0.0",
-    "crypto-browserify": "3.12.0",
-    "url": "0.11.0",
-    "util": "0.12.4",
-    "blob-polyfill": "6.0.20211015",
-
-    "large-nft": ">=0.1.0-beta",
-    "large-reader-services": "file:../../large-reader-services"    
+    "large-nft": "*",
+    "large-reader-services": "*"    
   }
 }
