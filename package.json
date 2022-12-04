@@ -4,12 +4,13 @@
   "description": "Generate a website for an NFT collection built with Large.",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/american-space-software/large-reader"
+    "url": "git+https://gitlab.com/american-space-software/large-reader/"
   },
   "scripts": {
-    "serve": "node ./node_modules/http-server/bin/http-server",
-    "generate": "node node_modules/large-reader-services/dist/generate.js",
-    "generate:dev": "node node_modules/large-reader-services/dist/generate.js --env dev"
+    "serve": "node ./node_modules/http-server/bin/http-server -p 8081",
+    "generate": "node node_modules/large-nft/public/reader/generate.js",
+    "generate:dev": "node node_modules/large-nft/public/reader/generate.js --env dev",
+    "sync": "node node_modules/large/public/sync.js"
 
   },
   "keywords": [],
@@ -24,7 +25,6 @@
     "http-server": "14.1.1",
     "convert-svg-to-png": "0.6.4",
 
-    "large-nft": "*",
-    "large-reader-services": "*"    
+    "large-nft": "*"
   }
 }
