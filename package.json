@@ -4,7 +4,7 @@
   "description": "Generate a website for an NFT collection built with Large.",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/american-space-software/large-reader/"
+    "url": "git+https://github.com/LargeNFT/large-reader/"
   },
   "scripts": {
     "serve": "node ./node_modules/http-server/bin/http-server -p 8081 -c-1",
@@ -17,7 +17,7 @@
   "author": "Patrick Toner",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/american-space-software/large-reader/issues"
+    "url": "https://github.com/LargeNFT/large-reader/issues"
   },
   "type": "module",
   "devDependencies": {
