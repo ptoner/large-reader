@@ -14,7 +14,7 @@ Configuration for the generation and sync processes are stored in large-config.j
 ### Example
 Here is an example configuration for a site hosted on GitLab Pages.
 
-```console
+```json
 {
     "hostname": "https://ptoner.gitlab.io",
     "baseURL": "/bladerunner-punks-reader/",
