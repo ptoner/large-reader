@@ -64,15 +64,17 @@ In the example above, the link field for the "OpenSea" marketplace is the URL of
 
 You can add as many objects to the marketplaces array as you like, as long as each object has the required name field.
 
+Currently OpenSea and LooksRare are configured by default.
+
 ### External Links
 Configure links to external resources associated with the collection such as Discord or Twitter. 
 
 
 
-
 ### Generate Large Reader for localhost
+Note the -- before passing options. Generates HTML files in ./public folder.
 ```console
-npm run generate:dev
+npm run generate -- --env dev --main-branch main
 ```
 
 ### Generate Large Reader for localhost
@@ -84,10 +86,11 @@ npm run start
 The generated web app will be available at [http://localhost:8081](http://localhost:8081) by default.
 
 
-
 ### Generate Large Reader for production
+Generates HTML files in 'public' branch.
+
 ```console
-npm run generate
+npm run generate -- --main-branch main
 ```
 
 
@@ -98,11 +101,7 @@ npm run generate
 Transaction data is also cached locally in PouchDB. 
 
 ### Start Large Sync
-```console
-npm run sync
-```
-
-### Start local HTTP server
+Note the -- before passing options.
 ```console
 npm run sync --  --env dev --alchemy <API key>
 ```
@@ -111,20 +110,17 @@ npm run sync --  --env dev --alchemy <API key>
 
 | Option | Default | Description | 
 | ------------- | ------------- | ------------- |
-| --env  | production | This loads either the dev or production settings for hostname and baseURL. Also in dev mode the sync process does not commit or push to the git provider. |
+| --env  | production | This loads either the dev or production settings for hostname and baseURL. Also in dev mode nothing is written to the 'public' branch. |
 | --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
-| --branch  | main  | The git branch used to push.
+| --main-branch  | main  | The main branch. 
+| --public-branch  | public  | The public branch. This branch is where the generate and sync tools write their changes.
 | --sync-rate  | 30*1000  | Milliseconds between sync attempts. Default is 30 seconds. 
-
-
-
 
 
 
 # Large Reader Showcase
 These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
 * [Alice's Adventures in Wonderland](https://readalice.com)
-
 
 # Note
 The README in this forked repo does not get updated over time. Check the original 'large-reader' [GitHub](https://github.com/LargeNFT/large-reader) [GitLab](https://gitlab.com/american-space-software/large-reader) repo that this was forked from for up-to-date instructions.

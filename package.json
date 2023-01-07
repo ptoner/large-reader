@@ -9,7 +9,6 @@
   "scripts": {
     "serve": "node ./node_modules/http-server/bin/http-server -p 8081 -c-1",
     "generate": "node node_modules/large-nft/public/reader/generate.js",
-    "generate:dev": "node node_modules/large-nft/public/reader/generate.js --env dev",
     "sync": "node --no-experimental-fetch node_modules/large-nft/public/reader/sync.js"
 
   },
