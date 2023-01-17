@@ -1,6 +1,6 @@
 {
   "name": "large-reader",
-  "version": "0.0.15-alpha",
+  "version": "0.0.16-alpha",
   "description": "Generate a website for an NFT collection built with Large.",
   "repository": {
     "type": "git",
@@ -8,9 +8,9 @@
   },
   "scripts": {
     "serve": "node ./node_modules/http-server/bin/http-server -p 8081 -c-1",
-    "generate": "node node_modules/large-nft/public/reader/generate.js",
-    "sync": "node --no-experimental-fetch node_modules/large-nft/public/reader/sync.js"
-
+    "generate": "node node_modules/large-nft/public/generate/index.js",
+    "generate:dev": "node node_modules/large-nft/public/generate/index.js --env dev",
+    "sync": "node --no-experimental-fetch node_modules/large-nft/public/sync/index.js"
   },
   "keywords": [],
   "author": "Patrick Toner",
