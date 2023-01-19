@@ -75,5 +75,4 @@ test/test-repo/*
 
 .env
 test/.env
-pouch/*
-public/*
+sync/*
