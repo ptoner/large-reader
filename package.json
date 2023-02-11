@@ -12,7 +12,7 @@
     "generate:dev": "node node_modules/large-nft/public/generate/index.js --env dev",
     "sync": "node --no-experimental-fetch node_modules/large-nft/public/sync/index.js",
     "start": "node --no-experimental-fetch node_modules/large-nft/public/start.js",
-    "start:dev": "node --no-experimental-fetch node_modules/large-nft/public/start.js --env dev"
+    "generate:after": ""
   },
   "keywords": [],
   "author": "Patrick Toner",
