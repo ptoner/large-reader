@@ -76,3 +76,4 @@ test/test-repo/*
 .env
 test/.env
 sync/*
+secret/*
