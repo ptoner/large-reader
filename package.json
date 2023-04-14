@@ -8,11 +8,10 @@
   },
   "scripts": {
     "serve": "node ./node_modules/http-server/bin/http-server -p 8081 -c-1",
-    "generate": "node node_modules/large-nft/public/generate/index.js",
-    "generate:dev": "node node_modules/large-nft/public/generate/index.js --env dev",
-    "sync": "node --no-experimental-fetch node_modules/large-nft/public/sync/index.js",
-    "start": "node --no-experimental-fetch node_modules/large-nft/public/start.js",
-    "generate:after": ""
+    "generate": "node node_modules/large-nft/public/large/generate/index.js",
+    "generate:dev": "node node_modules/large-nft/public/large/generate/index.js --env dev",
+    "sync": "node --no-experimental-fetch node_modules/large-nft/public/large/sync/index.js",
+    "start": "node --no-experimental-fetch node_modules/large-nft/public/large/start.js"
   },
   "keywords": [],
   "author": "Patrick Toner",
@@ -29,6 +28,6 @@
     "convert-svg-to-png": "0.6.4",
     "sharp": "0.31.3",
 
-    "large-nft": "^0.6.28"
+    "large-nft": "^0.12.0"
   }
 }
