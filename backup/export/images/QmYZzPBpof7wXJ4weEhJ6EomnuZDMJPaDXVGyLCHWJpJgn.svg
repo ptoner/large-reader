@@ -1,0 +1,70 @@
+<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1'>
+            <style>
+                * {
+                    --lh: 95px;
+                    height:100%;
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+                }
+
+
+                @keyframes gradient {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    25% {
+                        background-position: 50%% 50%;
+                    }
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                    75% {
+                        background-position: 50% 50%;
+                    }
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+
+
+                .svg-h1 {
+
+                    border: 25px solid rgb(78,130,177);
+                    
+                    background: rgb(241,241,241);
+                    background: linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%);
+                    background-size: 400% 400%;
+                    animation: gradient 15s ease infinite;
+
+                    text-align: center;
+                    font-size: 75px;
+                    padding: 70px;            
+                    line-height: var(--lh);
+                    height: 1200px;
+                    width: 1200px;  
+                    -webkit-mask-image: linear-gradient(180deg, rgb(0,0,0) 60%, transparent);        
+                }
+
+                .svg-title {
+                    font-weight: 700;
+                    font-size: 1.25em;
+                }
+
+                .svg-text {
+                    width: 100%;
+                    font-weight: 500;
+                }
+
+                
+
+                
+
+            </style>
+            <g>
+                <foreignObject x='0' y='0' width='1200' height='1200'>
+                    <h1 class="svg-h1" xmlns='http://www.w3.org/1999/xhtml'><p>Alice took up the fan and gloves, and, as the hall was very hot, she kept fanning herself all the time she went on talking: &#x201C;Dear, dear! How queer everything is to-day! And yesterday things went on just as usual. I wonder if I&#x2019;ve been changed in the night? Let me think: was I the same when I got up this morning? I almost think I can remember feeling a little different. But if I&#x2019;m not the same, the next question is, Who in the world am I? Ah,&#xA0;that&#x2019;s&#xA0;the great puzzle!&#x201D; And she began thinking over </p></h1>
+                </foreignObject>
+            </g>
+        </svg>
