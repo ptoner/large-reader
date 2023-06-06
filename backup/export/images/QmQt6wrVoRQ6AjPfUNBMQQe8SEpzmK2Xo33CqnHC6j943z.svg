@@ -1,0 +1,79 @@
+<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1'>
+            <style>
+                * {
+                    --lh: 95px;
+                    height:100%;
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+                }
+
+
+                @keyframes gradient {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    25% {
+                        background-position: 50%% 50%;
+                    }
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                    75% {
+                        background-position: 50% 50%;
+                    }
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+
+
+                .svg-h1 {
+
+                    border: 25px solid rgb(78,130,177);
+                    
+                    background: rgb(241,241,241);
+                    background: linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%);
+                    background-size: 400% 400%;
+                    animation: gradient 15s ease infinite;
+
+                    text-align: center;
+                    font-size: 75px;
+                    padding: 70px;            
+                    line-height: var(--lh);
+                    height: 1200px;
+                    width: 1200px;  
+                    -webkit-mask-image: linear-gradient(180deg, rgb(0,0,0) 60%, transparent);        
+                }
+
+                .svg-title {
+                    font-weight: 700;
+                    font-size: 1.25em;
+                }
+
+                .svg-text {
+                    width: 100%;
+                    font-weight: 500;
+                }
+
+                .svg-h1 {
+	-webkit-transform: rotate(2deg);
+	-moz-transform: rotate(2deg);
+	-ms-transform: rotate(2deg);
+	-o-transform: rotate(2deg);
+	transform: rotate(2deg);
+}
+
+
+
+
+                
+
+            </style>
+            <g>
+                <foreignObject x='0' y='0' width='1200' height='1200'>
+                    <h1 class="svg-h1" xmlns='http://www.w3.org/1999/xhtml'><p>&#x201C;Serpent!&#x201D; screamed the Pigeon.<br/><br/>&#x201C;I&#x2019;m&#xA0;not&#xA0;a serpent!&#x201D; said Alice indignantly. &#x201C;Let me alone!&#x201D;<br/><br/>&#x201C;Serpent, I say again!&#x201D; repeated the Pigeon, but in a more subdued tone, and added with a kind of sob, &#x201C;I&#x2019;ve tried every way, and nothing seems to suit them!&#x201D;<br/><br/>&#x201C;I haven&#x2019;t the least idea what you&#x2019;re talking about,&#x201D; said Alice.<br/><br/></p></h1>
+                </foreignObject>
+            </g>
+        </svg>
